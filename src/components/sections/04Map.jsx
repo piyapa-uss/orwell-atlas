@@ -198,7 +198,14 @@ export default function MapSection({ activeId }) {
       </div>
 
       {/* 🗺️ 地图 */}
-      <div style={{ height: "700px", width: "1000px" }}>
+      <div
+        style={{
+          height: "62vh",
+          minHeight: "560px",
+          width: "min(70vw, 1040px)",
+          margin: "0 auto",
+        }}
+      >
         <Map
           ref={mapRef}
           initialViewState={{
