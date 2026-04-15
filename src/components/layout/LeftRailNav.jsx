@@ -4,10 +4,10 @@ import { THEME } from "../../theme";
 const items = [
   { no: "01", label: "Why Orwell?", id: "why-orwell" },
   { no: "02", label: "Constraint", id: "life-under-constraint" },
-  { no: "03", label: "Cost", id: "cost-of-survival" },
-  { no: "04", label: "Map", id: "mapping-inequality" },
-  { no: "05", label: "Then / Now", id: "then-now" },
-  { no: "06", label: "Numbers", id: "survival-by-numbers" },
+  { no: "03", label: "Map", id: "mapping-inequality" },
+  { no: "04", label: "Cost", id: "cost-of-survival" },
+  { no: "05", label: "Numbers", id: "survival-by-numbers" },
+  { no: "06", label: "Then / Now", id: "then-now" },
   { no: "07", label: "Reflection", id: "reflection" },
   { no: "08", label: "About", id: "footer-about" },
 ];

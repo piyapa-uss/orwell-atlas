@@ -20,10 +20,10 @@ export default function App() {
     const sectionIds = [
       "why-orwell",
       "life-under-constraint",
-      "cost-of-survival",
       "mapping-inequality",
-      "then-now",
+      "cost-of-survival",
       "survival-by-numbers",
+      "then-now",
       "reflection",
       "footer-about",
     ];
@@ -59,10 +59,10 @@ export default function App() {
       <HeroSection />
       <WhySection activeId={activeId} />
       <ConstraintSection activeId={activeId} />
-      <CostSection activeId={activeId} />
       <MapSection activeId={activeId} />
-      <CompareSection activeId={activeId} />
+      <CostSection activeId={activeId} />
       <NumbersSection activeId={activeId} />
+      <CompareSection activeId={activeId} />
       <ReflectionSection activeId={activeId} />
       <AboutSection activeId={activeId} />
       
