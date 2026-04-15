@@ -1,9 +1,8 @@
 export const THEME = {
   colors: {
     // base website
-    bg: "#f6f3ee",
-    surface: "#f5f0db",
-    surface2: "#fffaf0",
+    bg: "#f5f0db",
+    surface: "#f6f3ee",
     ink: "#171717",
     muted: "#6b675f",
     line: "#d8d2c8",
