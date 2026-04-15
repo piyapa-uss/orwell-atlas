@@ -4,6 +4,10 @@
   pointer-events: auto;
 }
 
-้html {
+html {
   scroll-behavior: smooth;
-} 
+}
+
+.income-popup {
+  z-index: 9999 !important;
+}
