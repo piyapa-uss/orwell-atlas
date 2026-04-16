@@ -1,21 +1,21 @@
 export const placesData = [
   {
     "id": 1,
-    "place": "Dunkirk Pier",
+    "place": "Dunkirk",
     "day": 1,
     "lat": 51.0344,
     "lon": 2.3768,
-    "type": "boat",
-    "context": "Travelled to England via Dunkirk and Tilbury."
+    "type": "Boat Pier",
+    "context": "I travelled to England third class via Dunkirk and Tilbury, which is the cheapest and not the worst way of crossing the Channel."
   },
   {
     "id": 2,
-    "place": "Tilbury Pier",
+    "place": "Tilbury",
     "day": 1,
     "lat": 51.4552,
     "lon": 0.3548,
-    "type": "boat",
-    "context": "Arrival point in England."
+    "type": "Boat Pier",
+    "context": "I travelled to England third class via Dunkirk and Tilbury, which is the cheapest and not the worst way of crossing the Channel."
   },
   {
     "id": 3,
@@ -23,7 +23,7 @@ export const placesData = [
     "day": 2,
     "lat": 51.51407,
     "lon": -0.09352,
-    "type": "office"
+    "type": "B'office and Family Hotel"
   },
   {
     "id": 4,
@@ -31,7 +31,7 @@ export const placesData = [
     "day": 3,
     "lat": 51.49091,
     "lon": -0.11686,
-    "type": "shop"
+    "type": "Clothes shop"
   },
   {
     "id": 5,
@@ -39,8 +39,8 @@ export const placesData = [
     "day": 3,
     "lat": 51.4988704,
     "lon": -0.1062941,
-    "type": "walk",
-    "context": "Stopped and questioned a man on the street."
+    "type": "Walk",
+    "context": "Seeing a man, a navvy or something of the kind, standing on the kerb in the Waterloo Road, I stopped and questioned him."
   },
   {
     "id": 6,
@@ -48,8 +48,8 @@ export const placesData = [
     "day": 4,
     "lat": 51.5101234,
     "lon": -0.0769284,
-    "type": "coffee",
-    "context": "Entered a coffee-shop."
+    "type": "Coffee-shop",
+    "context": "I crossed the river and walked a long way eastward, finally going into a coffee-shop on Tower Hill."
   },
   {
     "id": 7,
@@ -57,8 +57,8 @@ export const placesData = [
     "day": 4,
     "lat": 51.5094334,
     "lon": -0.0229634,
-    "type": "lodging",
-    "context": "Stayed in a lodging-house."
+    "type": "Lodging",
+    "context": "After my bad experience in the Waterloo Road* I moved eastward, and spent the next night in a lodging-house in Pennyfields."
   },
   {
     "id": 8,
@@ -66,7 +66,7 @@ export const placesData = [
     "day": 5,
     "lat": 51.5071316,
     "lon": -0.0620152,
-    "type": "walk"
+    "type": "Walk"
   },
   {
     "id": 9,
@@ -74,7 +74,7 @@ export const placesData = [
     "day": 5,
     "lat": 51.5174861,
     "lon": -0.0659685,
-    "type": "walk"
+    "type": "Walk"
   },
   {
     "id": 10,
@@ -82,8 +82,8 @@ export const placesData = [
     "day": 6,
     "lat": 51.5177802,
     "lon": -0.0780905,
-    "type": "market",
-    "context": "Observed crowded street life."
+    "type": "Market",
+    "context": "In Middlesex Street, among the crowds at the market, a draggled, down-at-heel woman was hauling a brat of five by the arm."
   },
   {
     "id": 11,
@@ -91,7 +91,7 @@ export const placesData = [
     "day": 8,
     "lat": 51.53332,
     "lon": -0.029346,
-    "type": "lodging"
+    "type": "Lodging"
   },
   {
     "id": 12,
@@ -99,7 +99,7 @@ export const placesData = [
     "day": 9,
     "lat": 51.5768,
     "lon": 0.1813,
-    "type": "suburb"
+    "type": "Suburb"
   },
   {
     "id": 13,
@@ -107,7 +107,7 @@ export const placesData = [
     "day": 10,
     "lat": 51.5582734,
     "lon": 0.0711669,
-    "type": "coffee"
+    "type": "Coffee-shop"
   },
   {
     "id": 14,
@@ -115,7 +115,7 @@ export const placesData = [
     "day": 10,
     "lat": 51.6136,
     "lon": -0.0754,
-    "type": "shelter"
+    "type": "Shelter"
   },
   {
     "id": 15,
@@ -123,7 +123,7 @@ export const placesData = [
     "day": 12,
     "lat": 51.51407,
     "lon": -0.09352,
-    "type": "office",
+    "type": "B'office",
     "context": "Borrow money from B."
   },
   {
@@ -132,7 +132,7 @@ export const placesData = [
     "day": 12,
     "lat": 51.5073978,
     "lon": -0.1282407,
-    "type": "square",
+    "type": "Square",
     "context": "Waited for a friend."
   },
   {
@@ -141,7 +141,7 @@ export const placesData = [
     "day": 12,
     "lat": 51.5076273,
     "lon": -0.1271061,
-    "type": "lodging"
+    "type": "Lodging"
   },
   {
     "id": 18,
@@ -149,8 +149,8 @@ export const placesData = [
     "day": 13,
     "lat": 51.5028379,
     "lon": -0.112801,
-    "type": "meeting",
-    "context": "Met Bozo near Waterloo Bridge."
+    "type": "Meeting",
+    "context": "Addresses did not exist in Paddy's world, but he had a vague idea that Bozo might be found in Lambeth, and in the end we ran across him on the Embankment, where he had established himself not far from Waterloo Bridge."
   },
   {
     "id": 19,
@@ -158,22 +158,48 @@ export const placesData = [
     "day": 13,
     "lat": 51.4944,
     "lon": -0.1006,
-    "type": "meeting"
+    "type": "Meeting"
   },
   {
     "id": 20,
+    "place": "Dock Road",
+    "day": 13,
+    "lat": 51.4826777,
+    "lon": -0.3047281,
+    "type": "Walk",
+    "context": "In the East India Dock Road the Salvation Army were holding a service."
+  },
+  {
+    "id": 21,
+    "place": "Cross Bridge",
+    "day": 13,
+    "lat": 51.5304349,
+    "lon": -0.1210173,
+    "type": "Bridge",
+    "context": "Under Charing Cross Bridge fifty men were waiting, mirrored in the shivering puddles."
+  },
+  {
+    "id": 22,
     "place": "Old Kent Road",
     "day": 22,
     "lat": 51.4849,
     "lon": -0.0697,
-    "type": "travel"
+    "type": "Travel"
   },
   {
-    "id": 21,
+    "id": 23,
     "place": "Bromley",
     "day": 22,
     "lat": 51.406,
     "lon": 0.0132,
-    "type": "shelter"
+    "type": "Shelter"
+  },
+  {
+    "id": 24,
+    "place": "Binfield",
+    "day": 23,
+    "lat": 51.4326,
+    "lon": -0.7937,
+    "type": "Easthampstead Union Workhouse"
   }
 ]

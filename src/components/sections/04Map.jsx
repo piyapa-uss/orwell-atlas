@@ -3,17 +3,19 @@ import * as React from "react";
 import { Map, Source, Layer } from "react-map-gl/maplibre";
 import "maplibre-gl/dist/maplibre-gl.css";
 import { placesData } from "../../data/orwell_places";
+import { Popup } from "react-map-gl/maplibre";
 
 export default function MapSection({ activeId }) {
 
-  // 🎯 状态
+  // State
   const [step, setStep] = React.useState(0);
   const [playing, setPlaying] = React.useState(false);
   const [hasPlayed, setHasPlayed] = React.useState(false);
+  const [selectedPlace, setSelectedPlace] = React.useState(null);
 
   const mapRef = React.useRef(null);
 
-  // 👉 GeoJSON
+  // transfer to GeoJSON
   const geojsonData = {
     type: "FeatureCollection",
     features: placesData.map((p, index) => ({
@@ -32,7 +34,7 @@ export default function MapSection({ activeId }) {
     })),
   };
 
-  // 🧠 必须先排序（修复关键 bug）
+  // sort
   const sortedFeatures = [...geojsonData.features].sort(
     (a, b) => a.properties.day - b.properties.day
   );
@@ -42,7 +44,7 @@ export default function MapSection({ activeId }) {
 
   const currentFeature = sortedFeatures[step];
 
-  // 🎯 进入 section 自动播放（只一次）
+  // animation
   React.useEffect(() => {
     if (activeId === "mapping-inequality" && !hasPlayed) {
       setPlaying(true);
@@ -50,7 +52,7 @@ export default function MapSection({ activeId }) {
     }
   }, [activeId, hasPlayed]);
 
-  // 🎬 初始定位（只执行一次）
+  // first position
   React.useEffect(() => {
     if (!mapRef.current || !firstCoord) return;
 
@@ -61,7 +63,7 @@ export default function MapSection({ activeId }) {
     });
   }, []);
 
-  // 🎬 播放逻辑（逐点出现）
+  // playing logic
   React.useEffect(() => {
     if (!playing) return;
 
@@ -74,18 +76,18 @@ export default function MapSection({ activeId }) {
           return prev;
         }
       });
-    }, 4000);
+    }, 3000);
 
     return () => clearInterval(interval);
   }, [playing]);
 
-  // 🔁 Replay
+  // Replay
   const handleReplay = () => {
     setStep(0);
     setPlaying(true);
   };
 
-  // 🧭 跟随 camera
+  // camera following
   React.useEffect(() => {
     if (!mapRef.current || !currentFeature) return;
 
@@ -96,13 +98,13 @@ export default function MapSection({ activeId }) {
     });
   }, [step]);
 
-  // 🟡 点（逐步出现）
+  // point appear
   const visiblePoints = {
     type: "FeatureCollection",
     features: sortedFeatures.slice(0, step + 1),
   };
 
-  // 🔵 线（逐步增长）
+  // line appear
   const lineData = {
     type: "Feature",
     geometry: {
@@ -113,7 +115,7 @@ export default function MapSection({ activeId }) {
     },
   };
 
-  // 🎨 点样式（当前点高亮）
+  // Point Style
   const pointLayer = {
     id: "points",
     type: "circle",
@@ -124,18 +126,18 @@ export default function MapSection({ activeId }) {
         10,
         6,
       ],
-      "circle-color": "#9b4442",
+      "circle-color": "#4a6a7f",
       "circle-stroke-width": 2,
       "circle-stroke-color": "#ffffff",
     },
   };
 
-  // 🎬 虚线路径
+  // Path way
   const lineLayer = {
     id: "line",
     type: "line",
     paint: {
-      "line-color": "#9b4442",
+      "line-color": "#9c4442",
       "line-width": 3,
       "line-dasharray": [1, 1],
     },
@@ -146,15 +148,15 @@ export default function MapSection({ activeId }) {
     id: "labels",
     type: "symbol",
     layout: {
-      "text-field": ["get", "place"], // ⭐ 关键：取 place 字段
-      "text-font": ["Open Sans Regular"],
-      "text-size": 12,
-      "text-offset": [0, 1.2], // 往上移一点
+      "text-field": ["get", "place"], 
+      "text-font": ["Open Sans Bold", "Arial Unicode MS Bold"],
+      "text-size": 16,
+      "text-offset": [0, 1.2], 
       "text-anchor": "top",
       "text-allow-overlap": false,
     },
     paint: {
-      "text-color": "#111",
+      "text-color": "#4a6a7f",
       "text-halo-color": "#fff",
       "text-halo-width": 2,
     },
@@ -163,18 +165,18 @@ export default function MapSection({ activeId }) {
   return (
     <SectionShell
       id="mapping-inequality"
-      title="Orwell's Footsteps"
+      title="Orwell's Footsteps Map"
       intro="Orwell's tramp journey unfolds step by step across London."
       isActive={activeId === "mapping-inequality"}
     >
 
-      {/* 🎮 控制 */}
+      {/* Control button */}
       <div style={{ marginBottom: "10px", display: "flex", gap: "10px" }}>
         <button
           onClick={() => setPlaying(!playing)}
           style={{
             padding: "6px 12px",
-            background: "#9b4442",
+            background: "#4a6a7f",
             border: "none",
             cursor: "pointer",
             color: "#fff",
@@ -187,7 +189,7 @@ export default function MapSection({ activeId }) {
           onClick={handleReplay}
           style={{
             padding: "6px 12px",
-            background: "#333",
+            background: "#9c4442",
             color: "#fff",
             border: "none",
             cursor: "pointer",
@@ -197,8 +199,8 @@ export default function MapSection({ activeId }) {
         </button>
       </div>
 
-      {/* 🗺️ 地图 */}
-      <div style={{ height: "700px", width: "1000px" }}>
+      {/* map */}
+      <div style={{ height: "600px", width: "1000px" }}>
         <Map
           ref={mapRef}
           initialViewState={{
@@ -207,15 +209,75 @@ export default function MapSection({ activeId }) {
             zoom: 12,
           }}
           style={{ width: "100%", height: "100%" }}
-          mapStyle="https://api.maptiler.com/maps/019d88b3-dd9c-72dd-ba40-1d66bb3af942/style.json?key=MBBehWfjjQaTQhTfmEeq"
-        >
+          mapStyle="https://api.maptiler.com/maps/019d8d6b-c650-77ba-be12-72f95e0969a1/style.json?key=MBBehWfjjQaTQhTfmEeq"
 
-          {/* 🔵 线 */}
+          onClick={(e) => {
+            const map = mapRef.current.getMap();
+
+            const features = map.queryRenderedFeatures(e.point, {
+              layers: ["points"], 
+            });
+
+            if (features.length > 0) {
+              setSelectedPlace(features[0]);
+            } else {
+              setSelectedPlace(null);
+            }
+          }}
+        >
+          
+          {selectedPlace && (
+            <Popup
+              longitude={selectedPlace.geometry.coordinates[0]}
+              latitude={selectedPlace.geometry.coordinates[1]}
+              onClose={() => setSelectedPlace(null)}
+              closeOnClick={false}
+              className="!p-0"
+            >
+              <article className="border-2 border-black bg-white shadow-[4px_4px_0_0,8px_8px_0_0] w-[220px]">
+
+                {/* Header */}
+                <div style={{ borderBottom: "2px solid #4a6a7f", paddingBottom: "4px", marginBottom: "6px" }}>
+                  <strong style={{ fontSize: "10px", fontWeight: "600", color: "#4a6a7f" }}>
+                    Orwell Footstep
+                  </strong>
+                </div>
+
+                    <div className="flex gap-1">
+                      <div className="w-3 h-3 border-2 border-black bg-white"></div>
+                      <div className="w-3 h-3 border-2 border-black bg-white"></div>
+                    </div>
+
+                {/* Content */}
+                <div className="border-t-2 border-black p-3">
+                  <h3
+                    className="text-sm font-semibold"
+                    style={{ color: "#4a6a7f" }}
+                  >
+                    {selectedPlace.properties.place}
+                  </h3>
+
+                  <p className="mt-1 text-xs text-gray-700">
+                    Day {selectedPlace.properties.day} · {selectedPlace.properties.type}
+                  </p>
+
+                  {selectedPlace.properties.context && (
+                    <p className="mt-2 text-xs text-black leading-snug italic">
+                      "{selectedPlace.properties.context}"
+                    </p>
+                  )}
+                </div>
+
+              </article>
+            </Popup>
+          )}
+        
+          {/* line */}
           <Source id="line" type="geojson" data={lineData} lineMetrics={true}>
             <Layer {...lineLayer} />
           </Source>
 
-          {/* 🟡 点 */}
+          {/* point */}
           <Source id="points" type="geojson" data={visiblePoints}>
             <Layer {...pointLayer} />
             <Layer {...labelLayer} />
