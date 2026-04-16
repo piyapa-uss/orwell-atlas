@@ -19,8 +19,8 @@ export default function SectionShell({ id, title, intro, children, isActive }) {
     >
       <div 
         style={{ 
-          maxWidth: "760px",
-          marginLeft: "200px",
+          maxWidth: "980px",
+          marginLeft: "120px",
         }}
       >
         {title && (
@@ -29,7 +29,7 @@ export default function SectionShell({ id, title, intro, children, isActive }) {
               margin: "0 0 20px 0",
               color: THEME.colors.ink,
               fontFamily: THEME.fonts.serif,
-              fontSize: "clamp(2.8rem, 5vw, 4.8rem)",
+              fontSize: "clamp(2.0rem, 3.5vw, 3.0rem)",
               lineHeight: 1.02,
               fontWeight: 500,
               letterSpacing: "-0.01em",

@@ -1,10 +1,12 @@
 import { useRef, useState } from "react";
 import { THEME } from "../../theme";
+import IncomeMap from "../maps/IncomeMap";
 
 export default function CompareSection() {
   const [position, setPosition] = useState(50);
   const sectionRef = useRef(null);
-    const handlePointerMove = (e) => {
+
+  const handlePointerMove = (e) => {
     if (!sectionRef.current) return;
 
     const rect = sectionRef.current.getBoundingClientRect();
@@ -12,7 +14,7 @@ export default function CompareSection() {
     const next = (x / rect.width) * 100;
 
     setPosition(Math.max(0, Math.min(100, next)));
-    };
+  };
 
   return (
     <section
@@ -41,6 +43,7 @@ export default function CompareSection() {
             right: "56px",
             color: "white",
             textAlign: "right",
+            zIndex: 2,
           }}
         >
           <div
@@ -62,6 +65,40 @@ export default function CompareSection() {
           >
             Now
           </div>
+        </div>
+
+        <div
+          style={{
+            position: "absolute",
+            right: "56px",
+            top: "170px",
+            width: "min(38vw, 560px)",
+            height: "min(60vh, 620px)",
+            borderRadius: "20px",
+            overflow: "hidden",
+            border: `1px solid rgba(246, 243, 238, 0.22)`,
+            boxShadow: "0 10px 30px rgba(0,0,0,0.18)",
+            background: THEME.colors.surface2,
+            zIndex: 10,
+          }}
+        >
+          <IncomeMap />
+        </div>
+
+        <div
+          style={{
+            position: "absolute",
+            right: "56px",
+            bottom: "40px",
+            width: "min(38vw, 560px)",
+            fontSize: "0.85rem",
+            color: "rgba(255,255,255,0.7)",
+            lineHeight: 1.5,
+            zIndex: 11,
+          }}
+        >
+          Median income by borough (2022–23). Darker areas indicate higher
+          income.
         </div>
       </div>
 
@@ -112,11 +149,12 @@ export default function CompareSection() {
         style={{
           position: "absolute",
           left: "50%",
-          top: "50%",
+          top: "72%",
           transform: "translate(-50%, -50%)",
-          width: "min(720px, 80vw)",
+          width: "min(620px, 68vw)",
           textAlign: "center",
           pointerEvents: "none",
+          zIndex: 3,
         }}
       >
         <p
@@ -129,8 +167,8 @@ export default function CompareSection() {
             margin: 0,
           }}
         >
-          Compare the geography of everyday survival across two Londons:
-          one shaped by Orwell’s era, the other by the city today.
+          Compare the geography of everyday survival across two Londons: one
+          shaped by Orwell’s era, the other by the city today.
         </p>
       </div>
 
@@ -144,6 +182,7 @@ export default function CompareSection() {
           width: "2px",
           background: THEME.colors.ink,
           transform: "translateX(-1px)",
+          zIndex: 20,
         }}
       />
 
@@ -165,11 +204,11 @@ export default function CompareSection() {
           fontSize: "0.8rem",
           cursor: "ew-resize",
           boxShadow: "0 4px 14px rgba(0,0,0,0.12)",
+          zIndex: 21,
         }}
       >
         ↔
       </div>
-        
     </section>
   );
 }
