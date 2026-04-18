@@ -4,6 +4,7 @@ import { Map, Source, Layer } from "react-map-gl/maplibre";
 import "maplibre-gl/dist/maplibre-gl.css";
 import { placesData } from "../../data/orwell_places";
 import { Popup } from "react-map-gl/maplibre";
+import { THEME } from "../../theme";
 
 export default function MapSection({ activeId }) {
 
@@ -285,6 +286,20 @@ export default function MapSection({ activeId }) {
 
         </Map>
       </div>
+
+      <p
+        style={{
+          margin: "10px 0 0 0",
+          color: THEME.colors.muted,
+          fontFamily: THEME.fonts.serif,
+          fontSize: "1rem",
+          lineHeight: 1.6,
+          textAlign: "center",
+          fontStyle: "normal",
+        }}
+      >
+        Click on each place to explore more details about Orwell's journey.
+      </p>
 
     </SectionShell>
   );

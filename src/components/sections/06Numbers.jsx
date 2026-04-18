@@ -24,64 +24,84 @@ ChartJS.register(
   Legend
 );
 
+const LegendSquare = ({ color }) => (
+  <span
+    style={{
+      display: "inline-block",
+      width: "12px",
+      height: "12px",
+      backgroundColor: color,
+      marginRight: "6px",
+      borderRadius: "2px",
+    }}
+  />
+);
+
 export default function NumbersSection({ activeId }) {
-  const [lineData, setLineData] = useState(null);
   const [rawRows, setRawRows] = useState([]);
   const [labels, setLabels] = useState([]);
   const [activeIndex, setActiveIndex] = useState(0);
+  const [activeLineIndex, setActiveLineIndex] = useState(null);
+
+  const colors = [
+    "#acbd8b",
+    "#6a9582",
+    "#bc8e5f",
+    "#7a4628",
+    "#4a6a7f",
+    "#9c4442",
+  ];
+
+  const names = ["Bread", "Tea and two Slices", "Coat", "Trousers", "Dormitory", "Income"];
 
   useEffect(() => {
     fetch(`${import.meta.env.BASE_URL}Price_Comparison.csv`)
-      .then((res) => {
-        if (!res.ok) throw new Error("CSV not found");
-        return res.text();
-      })
+      .then((res) => res.text())
       .then((text) => {
         const rows = text
           .trim()
           .split(/\r?\n/)
-          .map((r) => r.split(","))
-          .filter((row) => row.length > 1);
+          .map((r) => r.split(","));
 
-        const headers = rows[0];
         const dataRows = rows.slice(1);
-        const labels = dataRows.map((row) => row[0]);
+        const labels = dataRows.map((r) => r[0]);
 
-        const colors = [
-          "#acbd8b",
-          "#6a9582",
-          "#bc8e5f",
-          "#7a4628",
-          "#4a6a7f",
-          "#9c4442",
-        ];
-
-        // line chart data
-        const lineDatasets = headers.slice(1).map((col, i) => {
-          const color = colors[i % colors.length];
-          return {
-            label: col,
-            data: dataRows.map((row) => Number(row[i + 1]) || 0),
-            borderColor: color,
-            backgroundColor: color,
-            pointBackgroundColor: color,
-            borderWidth: 2,
-            tension: 0.45,
-          };
-        });
-
-        setLineData({
-          labels,
-          datasets: lineDatasets,
-        });
-
-        setLabels(labels);
         setRawRows(dataRows);
-      })
-      .catch((err) => console.error(err));
+        setLabels(labels);
+      });
   }, []);
 
-  // Bar chart data
+  // Line Data
+  const lineDataComputed =
+    rawRows.length > 0
+      ? {
+          labels,
+          datasets: colors.map((color, i) => {
+            const isActive = activeLineIndex === i;
+
+            return {
+              label: names[i],
+              data: rawRows.map((row) => Number(row[i + 1]) || 0),
+
+              borderColor:
+                activeLineIndex === null
+                  ? color
+                  : isActive
+                  ? color
+                  : color + "33",
+
+              backgroundColor: color,
+              borderWidth: isActive ? 4 : 2,
+              tension: 0.4,
+              pointRadius: isActive ? 4 : 2,
+              pointBackgroundColor: color,
+            };
+          }),
+        }
+      : null;
+
+ 
+  // Bar Data
   const barData =
     rawRows.length > 0
       ? {
@@ -89,133 +109,265 @@ export default function NumbersSection({ activeId }) {
           datasets: [
             {
               label: "Income",
-              data: [Number(rawRows[activeIndex]?.[5]) || 0, 0],
+              data: [(Number(rawRows[activeIndex]?.[6]) || 0) * 30, 0],
               backgroundColor: "#9c4442",
               stack: "total",
             },
-            {
-              label: "Bread",
-              data: [0, Number(rawRows[activeIndex]?.[1]) || 0],
-              backgroundColor: "#acbd8b",
-              stack: "total",
-            },
-            {
-              label: "Tea",
-              data: [0, Number(rawRows[activeIndex]?.[2]) || 0],
-              backgroundColor: "#6a9582",
-              stack: "total",
-            },
-            {
-              label: "Coat",
-              data: [0, Number(rawRows[activeIndex]?.[3]) || 0],
-              backgroundColor: "#bc8e5f",
-              stack: "total",
-            },
-            {
-              label: "Trousers",
-              data: [0, Number(rawRows[activeIndex]?.[4]) || 0],
-              backgroundColor: "#7a4628",
-              stack: "total",
-            },
-            {
-              label: "Lodging",
-              data: [0, Number(rawRows[activeIndex]?.[5]) || 0],
-              backgroundColor: "#4a6a7f",
-              stack: "total",
-            },
+            ...names.slice(0, 5).map((name, i) => {
+              const raw = Number(rawRows[activeIndex]?.[i + 1]) || 0;
+              const val =
+                i === 0 || i === 1 || i === 4 ? raw * 30 : raw;
+
+              return {
+                label: name,
+                data: [0, val],
+                backgroundColor: colors[i],
+                stack: "total",
+              };
+            }),
           ],
         }
       : null;
 
-  // line chat year
+  
+  // Line Options
   const lineOptions = {
     responsive: true,
+    maintainAspectRatio: false,
+
     plugins: {
       legend: {
         position: "top",
+
+        // legend hover -> context
+        onHover: (e, item) => {
+          setActiveLineIndex(item.datasetIndex);
+        },
+        onLeave: () => {
+          setActiveLineIndex(null);
+        },
       },
+
       title: {
         display: true,
-        text: "Price Trends Over Time",
+        text: "Price Trends (1930 - 2026)",
       },
     },
+
+    scales: {
+      x: {
+        title: {
+          display: true,
+          text: 'Year', 
+          font: { size: 12, weight: 'bold' },
+        }
+      },
+      y: {
+        beginAtZero: true,
+        title: {
+          display: true,
+          text: 'Daily Value / GBP (£)',
+          font: { size: 12, weight: 'bold' },
+        }
+      }
+    },
+
     interaction: {
       mode: "index",
       intersect: false,
     },
-    // move on line chart
-    onHover: (event, elements) => {
+
+    // Hover year
+    onHover: (e, elements) => {
       if (elements.length > 0) {
         setActiveIndex(elements[0].index);
       }
     },
   };
 
-  // Bar chart
+  // Bar Options
   const barOptions = {
     responsive: true,
+    maintainAspectRatio: false,
+
     plugins: {
-      legend: {
-        display: false,
-      },
+      legend: { display: false },
       title: {
         display: true,
-        text: `(${labels[activeIndex] || ""})`,
+        text: `Monthly Breakdown (${labels[activeIndex] || ""})`,
       },
     },
+
     scales: {
       x: {
         stacked: true,
+        title: {
+          display: true,
+          text: 'Category', 
+          font: { size: 12, weight: 'bold' }
+        }
       },
       y: {
         stacked: true,
+        beginAtZero: true,
+        title: {
+          display: true,
+          text: 'Monthly Total (£)', 
+          font: { size: 12, weight: 'bold' }
+        }
       },
     },
   };
+
+  const STORY_CONTEXT = [
+    { title: "Bread", color: colors[0], 
+      text: (<>In the end his perseverance was rewarded, for he picked up <span style={{ color: colors[0], fontWeight: 600 }}>a penny. We bought a large piece of stale bread</span>, and devoured it as we walked.</>),
+    },
+    { title: "Tea and two Slices", color: colors[1], 
+      text: (<>The <span style={{ color: colors[1], fontWeight: 600 }}>tea-and-two-slices cost threepence halfpenny</span>, leaving me with eight and twopence.</> ),
+      },
+    { title: "Coat", color: colors[2], 
+      text: (<>He said:  ''Ere y'are, the best rig-out you ever 'ad. A tosheroon <span style={{ color: colors[2], fontWeight: 600 }}>[half a crown] for the coat</span>, two 'ogs for the trousers, one and a tanner for the boots, and a 'og for the cap and scarf. That's seven bob.'</>),
+    },
+    { title: "Trousers", color: colors[3], 
+      text: (<>He said:  ''Ere y'are, the best rig-out you ever 'ad. A tosheroon [half a crown] for the coat, <span style={{ color: colors[3], fontWeight: 600 }}>two 'ogs for the trousers</span>, one and a tanner for the boots, and a 'og for the cap and scarf. That's seven bob.'</>),
+    },
+    { title: "Dormitory", color: colors[4], 
+      text: (<>The charge was <span style={{ color: colors[4], fontWeight: 600 }}>ninepence or a shilling</span> (in the shilling dormitory the beds were six feet apart instead of four) and the terms were cash down by seven in the evening or out you went.</>),
+     },
+    { title: "Income", color: colors[5], 
+      text: (<>Take the year round, I make about <span style={{ color: colors[5], fontWeight: 600 }}>a pound a week</span>, because you can't do much in the winter. Boat Race day, and Cup Final day, I've took as much as four pounds.</>), 
+    },
+  ];
 
   return (
     <SectionShell
       id="survival-by-numbers"
       title="Surviving Then and Now"
-      intro="Comparing income and cost structure across time."
-      isActive={activeId === "survival-by-numbers"}
+      intro={
+        <>
+        What did it mean to survive on the margins?<br />
+        This chart compares the cost of basic necessities(food, clothing, and shelter)with income across time.<br /> 
+        By linking long-term trends with monthly affordability, it reveals how the struggle described in Orwell's narrative translates into measurable economic pressure.<br />
+        The seemingly lower lodging cost in 2026 reflects the limits of simplified estimates, which cannot fully capture the reality of today's rising rents and housing pressures.<br />
+        </>
+      }
+        isActive={activeId === "survival-by-numbers"}
     >
-      <div
-        style={{
-          display: "flex",
-          gap: "30px",
-          marginTop: "20px",
-          alignItems: "flex-end", // Bottom alignment
-        }}
-      >
-        {/* Line chart */}
-        <div style={{ flex: 9 }}>
-          {lineData ? (
-            <Line data={lineData} options={lineOptions} />
+      <div style={{ width: "1000px", margin: "0 auto" }}>
+        {/* Charts */}
+        <div
+          style={{
+            height: "400px",
+            display: "flex",
+            gap: "30px",
+            marginTop: "20px",
+            padding: "20px",
+            border: "1px solid #eee",
+          }}
+        >
+          <div style={{ flex: 8 }}>
+            {lineDataComputed && (
+              <Line data={lineDataComputed} options={lineOptions} />
+            )}
+          </div>
+
+          <div
+            style={{
+              flex: 2,
+              maxWidth: "250px",
+              borderLeft: "2px solid #eee",
+              paddingLeft: "20px",
+            }}
+          >
+            {barData && <Bar data={barData} options={barOptions} />}
+          </div>
+        </div>
+
+        {/* Context below charts*/}
+        <div
+          style={{
+            marginTop: "20px",
+
+            // Fix size
+            height: "100px",
+            width: "100%",
+
+            padding: "5px",
+            boxSizing: "border-box", 
+
+            backgroundColor: "rgba(255,255,255,0.3)",
+            backdropFilter: "blur(6px)",
+            borderRadius: "10px",
+
+            borderLeft: `6px solid ${
+              activeLineIndex !== null
+                ? STORY_CONTEXT[activeLineIndex].color
+                : "#ccc"
+            }`,
+
+            display: "flex",
+            flexDirection: "column", 
+
+            overflow: "hidden", 
+          }}
+        >
+          {activeLineIndex !== null ? (
+            <>
+              {/* fix title */}
+              <h4
+                style={{
+                  color: STORY_CONTEXT[activeLineIndex].color,
+                  marginBottom: "5px",
+                  flexShrink: 0, 
+                }}
+              >
+                <LegendSquare
+                  color={STORY_CONTEXT[activeLineIndex].color}
+                />
+                {STORY_CONTEXT[activeLineIndex].title}
+              </h4>
+
+              {/* context */}
+              <div
+                style={{
+                  flex: 1, 
+                  display: "flex",
+                  alignItems: "center",            
+                }}
+              >
+                <p style={{ fontStyle: "italic", margin: 0 }}>
+                  {STORY_CONTEXT[activeLineIndex].text}
+                </p>
+              </div>
+            </>
           ) : (
-            <p>Loading line chart...</p>
+            <div
+              style={{
+                flex: 1,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                color: "#999",
+              }}
+            >
+              Hover legend to see context
+            </div>
           )}
         </div>
 
-        {/* Bar chart */}
-        <div
-          style={{
-            flex: 1,
-            borderLeft: "2px solid #f0f0f0", 
-            paddingLeft: "20px",
-          }}
-        >
-          {barData ? (
-            <div style={{ height: "100%", width: "100%" }}>
-              <Bar data={barData} options={barOptions} />
-              <p style={{ textAlign: "center", fontSize: "0.8rem", color: "#666" }}>
-                Income vs Cost Details
-              </p>
-            </div>
-          ) : (
-            <p>Loading bar chart...</p>
-          )}
-        </div>
+        {/* Source */}
+          <p style={{ fontSize: "0.8rem", color: "#999", marginTop: "6px" }}>
+            Source:Prices are adjusted using the{" "}
+            <a
+              href="https://www.bankofengland.co.uk/monetary-policy/inflation/inflation-calculator"
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{ color: "#4a6a7f", textDecoration: "none" }}
+            >
+              Bank of England Inflation Calculator
+            </a>
+          </p>
       </div>
     </SectionShell>
   );
