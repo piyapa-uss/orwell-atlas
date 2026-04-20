@@ -5,6 +5,7 @@ import LeftRailNav from "./components/layout/LeftRailNav";
 import SectionShell from "./components/layout/SectionShell";
 import HeroSection from "./components/sections/00Hero";
 import WhySection from "./components/sections/01Why";
+import BookSection from "./components/sections/01bBook";
 import ConstraintSection from "./components/sections/02Constraint";
 import CostSection from "./components/sections/03Cost";
 import MapSection from "./components/sections/04Map";
@@ -19,6 +20,7 @@ export default function App() {
   useEffect(() => {
     const sectionIds = [
       "why-orwell",
+      "book-section",
       "life-under-constraint",
       "mapping-inequality",
       "cost-of-survival",
@@ -58,6 +60,7 @@ export default function App() {
 
       <HeroSection />
       <WhySection activeId={activeId} />
+      <BookSection activeId={activeId} />
       <ConstraintSection activeId={activeId} />
       <MapSection activeId={activeId} />
       <CostSection activeId={activeId} />

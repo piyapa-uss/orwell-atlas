@@ -1,0 +1,20 @@
+﻿Place;Neighbourhood;City;Action;Spending;Spending (Decimal Pounds System);Category;Day
+Family Hotel;City of London;London ;Reservation;7s 6d;0,375;Accomodation;Day 2
+Doss-House;Waterloo;London ;Reservation;1s;0,05;Accomodation;Day 3
+Coffee Shop;Tower Hill;London ;Tea and Two Slices;3½d;0,015;Food;Day 4
+Lodge-House;Poplar;London ;Reservation;1s;0,05;Accomodation;Day 4
+Lodge-House;Poplar;London ;Reservation;1s;0,05;Accomodation;Day 5
+Lodge-House;Poplar;London ;Reservation;1s;0,05;Accomodation;Day 6
+Lodge-House;Poplar;London ;Reservation;1s;0,05;Accomodation;Day 7
+Lodge-House;Bow;London ;Reservation;8d;0,035;Accomodation;Day 8
+Coffee Shop;Bow;London ;Tea and Two Slices;3½d;0,015;Food;Day 9
+Coffee Shop;Ilford;London ;Tea and Two Slices;8d;0,035;Food;Day 10
+Salvation Army Shelter;City of London;London ;Reservation;8d;0,035;Accomodation;Day 11
+Coffee Shop;City of London;London ;Cup of Tea;3½d;0,015;Food;Day 12
+Lodge-House;Westminster;London ;Reservation;11d;0,045;Accomodation;Day 12
+Lodge-House;Embarkment;London ;Reservation;9d;0,04;Accomodation;Day 13
+Lodge-House;Embarkment;London ;Reservation;8d;0,035;Accomodation;Day 21
+Coffee Shop;Embarkment;London ;Tea and Two Slices;3d;0,015;Food;Day 21
+Coffee Shop;Embarkment;London ;Dinner;4d;0,015;Food;Day 21
+Shop;Bromley;London ;Bread;1d;0,005;Food;Day 22
+Shop;Lower Binfield;Kent;Bread and Tobacco;1d;0,005;Food;Day 23

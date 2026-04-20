@@ -1,7 +1,8 @@
 import { THEME } from "../../theme";
 
 const navItems = [
-  { id: "why-orwell", label: "Why Orwell?" },
+  { id: "why-orwell", label: "The Author" },
+  { id: "book-section", label: "The Book" },
   { id: "life-under-constraint", label: "Constraint" },
   { id: "mapping-inequality", label: "Map" },
   { id: "cost-of-survival", label: "Cost" },
