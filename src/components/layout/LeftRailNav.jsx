@@ -3,7 +3,6 @@ import { THEME } from "../../theme";
 
 const items = [
   { no: "01", label: "The Author", id: "why-orwell" },
-  { no: "01b", label: "The Book", id: "book-section" },
   { no: "02", label: "Constraint", id: "life-under-constraint" },
   { no: "03", label: "Map", id: "mapping-inequality" },
   { no: "04", label: "Cost", id: "cost-of-survival" },
@@ -32,7 +31,6 @@ export default function LeftRailNav() {
      useEffect(() => {
       const sectionIds = [
         "why-orwell",
-        "book-section",
         "life-under-constraint",
         "mapping-inequality",
         "cost-of-survival",

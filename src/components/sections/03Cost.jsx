@@ -1,17 +1,32 @@
+// Recharts components for creating donut chart visualization
 import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer } from "recharts";
+// Custom hook to fetch and process daily spending and category data
 import { useSpendingData } from "../finance/useSpendingData";
+// Layout wrapper component for consistent section styling
 import SectionShell from "../layout/SectionShell";
+// Application theme with colors, fonts, and styling constants
+import { THEME } from "../../theme.js";
 
-const COLORS = ["#2c2c2c", "#a0a0a0"];
+// Color palette for donut chart segments
+const COLORS = [THEME.colors.ink, THEME.colors.stone];
 
+// Emoji icons for spending categories
 const CATEGORY_ICONS = {
-  Accomodation: "🏠",
+  Accommodation: "🏠",
   Food: "🍞",
 };
 
+/**
+ * CostSection Component
+ * Displays daily spending transactions and category-based spending breakdown
+ * Uses a two-column layout: left for daily details, right for donut chart
+ * @param {string} activeId - ID of currently active section for navigation highlighting
+ */
 export default function CostSection({ activeId }) {
+  // Fetch spending data from custom hook
   const { dailyData, categoryData } = useSpendingData();
 
+  // Calculate total spending across all categories
   const total = categoryData.reduce((sum, c) => sum + c.value, 0);
 
   return (
@@ -21,74 +36,117 @@ export default function CostSection({ activeId }) {
       intro="This section traces everyday expenses — food, lodging, transport — revealing how survival is structured through spending patterns."
       isActive={activeId === "cost-of-survival"}
     >
-  
-      <div style={{ display: "flex", gap: "3rem", marginTop: "2rem", alignItems: "flex-start" }}>
+      {/* Main container: two-column layout (flexbox) */}
+      <div style={{
+        display: "flex",
+        gap: "3rem",
+        alignItems: "flex-start",
+        width: "100%",
+        maxWidth: "1100px",
+        margin: "2rem auto 0 auto",
+        justifyContent: "center",
+      }}>
 
-        {/* LEFT COLUMN — Daily Expenses */}
+        {/* LEFT COLUMN — Daily Expenses: Scrollable list of transactions */}
         <div style={{ flex: 1, maxHeight: "600px", overflowY: "auto" }}>
-          <h3 style={{ marginBottom: "1rem" }}>Day by Day</h3>
+          <h3 style={{
+            marginBottom: "1rem",
+            fontFamily: THEME.fonts.serif,
+            fontSize: "1.8rem",
+            fontWeight: "400",
+          }}>
+            Day by Day
+          </h3>
 
+          {/* Loop through each day's transactions */}
           {dailyData.map((day, index) => {
-            // Compare closing balance with previous day
+            // Determine if balance increased or decreased compared to previous day
             const prevBalance = index > 0 ? dailyData[index - 1].closingBalance : 0;
             const balanceWentUp = day.closingBalance >= prevBalance;
 
             return (
               <div key={day.day}>
 
-                {/* Day header */}
+                {/* Day header with day name and balance */}
                 <div style={{
                   display: "flex",
                   justifyContent: "space-between",
                   alignItems: "center",
-                  backgroundColor: "#f0ede6",
-                  padding: "0.4rem 0.8rem",
+                  backgroundColor: THEME.colors.surface,
+                  padding: "0.6rem 0.8rem",
+                  marginTop: "1rem",
                   marginBottom: "0.25rem",
-                  fontSize: "0.85rem",
-                  color: "#555",
+                  borderLeft: `3px solid ${THEME.colors.stone}`,
                 }}>
-                  <span>{day.day}</span>
-
-                  {/* Balance indicator */}
+                  {/* Display day of week */}
                   <span style={{
-                    color: balanceWentUp ? "#2c7a2c" : "#b03030",
-                    fontWeight: "600",
+                    fontFamily: THEME.fonts.serif,
+                    fontSize: "1rem",
+                    fontStyle: "italic",
+                    color: THEME.colors.muted,
                   }}>
-                    {balanceWentUp ? "▲" : "▼"} Balance: £{day.closingBalance.toFixed(3)}
+                    {day.day}
+                  </span>
+
+                  {/* Show balance with up/down indicator and color coding */}
+                  <span style={{
+                    fontFamily: THEME.fonts.sans,
+                    fontSize: "0.82rem",
+                    fontWeight: "600",
+                    letterSpacing: "0.03em",
+                    color: balanceWentUp ? "#1b4d3f" : THEME.colors.accent,
+                  }}>
+                    {balanceWentUp ? "▲" : "▼"} Balance: £{day.closingBalance.toFixed(2)}
                   </span>
                 </div>
 
-                {/* Items */}
+                {/* List of individual transactions for this day */}
                 {day.items.map((item, i) => (
                   <div key={i} style={{
                     display: "flex",
                     justifyContent: "space-between",
                     alignItems: "center",
                     padding: "0.6rem 0.8rem",
-                    borderBottom: "1px solid #e8e4dc",
-                    backgroundColor: item.isSaving ? "#f7fcf7" : "transparent",
+                    borderBottom: `1px solid ${THEME.colors.line}`,
+                    backgroundColor: "transparent",
                   }}>
+                    {/* Transaction details: icon, action, and location */}
                     <div style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
+                      {/* Category emoji icon */}
                       <span style={{ fontSize: "1.2rem" }}>
                         {CATEGORY_ICONS[item.category] || "📌"}
                       </span>
                       <div>
-                        <div style={{ fontSize: "0.9rem", fontWeight: "500" }}>
+                        {/* Transaction action/description */}
+                        <div style={{
+                          fontFamily: THEME.fonts.serif,
+                          fontSize: "1rem",
+                          fontWeight: "500",
+                        }}>
                           {item.action}
                         </div>
-                        <div style={{ fontSize: "0.75rem", color: "#888" }}>
+                        {/* Location and neighbourhood */}
+                        <div style={{
+                          fontFamily: THEME.fonts.sans,
+                          fontSize: "0.75rem",
+                          color: THEME.colors.muted,
+                        }}>
                           {item.place}, {item.neighbourhood}
                         </div>
                       </div>
                     </div>
+                    {/* Amount and original price */}
                     <div style={{ textAlign: "right" }}>
+                      {/* Amount with sign (+ for savings, - for spending) */}
                       <div style={{
+                        fontFamily: THEME.fonts.sans,
                         fontSize: "0.85rem",
                         fontWeight: "600",
-                        color: item.isSaving ? "#2c7a2c" : "#b03030",
+                        color: item.isSaving ? "#1b4d3f" : THEME.colors.accent,
                       }}>
-                        {item.isSaving ? "+" : "-"} £{item.amount.toFixed(3)}
+                        {item.isSaving ? "+" : "-"} £{item.amount.toFixed(2)}
                       </div>
+                      {/* Original value (e.g., original price before spending) */}
                       <div style={{ fontSize: "0.72rem", color: "#aaa" }}>
                         {item.original}
                       </div>
@@ -100,32 +158,40 @@ export default function CostSection({ activeId }) {
           })}
         </div>
 
-        {/* RIGHT COLUMN — Donut Chart */}
-        <div style={{ width: "320px", flexShrink: 0 }}>
-          <h3 style={{ marginBottom: "1rem" }}>Spending by Category</h3>
+        {/* RIGHT COLUMN — Spending Summary: Donut chart and category breakdown */}
+        <div style={{ flex: 1, maxHeight: "600px" }}>
+          <h3 style={{
+            marginBottom: "1rem",
+            fontFamily: THEME.fonts.serif,
+            fontSize: "1.8rem",
+            fontWeight: "400",
+          }}>
+            Spending by Category
+          </h3>
 
-          {/* Donut */}
-          <div style={{ position: "relative", width: "100%", height: "280px" }}>
+          {/* Donut chart container with centered total */}
+          <div style={{ position: "relative", width: "100%", height: "480px" }}>
+            {/* Responsive Recharts donut chart */}
             <ResponsiveContainer width="100%" height="100%">
               <PieChart>
                 <Pie
                   data={categoryData}
                   cx="50%"
                   cy="50%"
-                  innerRadius={80}
-                  outerRadius={120}
+                  innerRadius={130}
+                  outerRadius={190}
                   dataKey="value"
                   strokeWidth={0}
                 >
+                  {/* Apply alternating colors to each category segment */}
                   {categoryData.map((entry, index) => (
                     <Cell key={index} fill={COLORS[index % COLORS.length]} />
                   ))}
                 </Pie>
-                <Tooltip formatter={(value) => [`£${value.toFixed(3)}`, ""]} />
               </PieChart>
             </ResponsiveContainer>
 
-            {/* Center total */}
+            {/* Center overlay: total spending amount */}
             <div style={{
               position: "absolute",
               top: "50%",
@@ -134,35 +200,61 @@ export default function CostSection({ activeId }) {
               textAlign: "center",
               pointerEvents: "none",
             }}>
-              <div style={{ fontSize: "1.4rem", fontWeight: "700" }}>
-                £{total.toFixed(3)}
+              {/* Total spending amount */}
+              <div style={{
+                fontSize: "1.6rem",
+                fontWeight: "700",
+                fontFamily: THEME.fonts.serif,
+              }}>
+                £{total.toFixed(2)}
               </div>
-              <div style={{ fontSize: "0.75rem", color: "#888" }}>total spent</div>
+              {/* Label for total */}
+              <div style={{
+                fontSize: "0.75rem",
+                color: THEME.colors.muted,
+                fontFamily: THEME.fonts.sans,
+              }}>
+                total spent
+              </div>
             </div>
           </div>
 
-          {/* Legend */}
+          {/* Legend: Category breakdown with icons, names, and amounts */}
+          {/* Render each spending category as a legend item */}
           {categoryData.map((cat, i) => (
             <div key={i} style={{
               display: "flex",
               justifyContent: "space-between",
               alignItems: "center",
               padding: "0.75rem 0",
-              borderBottom: "1px solid #e8e4dc",
+              borderBottom: `1px solid ${THEME.colors.line}`,
             }}>
+              {/* Color swatch and category name */}
               <div style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
+                {/* Colored circle matching chart segment */}
                 <div style={{
                   width: "12px",
                   height: "12px",
                   borderRadius: "50%",
                   backgroundColor: COLORS[i % COLORS.length],
                 }} />
-                <span style={{ fontSize: "0.9rem" }}>
+                {/* Category emoji and name */}
+                <span style={{
+                  fontSize: "0.9rem",
+                  fontFamily: THEME.fonts.sans,
+                  color: THEME.colors.ink,
+                }}>
                   {CATEGORY_ICONS[cat.name] || "📌"} {cat.name}
                 </span>
               </div>
-              <span style={{ fontSize: "0.9rem", fontWeight: "600" }}>
-                £{cat.value.toFixed(3)}
+              {/* Amount spent in this category */}
+              <span style={{
+                fontSize: "0.9rem",
+                fontWeight: "600",
+                fontFamily: THEME.fonts.sans,
+                color: THEME.colors.ink,
+              }}>
+                £{cat.value.toFixed(2)}
               </span>
             </div>
           ))}

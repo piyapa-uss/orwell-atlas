@@ -11,6 +11,7 @@ export default function SectionShell({ id, title, intro, children, isActive }) {
         minHeight: "70vh",
         display: "flex",
         alignItems: "center",
+        justifyContent: "center",
         borderTop: `1px solid ${THEME.colors.line}`,
         scrollMarginTop: "80px",
         opacity: isActive ? 1 : 0.55,
@@ -20,7 +21,8 @@ export default function SectionShell({ id, title, intro, children, isActive }) {
       <div 
         style={{ 
           maxWidth: "980px",
-          marginLeft: "120px",
+          margin: "0 auto",
+          width: "100%",
         }}
       >
         {title && (

@@ -1,157 +1,429 @@
+import { useEffect, useRef } from "react";
 import BreadButter from "../../data/images/breadbutter.jpg";
 import Beggar from "../../data/images/beggar.jpg";
+import Strike from "../../data/images/strikes.jpg";
+import StrikeGoogle from "../../data/images/google_strike.jpg";
 import RoughSleeping from "../../data/images/rough_sleeping.jpg";
 import Coffin from "../../data/images/Fourpence_coffin.jpg";
 import Hangover from "../../data/images/hangover.jpg";
 import SectionShell from "../layout/SectionShell";
+import { THEME } from "../../theme";
+
+
+/**
+ * Hook: fades elements in on scroll. Very subtle: opacity + 14px translateY.
+ * Respects prefers-reduced-motion automatically via CSS.
+ */
+function useRevealOnScroll() {
+  const ref = useRef(null);
+
+  useEffect(() => {
+    const root = ref.current;
+    if (!root) return;
+
+    const els = root.querySelectorAll(".reveal");
+    const io = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("is-visible");
+            io.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.12, rootMargin: "0px 0px -40px 0px" }
+    );
+
+    els.forEach((el) => io.observe(el));
+    return () => io.disconnect();
+  }, []);
+
+  return ref;
+}
+
 
 export default function ConstraintSection({ activeId }) {
+  const contentRef = useRevealOnScroll();
+  const c = THEME.colors;
+  const f = THEME.fonts;
+
   return (
     <SectionShell
       id="life-under-constraint"
       title="Life Under Constraint"
-      intro = '"England is a very good country when you are not poor" - Down and out in Paris and London'
+      intro={'"England is a very good country when you are not poor" - Down and out in Paris and London'}
       isActive={activeId === "life-under-constraint"}
     >
-      {/* CONTENT START */}
+      {/* Scoped styles for this section only */}
+        <style>{`
+        .constraint-section {
+          max-width: 760px;
+          margin: 0 auto;
+          font-family: ${f.serif};
+          font-size: 1.2rem;
+          line-height: 1.65;
+          color: ${c.ink};
+        }
+        .constraint-section p {
+          font-family: ${f.serif};
+          font-size: 1.2rem;
+          line-height: 1.65;
+          color: ${c.ink};
+          margin: 0 0 1.5rem;
+        }
+        .constraint-section p strong { font-weight: 600; color: ${c.ink}; }
+        .constraint-section h3 {
+          font-family: ${f.serif};
+          font-weight: 500;
+          font-size: clamp(1.75rem, 3vw, 2.35rem);
+          line-height: 1.15;
+          letter-spacing: -0.005em;
+          margin: 4rem 0 1.5rem;
+          color: ${c.ink};
+        }
+        .constraint-section a {
+          color: ${c.accent};
+          text-decoration: none;
+          border-bottom: 1px solid rgba(156,68,66,.35);
+          transition: border-color .2s;
+        }
+        .constraint-section a:hover { border-bottom-color: ${c.accent}; }
+ 
+        /* Drop cap on the first paragraph */
+        .constraint-section .lede::first-letter {
+          font-family: ${f.serif};
+          font-weight: 500;
+          float: left;
+          font-size: 5.2rem;
+          line-height: .85;
+          padding: .4rem .6rem 0 0;
+          color: ${c.accent};
+        }
+ 
+        /* Figures */
+        .constraint-section figure { margin: 3rem 0; padding: 0; }
+        .constraint-section figure img {
+          width: 100%;
+          height: auto;
+          display: block;
+          border-radius: 2px;
+        }
+        .constraint-section figcaption {
+          font-family: ${f.sans};
+          font-size: .8rem;
+          line-height: 1.5;
+          color: ${c.muted};
+          margin-top: .75rem;
+          padding-left: .75rem;
+          border-left: 1px solid ${c.line};
+          letter-spacing: .01em;
+        }
+ 
+        /* Split layouts (text + image side by side) */
+        .constraint-section .split {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 2.5rem;
+          align-items: start;
+          margin: 3rem 0;
+        }
+        .constraint-section .split figure { margin: 0; }
+        .constraint-section .split p { font-size: 1.1rem; }
+ 
+        /* Force all split images to a unified portrait ratio —
+           keeps the visual rhythm consistent across the section.
+           Use object-position per image to control which part stays visible. */
+        .constraint-section .split figure img {
+          aspect-ratio: 4 / 5;
+          object-fit: cover;
+          object-position: center;
+        }
+ 
+        /* Breakout figure — wider than text column on large screens */
+        .constraint-section .breakout-figure {
+          margin: 3.5rem -6rem 3rem;
+        }
+        @media (max-width: 1000px) {
+          .constraint-section .breakout-figure { margin-left: 0; margin-right: 0; }
+        }
+ 
+        /* PULL QUOTES — the protagonists */
+        .constraint-section .pullquote {
+          margin: 3.5rem -2rem;
+          padding: 1rem 0;
+          text-align: center;
+          position: relative;
+        }
+        .constraint-section .pullquote::before,
+        .constraint-section .pullquote::after {
+          content: "";
+          display: block;
+          width: 60px;
+          height: 1px;
+          background: ${c.accent};
+          margin: 0 auto;
+          opacity: .5;
+        }
+        .constraint-section .pullquote::before { margin-bottom: 1.75rem; }
+        .constraint-section .pullquote::after { margin-top: 1.75rem; }
+        .constraint-section .pullquote blockquote {
+          margin: 0 auto;
+          padding: 0;
+          font-family: ${f.serif};
+          font-style: italic;
+          font-weight: 400;
+          font-size: clamp(1.8rem, 4.2vw, 3.1rem);
+          line-height: 1.18;
+          letter-spacing: -0.005em;
+          color: ${c.ink};
+          max-width: 22ch;
+        }
+        .constraint-section .pullquote .mark {
+          font-family: ${f.serif};
+          font-style: normal;
+          color: ${c.accent};
+          font-size: 1.15em;
+          line-height: 0;
+          vertical-align: -0.15em;
+          margin: 0 .05em;
+          opacity: .8;
+        }
+        .constraint-section .pullquote cite {
+          display: block;
+          margin-top: 2rem;
+          font-family: ${f.sans};
+          font-style: normal;
+          font-size: .75rem;
+          letter-spacing: .22em;
+          text-transform: uppercase;
+          color: ${c.muted};
+          font-weight: 500;
+        }
+ 
+        /* INLINE QUOTE — smaller, with left accent bar */
+        .constraint-section .inline-quote {
+          margin: 2.5rem 0;
+          padding: 1.25rem 0 1.25rem 1.75rem;
+          border-left: 3px solid ${c.accent};
+          font-family: ${f.serif};
+          font-style: italic;
+          font-size: 1.4rem;
+          line-height: 1.45;
+          color: ${c.ink};
+        }
+        .constraint-section .inline-quote cite {
+          display: block;
+          margin-top: .75rem;
+          font-family: ${f.sans};
+          font-style: normal;
+          font-size: .7rem;
+          letter-spacing: .2em;
+          text-transform: uppercase;
+          color: ${c.muted};
+          font-weight: 500;
+        }
+ 
+        /* SCROLL REVEAL — very subtle */
+        .constraint-section .reveal {
+          opacity: 0;
+          transform: translateY(14px);
+          transition: opacity 1.1s ease-out, transform 1.1s ease-out;
+          will-change: opacity, transform;
+        }
+        .constraint-section .reveal.is-visible {
+          opacity: 1;
+          transform: translateY(0);
+        }
+        @media (prefers-reduced-motion: reduce) {
+          .constraint-section .reveal {
+            opacity: 1;
+            transform: none;
+            transition: none;
+          }
+        }
+ 
+        /* Mobile */
+        @media (max-width: 720px) {
+          .constraint-section .split { grid-template-columns: 1fr; gap: 1.5rem; }
+          .constraint-section .pullquote { margin: 2.5rem 0; }
+          .constraint-section .pullquote blockquote { max-width: 18ch; }
+          .constraint-section p { font-size: 1.1rem; }
+          .constraint-section .lede::first-letter { font-size: 4rem; }
+        }
+      `}</style>
 
-      {/* Block 1 — The Economic Crisis */}
-      <div style={{ display: "flex", gap: "1.5rem", alignItems: "center", margin: "2rem 0" }}>
-        <div style={{ flex: 1 }}>
-          <p>
-            In the early 1930s, London was immersed in a severe economic crisis known as the <strong>Great Slump</strong>, triggered by the <strong>Great Depression</strong> following the <strong>Wall Street Crash of 1929</strong>. One of the most visible consequences was <strong>rampant unemployment</strong>. Factory closures, wage cuts, and mass layoffs deeply affected the city, and the situation was made worse by a steady influx of migrants arriving from across the British Isles, all drawn to the capital in search of work that, for most, simply did not exist.
-          </p>
-          <p style={{ marginBottom: "2rem" }}>
-            At the same time, <strong>state assistance</strong>, also known as "<i>the dole</i>", <strong>was very limited and offered only minimal relief</strong>. Benefits werefrequently reduced, and subject to humiliating bureaucratic scrutiny, posing great challenge for many families. As a result, hunger, malnutrition, and disease became increasingly common through London's streets. <strong>Long queues for food, labour exchanges, and lodging houses</strong> became the defining image of the city's poorest districts.
+      <div ref={contentRef} className="constraint-section">
+
+        {/* Block 1 — The Economic Crisis */}
+        <div className="reveal">
+          <p className="lede">
+            In the early 1930s, London was immersed in a severe economic crisis known as the <strong>Great Slump</strong>, triggered by the <strong>Great Depression</strong> and the <strong>Wall Street Crash of 1929</strong>. One of the most visible consequences was <strong>rampant unemployment</strong>. Factory closures, wage cuts, and mass layoffs deeply affected the city, its citizens ant the loads of migrants who arrived from all parts of the British Isles, drawn to the capital in search of work that, for most, simply did not exist.
           </p>
         </div>
-        <img
-          src={Beggar}
-          alt="A woman assists a disabled war veteran begging on Curzon Street. Monck, Margaret."
-          style={{
-            width: "280px",
-            maxWidth: "100%",
-            objectFit: "cover",
-            flexShrink: 0,
-            borderRadius: "15px",
-          }}
-        />
-      </div>
 
-      {/* Block 2 — Tea and Two Slices */}
-      <div style={{ display: "flex", gap: "1.5rem", alignItems: "flex-start", marginTop: "1.5rem" }}>
-        <img
-          src={BreadButter}
-          alt="Blackfriars free breakfast, c. 1933, Daily Herald © Science Museum Group collection."
-          style={{
-            width: "320px",
-            maxWidth: "100%",
-            flexShrink: 0,
-            objectFit: "cover",
-            borderRadius: "15px",
+        <div className="split">
+          <figure className="reveal">
+            <img
+              src={Beggar}
+              alt="A woman assists a disabled war veteran begging on Curzon Street. — Margaret Monck"
+            />
+            <figcaption>
+              A woman assists a disabled war veteran begging on Curzon Street. — Margaret Monck
+            </figcaption>
+          </figure>
+          <div className="reveal">
+            <p>
+              It was a hard time and <strong>state assistance</strong>, famously known as "<em>the dole</em>", <strong>was very limited and offered only minimal relief</strong>. <a href="https://schoolhistory.co.uk/modern/dole-and-the-means-test/">The usual rate for the dole was 15 shillings per week for a man and wife (nearly £40 at today's exchange rate) and about 5s (25p) for each child</a>. Howeever, benefits were frequently reduced, and subject to humiliating bureaucratic scrutiny, posing great challenge for many families. 
+            </p>
+            <p>
+              As a result, hunger, malnutrition, and disease became increasingly common through London's streets. <strong>Long queues for food, labour exchanges, and lodging houses</strong> became the defining image of the city's poorest districts.
+            </p>
+          </div>
+        </div>
 
-          }}
-        />
-        <div style={{ flex: 1 }}>
-          <h3>Tea and Two Slices</h3>
+        {/* SECOND IMAGE — breakout figure. Replace src with your new image import. */}
+        <figure className="reveal breakout-figure">
+          <img
+            src={Strike}
+            alt="Hunger marchers rest on their journey from Tyneside to London. Spender, Humphrey. © London Museum."
+          />
+          <figcaption>
+            Hunger marchers rest on their journey from Tyneside to London. Spender, Humphrey. © London Museum.
+          </figcaption>
+        </figure>
+
+        {/* Block 2 — Tea and Two Slices */}
+        <h3 className="reveal">Tea and Two Slices</h3>
+
+        <div className="reveal">
           <p>
-            Bread with butter and tea with milk were pillars of the British diet. For many, they were a light breakfast or an afternoon ritual. But in early 1930s, this modest combination became the only meal that thousands of Londoners could reliably afford once a day. And even then, butter and milk were luxuries beyond reach. Most of them contained margarine and dust tea. On luckier days, a bun, a pint of cocoa, or a bowl of skilly (a thin gruel of hot water and oatmeal served in lodging houses and spikes) x|might be all that stood between a person and an empty stomach.
+            Bread with butter and tea with milk were pillars of the British diet. For many, they were a light breakfast or an afternoon ritual. But in early 1930s, this modest combination became the only meal that thousands of Londoners could reliably afford once a day. And even then, butter and milk were luxuries beyond reach. Most of them contained margarine and dust tea.
           </p>
-          <p style={{ marginBottom: "2rem" }}>
-            <i>"Knots of men stood at all the corners, slightly underfed, but kept going by the tea-and-two-slices which the Londoner swallows every two hours"</i>. - Down and Out in Paris and London.
+          <p>
+            On luckier days, a bun, a pint of cocoa, or a bowl of <em>skilly</em> — a thin gruel of hot water and oatmeal served in lodging houses and spikes — might be all that stood between a person and an empty stomach.
           </p>
         </div>
-      </div>
 
-      {/* Block 3 — The Spikes */}
-      <h3>The Spikes</h3>
-      <div style={{ display: "flex", gap: "1.5rem", alignItems: "flex-start" }}>
-        <div style={{ flex: 1 }}>
+        <figure className="reveal">
+          <img
+            src={BreadButter}
+            alt="Blackfriars free breakfast, c. 1933, Daily Herald © Science Museum Group collection."
+          />
+          <figcaption>
+            Blackfriars free breakfast, c. 1933. — Daily Herald © Science Museum Group collection
+          </figcaption>
+        </figure>
+
+        {/* Pull quote 1 */}
+        <aside className="pullquote reveal">
+          <blockquote>
+            <span className="mark">“</span>Knots of men stood at all the corners, slightly underfed, but kept going by the tea-and-two-slices which the Londoner swallows every two hours<span className="mark">”</span>
+          </blockquote>
+          <cite>Down and Out in Paris and London</cite>
+        </aside>
+
+        {/* Block 3 — The Spikes */}
+        <h3 className="reveal">The Spikes</h3>
+
+        <div className="split">
+          <div className="reveal">
+            <p>
+              Each night, the most disadvantaged residents of the city crowded into the <em>spikes</em>. They were <strong>casual wards and common lodging houses</strong> that offered the bare minimum of shelter. <strong>Conditions inside were deliberately austere and often degrading</strong>, designed to be uncomfortable enough to discourage people from staying any longer than absolutely necessary.
+            </p>
+            <p>
+              The buildings resembled prisons. They were poorly heated, foul-smelling, infested with bugs and diseases and overcrowded, with inadequate or no beds, scarce low-quality food, and staff who routinely treated the poor with scorn and hostility.
+            </p>
+          </div>
+          <figure className="reveal">
+            <img
+              src={Coffin}
+              alt="The Salvation Army Coffins. Retrieved from Terry MacEwen."
+              style={{ objectPosition: "right" }}
+            />
+            <figcaption>
+              The Salvation Army Coffins. — Terry MacEwen
+            </figcaption>
+          </figure>
+        </div>
+
+        <div className="reveal">
           <p>
-            Each night, the most disadvantaged residents of the city crowded into the <i>spikes</i>. They were <strong>casual wards and common lodging houses</strong> that offered the bare minimum of shelter. <strong>Conditions inside were deliberately austere and often degrading</strong>, designed to be uncomfortable enough to discourage people from staying any longer than absolutely necessary. The buildings resembled prisons: poorly heated, foul-smelling, and overcrowded, with inadequate beds, scarce low-quality food, and staff who routinely treated the poor with scorn and hostility.
-          </p>
-          <p>
-            Not all spikes were the same, however. They varied widely in quality, management, and character. Some were privately run, others publicly administered; Some admited families, other just one gender: Some were more tolerable than others. 
+            Not all spikes were the same, however. They varied widely in quality, management, and character. Some were privately run, others publicly administered; some admitted families, others just one gender; some were more tolerable than others. At the top of "luxury" were the <strong>Rowton Houses and Bruce Houses</strong>, and, an step below, the <strong>Salvation Army hostels</strong>. However, those not "lucky" enough usually ended up in ordinary <strong>common lodging houses</strong>, or even worse, in <strong>The Coffin</strong> — a literal wooden box, just large enough to lie in, with a tarpaulin for a covering -, or the infamous <strong>Twopenny Hangover</strong> - a rope stretched in front of person, which he/she would lean upon to sleep, suspended above the floor.
           </p>
         </div>
-        <img
-          src={Coffin}
-          alt="The Salvation Army Coffins. Retrieved from Terry MacEwen."
-          style={{
-            width: "240px",
-            maxWidth: "100%",
-            flexShrink: 0,
-            objectFit: "cover",
-            borderRadius: "15px",
-          }}
-        />
-      </div>
 
-      <p>
-        At the top of “luxury” were the <strong>Rowton Houses and Bruce Houses</strong>, the most decent option available to those with a shilling to spare. For that price, a man could secure his own cubicle and access to a decent bathroom. They were “splendid buildings”, but their strict internal discipline was well-known. 
-      </p>
+        {/* Inline quote — bugs */}
+        <aside className="inline-quote reveal">
+          It is a curious but well-known fact that bugs are much commoner in south than north London. For some reason they have not yet crossed the river in any great numbers.
+          <cite>Down and Out in Paris and London</cite>
+        </aside>
 
-      <div style={{ display: "flex", gap: "1.5rem", alignItems: "flex-start", marginBottom: "1.5rem" }}>
-        <img
-          src={Hangover}
-          alt="The Twopenny Hangover."
-          style={{
-            width: "240px",
-            maxWidth: "100%",
-            flexShrink: 0,
-            objectFit: "cover",
-            borderRadius: "15px",
-          }}
-        />
-        <div style={{ flex: 1 }}>
+        <figure className="reveal">
+          <img
+            src={Hangover}
+            alt="The Twopenny Hangover."
+          />
+          <figcaption>The Twopenny Hangover.</figcaption>
+        </figure>
+
+        <br />
+
+        {/* Block 9 — The Lens */}
+        <h3 className="reveal">The Lens</h3>
+
+        {/* Pull quote 2 */}
+        <aside className="pullquote reveal">
+          <blockquote>
+            <span className="mark">“</span>I had never noticed one of the worst things about London — the fact that it costs money even to sit down<span className="mark">”</span>
+          </blockquote>
+          <cite>Down and Out in Paris and London</cite>
+        </aside>
+
+        <div className="reveal">
           <p>
-            A step below were the <strong>Salvation Army hostels</strong>. Most were reasonably clean and offered basic shower facilities at minimal cost. Accommodation varied: some provided private cubicles, while others packed up to forty men into a single shared room.
+            Far from the imperial and majestic vision of London, Orwell portrayed the city as a suffocating place for those at the bottom. The East End, Southbank, and Lambeth — not so far away from The City and Westminster, the center of the power of the British empire — were neighbourhoods in which survival was a daily negotiation.
           </p>
           <p>
-            Further down the scale came the ordinary common <strong>lodging houses</strong>. They were stuffy, noisy, and dirty. However, their laissez-faire atmosphere and vivid social gatherings transformed them into places where people could forget the hardships of the day. To sleep in those places was nearly impossible: Beds, usually up  to fifty or sixty together in the same room, were really small and uncomfortable, and sheet were dirty and never enough. 
-          </p>
-          <p>
-            For fourpence a night, a man could rent <strong>a coffin</strong>, a literal wooden box, just large enough to lie in, with a tarpaulin for a covering. They were cold, infested with bugs and offered nothing beyond the roof overhead. 
+            Nearly a century later, we can still see vestiges of Orwell's London still in the present. The shelters, the labour, the hunger may have changed, but dynamics, practices and institutions of the past still survive and shape the current lives of the poor.
           </p>
         </div>
-      </div>
 
-      {/* Block 9 — The Lens */}
-      <div>
-          <h3>The Lens</h3>
-          <p>
-            <i>"I had been in London innumerable times, and yet till that day I had never noticed one of the worst things about London—the fact that it costs money even to sit down. In Paris, if you had no money and could not find a public bench, you would sit on the pavement. Heaven knows what sitting on the pavement would lead to in London—prison, probably".</i> - Down and Out in Paris and London.
-          </p>
-          <p>
-            Far from the imperial and majestic vision of London, Orwell portrayed the city as a suffocating place for those at the bottom. The East End, Southbank, and Lambeth, not so far away from The City and Westminster, the center of the power of the British empire, the biggest empire of the world at that time, were neighbourhoods in which survival was a daily negotiation.
-          </p>
-          <p>
-           Nearly a century later, Orwell's London remains surprisingly intact. The shelters, the labour, the hunger may have chaged, but dymanics, practices and institutions of the past still survive and shape the lives of the poor.
-          </p>
-      </div>
-      <div style={{ display: "flex", alignItems: "center"}}>
-        <div style={{ flex: 1 }}>
-          <p>
-            For example, many of the laws and administrative practices designed to control and discourage vagrancy in the 1930s remained in force, with few changes, well into the modern era. The most prominent of these is <a href="https://www.legislation.gov.uk/ukpga/Geo4/5/83">the Vagrancy Act 1824</a>. This 200 year old law, which criminalized homelessness and begging by making sleeping outdoors a punishable offense and allowing police to arrest people without visible means of support, remained enforceable into the present in spite of several amendments. 
-          </p>
-          <p>
-            Far from reducing poverty, these laws deepened it, systematically dehumanising the lives of those they claimed to regulate. They are, ultimately, the reason Orwell's lens remains indispensable — not merely as literature, but as a tool for understanding how inequality persists, shifts, and reproduces itself in one of the world's wealthiest cities in this age of rapid economical and social change due to the impact of the fouth industrial revoulition and IA and the rise of the new far-right.
-          </p>
+        <div className="split">
+          <div className="reveal">
+            <p>
+              One example are the many laws and administrative practices designed to control and discourage vagrancy in the 1930s which remained in force, with few changes, well into the modern era. The most prominent is <a href="https://www.legislation.gov.uk/ukpga/Geo4/5/83">the Vagrancy Act 1824</a> — a 200-year-old law that criminalized homelessness and begging, making sleeping outdoors a punishable offense and allowing police to arrest people without visible means of support. Far from reducing poverty, these laws deepened it, systematically dehumanising the lives of those they claimed to regulate.
+            </p>
+          </div>
+          <figure className="reveal">
+            <img
+              src={StrikeGoogle}
+              alt="A Google worker holds a sign at a demonstration against alleged union busting and layoffs risk outside the Kings Cross headquarters in London, Britain, April 4, 2023. REUTERS/Henry Nicholls"
+            />
+            <figcaption>
+              A Google worker holds a sign at a demonstration against alleged union busting and layoffs risk, 2023. REUTERS/Henry Nicholls 
+            </figcaption>
+          </figure>
         </div>
-        <img
-          src={RoughSleeping}
-          alt="Rough sleeping in London. Retrieved from Inside Housing."
-          style={{
-            width: "320px",
-            maxWidth: "100%",
-            objectFit: "cover",
-            flexShrink: 0,
-            borderRadius: "15px",
-          }}
-        />
-      </div>
 
-      {/* CONTENT END */}
+        <div className="reveal">
+
+          <p>
+            </p>
+            Like in the early ’30, London is still the promised land for those who arrive in the city seeking a better future. However, as Orwell showed in Down and Out in Paris and London, London is not an easy journey. This is particularly important in the wake of the fourth industrial revolution and the rapid transformation of the job market brought by automation, AI, and the gig economy, and the increasingly unaffordable cost of living. A period of crisis that, much like the Great Slump, is likely to hit the most vulnerable the hardest. Between 2010 and 2024, <a href="https://homelessoflondon.mylondon.news/">Homeless households living in temporary accommodation in Greater London grew from 39,030 to 65,280</a>. This is, ultimately, the reason Orwell's lens remains indispensable. It allows us to see the city through the eyes of those who struggle the most to survive in it, and to understand how the past continues to shape the present.
+        </div>
+
+        <figure className="reveal">
+          <img
+              src={RoughSleeping}
+              alt="Rough sleeping in London. Retrieved from Inside Housing."
+            />
+            <figcaption>
+              Rough sleeping in London. — Inside Housing
+            </figcaption>
+          </figure>
+
+
+      </div>
     </SectionShell>
   );
 }
