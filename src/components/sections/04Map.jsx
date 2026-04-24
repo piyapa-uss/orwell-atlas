@@ -27,6 +27,8 @@ export default function MapSection({ activeId }) {
         day: p.day,
         type: p.type,
         context: p.context,
+        spend: p.spend,
+        image: p.image,
       },
       geometry: {
         type: "Point",
@@ -77,7 +79,7 @@ export default function MapSection({ activeId }) {
           return prev;
         }
       });
-    }, 3000);
+    }, 2000);
 
     return () => clearInterval(interval);
   }, [playing]);
@@ -167,7 +169,7 @@ export default function MapSection({ activeId }) {
     <SectionShell
       id="mapping-inequality"
       title="Orwell's Footsteps Map"
-      intro="Orwell's tramp journey unfolds step by step across London."
+      intro=" 👣 Orwell's tramp journey unfolds step by step across London."
       isActive={activeId === "mapping-inequality"}
     >
 
@@ -202,91 +204,130 @@ export default function MapSection({ activeId }) {
 
       {/* map */}
       <div style={{ height: "600px", width: "1000px" }}>
-        <Map
-          ref={mapRef}
-          initialViewState={{
-            longitude: firstCoord[0],
-            latitude: firstCoord[1],
-            zoom: 12,
-          }}
-          style={{ width: "100%", height: "100%" }}
-          mapStyle="https://api.maptiler.com/maps/019d8d6b-c650-77ba-be12-72f95e0969a1/style.json?key=MBBehWfjjQaTQhTfmEeq"
+          <Map
+            ref={mapRef}
+            initialViewState={{
+              longitude: firstCoord[0],
+              latitude: firstCoord[1],
+              zoom: 12,
+            }}
+            style={{ width: "100%", height: "100%" }}
+            mapStyle="https://api.maptiler.com/maps/019d8d6b-c650-77ba-be12-72f95e0969a1/style.json?key=MBBehWfjjQaTQhTfmEeq"
 
-          onClick={(e) => {
-            const map = mapRef.current.getMap();
+            onClick={(e) => {
+              const map = mapRef.current.getMap();
 
-            const features = map.queryRenderedFeatures(e.point, {
-              layers: ["points"], 
-            });
+              const features = map.queryRenderedFeatures(e.point, {
+                layers: ["points"], 
+              });
 
-            if (features.length > 0) {
-              setSelectedPlace(features[0]);
-            } else {
-              setSelectedPlace(null);
-            }
-          }}
-        >
-          
-          {selectedPlace && (
-            <Popup
-              longitude={selectedPlace.geometry.coordinates[0]}
-              latitude={selectedPlace.geometry.coordinates[1]}
-              onClose={() => setSelectedPlace(null)}
-              closeOnClick={false}
-              className="!p-0"
-            >
-              <article className="border-2 border-black bg-white shadow-[4px_4px_0_0,8px_8px_0_0] w-[220px]">
+              if (features.length > 0) {
+                setSelectedPlace(features[0]);
+              } else {
+                setSelectedPlace(null);
+              }
+            }}
+          >
 
-                {/* Header */}
-                <div style={{ borderBottom: "2px solid #4a6a7f", paddingBottom: "4px", marginBottom: "6px" }}>
-                  <strong style={{ fontSize: "10px", fontWeight: "600", color: "#4a6a7f" }}>
-                    Orwell Footstep
-                  </strong>
-                </div>
+            {selectedPlace && (
+              <Popup
+                longitude={selectedPlace.geometry.coordinates[0]}
+                latitude={selectedPlace.geometry.coordinates[1]}
+                onClose={() => setSelectedPlace(null)}
+                closeOnClick={false}
+                className="!p-0"
+              >
+                <article className="border-2 border-black bg-white shadow-[4px_4px_0_0,8px_8px_0_0] w-[220px]">
 
-                    <div className="flex gap-1">
-                      <div className="w-3 h-3 border-2 border-black bg-white"></div>
-                      <div className="w-3 h-3 border-2 border-black bg-white"></div>
-                    </div>
+                  {/* Header */}
+                  <div style={{ 
+                          borderBottom: "2px solid #4a6a7f", 
+                          paddingBottom: "4px", 
+                          marginBottom: "6px" 
+                        }}>
+                    <strong style={{ 
+                              fontSize: "10px", 
+                              fontWeight: "600", 
+                              color: "#4a6a7f" 
+                            }}>
+                      Orwell Footstep
+                    </strong>
+                  </div>
 
-                {/* Content */}
-                <div className="border-t-2 border-black p-3">
-                  <h3
-                    className="text-sm font-semibold"
-                    style={{ color: "#4a6a7f" }}
-                  >
-                    {selectedPlace.properties.place}
-                  </h3>
+                      <div className="flex gap-1">
+                        <div className="w-3 h-3 border-2 border-black bg-white"></div>
+                        <div className="w-3 h-3 border-2 border-black bg-white"></div>
+                      </div>
 
-                  <p className="mt-1 text-xs text-gray-700">
-                    Day {selectedPlace.properties.day} · {selectedPlace.properties.type}
-                  </p>
-
-                  {selectedPlace.properties.context && (
-                    <p className="mt-2 text-xs text-black leading-snug italic">
-                      "{selectedPlace.properties.context}"
-                    </p>
+                  {selectedPlace?.properties?.image && (
+                    <img
+                      src={selectedPlace.properties.image}
+                      alt={selectedPlace.properties.place}
+                      style={{
+                        width: "100%",
+                        height: "120px",
+                        objectFit: "cover",
+                        marginBottom: "8px",
+                        borderRadius: "4px",
+                      }}
+                    />
                   )}
-                </div>
 
-              </article>
-            </Popup>
-          )}
-        
-          {/* line */}
-          <Source id="line" type="geojson" data={lineData} lineMetrics={true}>
-            <Layer {...lineLayer} />
-          </Source>
+                  {/* Content */}
+                  <div className="border-t-2 border-black p-3">
+                   
+                   {selectedPlace.properties.context && (
+                      <p
+                        style={{ 
+                          marginTop: "6px", 
+                          fontSize: "12px", 
+                          fontFamily: THEME.fonts.serif,
+                          fontStyle: "italic",
+                          color: THEME.colors.muted,
+                          lineHeight: 1.5,
+                        }}
+                      >
+                        "{selectedPlace.properties.context}"
+                      </p>
+                    )}
 
-          {/* point */}
-          <Source id="points" type="geojson" data={visiblePoints}>
-            <Layer {...pointLayer} />
-            <Layer {...labelLayer} />
-          </Source>
+                    <h3
+                      className="text-sm font-semibold"
+                      style={{ color: "#4a6a7f" }}
+                    >
+                      {selectedPlace.properties.place}
+                    </h3>
 
-        </Map>
+                    <p className="mt-1 text-xs text-gray-700">
+                      Day {selectedPlace.properties.day} · {selectedPlace.properties.type}
+                    </p>
+
+                    {selectedPlace.properties.spend && (
+                      <p className="mt-1 text-xs text-gray-700">
+                        Spend: {selectedPlace.properties.spend}
+                      </p>
+                    )}
+
+                  </div>
+
+                </article>
+              </Popup>
+            )}
+          
+            {/* line */}
+            <Source id="line" type="geojson" data={lineData} lineMetrics={true}>
+              <Layer {...lineLayer} />
+            </Source>
+
+            {/* point */}
+            <Source id="points" type="geojson" data={visiblePoints}>
+              <Layer {...pointLayer} />
+              <Layer {...labelLayer} />
+            </Source>
+
+          </Map>
       </div>
-
+      
       <p
         style={{
           margin: "10px 0 0 0",

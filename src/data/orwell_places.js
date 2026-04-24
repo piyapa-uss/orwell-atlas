@@ -23,7 +23,8 @@ export const placesData = [
     "day": 2,
     "lat": 51.51407,
     "lon": -0.09352,
-    "type": "B'office and Family Hotel"
+    "type": "B'office and Family Hotel",
+    "spend": "Seven and Six pence"
   },
   {
     "id": 4,
@@ -40,7 +41,8 @@ export const placesData = [
     "lat": 51.4988704,
     "lon": -0.1062941,
     "type": "Walk",
-    "context": "Seeing a man, a navvy or something of the kind, standing on the kerb in the Waterloo Road, I stopped and questioned him."
+    "context": "Seeing a man, a navvy or something of the kind, standing on the kerb in the Waterloo Road, I stopped and questioned him.",
+    "spend": "One shilling"
   },
   {
     "id": 6,
@@ -49,7 +51,8 @@ export const placesData = [
     "lat": 51.5101234,
     "lon": -0.0769284,
     "type": "Coffee-shop",
-    "context": "I crossed the river and walked a long way eastward, finally going into a coffee-shop on Tower Hill."
+    "context": "I crossed the river and walked a long way eastward, finally going into a coffee-shop on Tower Hill.",
+    "spend": "Threepence Halfpenny"
   },
   {
     "id": 7,
@@ -58,7 +61,8 @@ export const placesData = [
     "lat": 51.5094334,
     "lon": -0.0229634,
     "type": "Lodging",
-    "context": "After my bad experience in the Waterloo Road* I moved eastward, and spent the next night in a lodging-house in Pennyfields."
+    "context": "After my bad experience in the Waterloo Road* I moved eastward, and spent the next night in a lodging-house in Pennyfields.",
+    "spend": "One shilling"
   },
   {
     "id": 8,
@@ -66,7 +70,8 @@ export const placesData = [
     "day": 5,
     "lat": 51.5071316,
     "lon": -0.0620152,
-    "type": "Walk"
+    "type": "Walk",
+    "context":"All day I loafed in the streets, east as far as Wapping, west as far as Whitechapel."
   },
   {
     "id": 9,
@@ -74,7 +79,9 @@ export const placesData = [
     "day": 5,
     "lat": 51.5174861,
     "lon": -0.0659685,
-    "type": "Walk"
+    "type": "Walk",
+    "context":"All day I loafed in the streets, east as far as Wapping, west as far as Whitechapel.",
+    "image": "public/images/rowtonwhitechapel4.jpg"
   },
   {
     "id": 10,
@@ -91,7 +98,8 @@ export const placesData = [
     "day": 8,
     "lat": 51.53332,
     "lon": -0.029346,
-    "type": "Lodging"
+    "type": "Lodging",
+    "spend": "Eight pance"
   },
   {
     "id": 12,
@@ -99,7 +107,8 @@ export const placesData = [
     "day": 9,
     "lat": 51.5768,
     "lon": 0.1813,
-    "type": "Suburb"
+    "type": "Suburb",
+    "context": "When we were in the outskirts of Romton, Paddy noticed a bottle of milk on a doorstep, evidently left there by mistake."
   },
   {
     "id": 13,
@@ -107,7 +116,8 @@ export const placesData = [
     "day": 10,
     "lat": 51.5582734,
     "lon": 0.0711669,
-    "type": "Coffee-shop"
+    "type": "Coffee-shop",
+    "spend": "Eight pance"
   },
   {
     "id": 14,
@@ -115,7 +125,8 @@ export const placesData = [
     "day": 10,
     "lat": 51.6136,
     "lon": -0.0754,
-    "type": "Shelter"
+    "type": "Shelter",
+    "context": "He was going to Edbury spike, and suggested that we should go together."
   },
   {
     "id": 15,
@@ -124,7 +135,8 @@ export const placesData = [
     "lat": 51.51407,
     "lon": -0.09352,
     "type": "B'office",
-    "context": "Borrow money from B."
+    "context": "Borrow money from B.",
+    "spend": "Two pounds"
   },
   {
     "id": 16,
@@ -133,7 +145,7 @@ export const placesData = [
     "lat": 51.5073978,
     "lon": -0.1282407,
     "type": "Square",
-    "context": "Waited for a friend."
+    "context": "We loitered the day in Trafalgar Square, looking for a friend of Paddy's who never turned up, and at night went to a lodging-house in a back alley near the Strand."
   },
   {
     "id": 17,
@@ -141,7 +153,8 @@ export const placesData = [
     "day": 12,
     "lat": 51.5076273,
     "lon": -0.1271061,
-    "type": "Lodging"
+    "type": "Lodging",
+    "context": "We loitered the day in Trafalgar Square, looking for a friend of Paddy's who never turned up, and at night went to a lodging-house in a back alley near the Strand."
   },
   {
     "id": 18,
@@ -150,7 +163,9 @@ export const placesData = [
     "lat": 51.5028379,
     "lon": -0.112801,
     "type": "Meeting",
-    "context": "Addresses did not exist in Paddy's world, but he had a vague idea that Bozo might be found in Lambeth, and in the end we ran across him on the Embankment, where he had established himself not far from Waterloo Bridge."
+    "context": "Addresses did not exist in Paddy's world, but he had a vague idea that Bozo might be found in Lambeth, and in the end we ran across him on the Embankment, where he had established himself not far from Waterloo Bridge.",
+    "spend": "Eight pance",
+    "image": "public/images/th-embankment.jpeg"
   },
   {
     "id": 19,
@@ -158,7 +173,7 @@ export const placesData = [
     "day": 13,
     "lat": 51.4944,
     "lon": -0.1006,
-    "type": "Meeting"
+    "type": "Meeting",
   },
   {
     "id": 20,
@@ -192,7 +207,8 @@ export const placesData = [
     "day": 22,
     "lat": 51.406,
     "lon": 0.0132,
-    "type": "Shelter"
+    "type": "Shelter",
+    "spend": "One penny"
   },
   {
     "id": 24,
@@ -200,6 +216,7 @@ export const placesData = [
     "day": 23,
     "lat": 51.4326,
     "lon": -0.7937,
-    "type": "Easthampstead Union Workhouse"
+    "type": "Easthampstead Union Workhouse",
+    "spend": "One penny"
   }
 ]

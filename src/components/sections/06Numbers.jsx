@@ -1,5 +1,6 @@
 import SectionShell from "../layout/SectionShell";
 import React, { useEffect, useState } from "react";
+import { THEME } from "../../theme";
 import { Line, Bar } from "react-chartjs-2";
 import {
   Chart as ChartJS,
@@ -219,24 +220,24 @@ export default function NumbersSection({ activeId }) {
     },
   };
 
-  const STORY_CONTEXT = [
+  const Context = [
     { title: "Bread", color: colors[0], 
-      text: (<>In the end his perseverance was rewarded, for he picked up <span style={{ color: colors[0], fontWeight: 600 }}>a penny. We bought a large piece of stale bread</span>, and devoured it as we walked.</>),
+      text: (<>"In the end his perseverance was rewarded, for he picked up <span style={{ color: colors[0], fontWeight: 600 }}>a penny. We bought a large piece of stale bread</span>, and devoured it as we walked."</>),
     },
     { title: "Tea and two Slices", color: colors[1], 
-      text: (<>The <span style={{ color: colors[1], fontWeight: 600 }}>tea-and-two-slices cost threepence halfpenny</span>, leaving me with eight and twopence.</> ),
+      text: (<>"The <span style={{ color: colors[1], fontWeight: 600 }}>tea-and-two-slices cost threepence halfpenny</span>, leaving me with eight and twopence."</> ),
       },
     { title: "Coat", color: colors[2], 
-      text: (<>He said:  ''Ere y'are, the best rig-out you ever 'ad. A tosheroon <span style={{ color: colors[2], fontWeight: 600 }}>[half a crown] for the coat</span>, two 'ogs for the trousers, one and a tanner for the boots, and a 'og for the cap and scarf. That's seven bob.'</>),
+      text: (<>"'He said:  ''Ere y'are, the best rig-out you ever 'ad. A tosheroon <span style={{ color: colors[2], fontWeight: 600 }}>[half a crown] for the coat</span>, two 'ogs for the trousers, one and a tanner for the boots, and a 'og for the cap and scarf. That's seven bob.'"</>),
     },
     { title: "Trousers", color: colors[3], 
-      text: (<>He said:  ''Ere y'are, the best rig-out you ever 'ad. A tosheroon [half a crown] for the coat, <span style={{ color: colors[3], fontWeight: 600 }}>two 'ogs for the trousers</span>, one and a tanner for the boots, and a 'og for the cap and scarf. That's seven bob.'</>),
+      text: (<>"He said:  ''Ere y'are, the best rig-out you ever 'ad. A tosheroon [half a crown] for the coat, <span style={{ color: colors[3], fontWeight: 600 }}>two 'ogs for the trousers</span>, one and a tanner for the boots, and a 'og for the cap and scarf. That's seven bob.'"</>),
     },
     { title: "Dormitory", color: colors[4], 
-      text: (<>The charge was <span style={{ color: colors[4], fontWeight: 600 }}>ninepence or a shilling</span> (in the shilling dormitory the beds were six feet apart instead of four) and the terms were cash down by seven in the evening or out you went.</>),
+      text: (<>"The charge was <span style={{ color: colors[4], fontWeight: 600 }}>ninepence or a shilling</span> (in the shilling dormitory the beds were six feet apart instead of four) and the terms were cash down by seven in the evening or out you went."</>),
      },
     { title: "Income", color: colors[5], 
-      text: (<>Take the year round, I make about <span style={{ color: colors[5], fontWeight: 600 }}>a pound a week</span>, because you can't do much in the winter. Boat Race day, and Cup Final day, I've took as much as four pounds.</>), 
+      text: (<>"Take the year round, I make about <span style={{ color: colors[5], fontWeight: 600 }}>a pound a week</span>, because you can't do much in the winter. Boat Race day, and Cup Final day, I've took as much as four pounds."</>), 
     },
   ];
 
@@ -302,7 +303,7 @@ export default function NumbersSection({ activeId }) {
 
             borderLeft: `6px solid ${
               activeLineIndex !== null
-                ? STORY_CONTEXT[activeLineIndex].color
+                ? Context[activeLineIndex].color
                 : "#ccc"
             }`,
 
@@ -317,15 +318,15 @@ export default function NumbersSection({ activeId }) {
               {/* fix title */}
               <h4
                 style={{
-                  color: STORY_CONTEXT[activeLineIndex].color,
+                  color: Context[activeLineIndex].color,
                   marginBottom: "5px",
                   flexShrink: 0, 
                 }}
               >
                 <LegendSquare
-                  color={STORY_CONTEXT[activeLineIndex].color}
+                  color={Context[activeLineIndex].color}
                 />
-                {STORY_CONTEXT[activeLineIndex].title}
+                {Context[activeLineIndex].title}
               </h4>
 
               {/* context */}
@@ -336,8 +337,8 @@ export default function NumbersSection({ activeId }) {
                   alignItems: "center",            
                 }}
               >
-                <p style={{ fontStyle: "italic", margin: 0 }}>
-                  {STORY_CONTEXT[activeLineIndex].text}
+                <p style={{ fontFamily: THEME.fonts.serif, fontSize: "15px", fontStyle: "italic", margin: 0 }}>
+                  {Context[activeLineIndex].text}
                 </p>
               </div>
             </>
