@@ -47,7 +47,7 @@ export default function SectionShell({ id, title, intro, children, isActive }) {
               fontFamily: THEME.fonts.serif,
               fontSize: "1.15rem",
               lineHeight: 1.65,
-              maxWidth: "680px",
+              
             }}
           >
             {intro}
