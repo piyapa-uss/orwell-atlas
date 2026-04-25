@@ -129,7 +129,7 @@ export default function CompareMap({ swipePosition }) {
       minZoom: MAP_SETTINGS.minZoom,
       maxZoom: MAP_SETTINGS.maxZoom,
       attributionControl: false,
-      interactive: false,
+      interactive: true,
     });
 
     const nowMap = new maplibregl.Map({
@@ -203,9 +203,75 @@ export default function CompareMap({ swipePosition }) {
         type: "raster",
         source: "booth-mosaic",
         paint: {
-          "raster-opacity": 0.60, // adjusted Booth's map opacity
+          "raster-opacity": 0.6,
           "raster-fade-duration": 0,
         },
+      });
+
+      thenMap.addSource("workhouses", {
+        type: "geojson",
+        data: "/orwell-atlas/data/maps/workhouses_london.geojson",
+      });
+
+      thenMap.addLayer({
+        id: "workhouse-points",
+        type: "circle",
+        source: "workhouses",
+        paint: {
+          "circle-radius": [
+            "interpolate",
+            ["linear"],
+            ["zoom"],
+            9,
+            4,
+            14,
+            8,
+          ],
+          "circle-color": "#171717",
+          "circle-opacity": [
+            "match",
+            ["get", "certainty"],
+            "exact",
+            0.9,
+            "approximate",
+            0.6,
+            "interpretive",
+            0.35,
+            0.7,
+          ],
+          "circle-stroke-width": 1.2,
+          "circle-stroke-color": "#F4E7A1",
+        },
+      });
+
+      thenMap.on("mouseenter", "workhouse-points", () => {
+        thenMap.getCanvas().style.cursor = "pointer";
+      });
+
+      thenMap.on("mouseleave", "workhouse-points", () => {
+        thenMap.getCanvas().style.cursor = "";
+      });
+
+      thenMap.on("click", "workhouse-points", (e) => {
+        if (!e.features || !e.features.length) return;
+
+        const props = e.features[0].properties;
+
+        new maplibregl.Popup({
+          closeButton: false,
+          closeOnClick: true,
+          className: "cost-popup",
+        })
+          .setLngLat(e.lngLat)
+          .setHTML(`
+            <div style="font-family: Inter, sans-serif; font-size: 12px; color: #171717;">
+              <strong>${props.name}</strong><br/>
+              Type: ${props.type}<br/>
+              Certainty: ${props.certainty}<br/>
+              <em>${props.note}</em>
+            </div>
+          `)
+          .addTo(thenMap);
       });
     });
 
@@ -310,6 +376,7 @@ export default function CompareMap({ swipePosition }) {
             { hover: false }
           );
         }
+
         hoveredIdRef.current = null;
         setHoveredBorough(null);
         popupRef.current?.remove();
@@ -348,12 +415,18 @@ export default function CompareMap({ swipePosition }) {
 
   useEffect(() => {
     const thenMap = thenMapRef.current;
-    if (!thenMap || !thenMap.getLayer("booth-mosaic-layer")) return;
+    if (!thenMap) return;
 
     const visibility =
       activeThenLayer === "booth_poverty_map" ? "visible" : "none";
 
-    thenMap.setLayoutProperty("booth-mosaic-layer", "visibility", visibility);
+    if (thenMap.getLayer("booth-mosaic-layer")) {
+      thenMap.setLayoutProperty("booth-mosaic-layer", "visibility", visibility);
+    }
+
+    if (thenMap.getLayer("workhouse-points")) {
+      thenMap.setLayoutProperty("workhouse-points", "visibility", visibility);
+    }
   }, [activeThenLayer]);
 
   useEffect(() => {
@@ -405,12 +478,13 @@ export default function CompareMap({ swipePosition }) {
         }}
       />
 
+      {/* THEN */}
       <div
         style={{
           position: "absolute",
           inset: 0,
           zIndex: 2,
-          pointerEvents: "none",
+          pointerEvents: "auto",
           clipPath: `inset(0 ${100 - swipePosition}% 0 0)`,
         }}
       >
@@ -423,6 +497,7 @@ export default function CompareMap({ swipePosition }) {
             height: "100%",
           }}
         />
+
         {/* Fade left edge of Booth mosaic */}
         <div
           style={{
@@ -448,16 +523,7 @@ export default function CompareMap({ swipePosition }) {
           position: "absolute",
           inset: 0,
           zIndex: 3,
-          clipPath: `inset(0 0 0 ${swipePosition}%)`,
-        }}
-      >
-      </div>
-
-      <div
-        style={{
-          position: "absolute",
-          inset: 0,
-          zIndex: 3,
+          pointerEvents: "auto",
           clipPath: `inset(0 0 0 ${swipePosition}%)`,
         }}
       >
