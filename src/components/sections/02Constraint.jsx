@@ -55,7 +55,7 @@ export default function ConstraintSection({ activeId }) {
       isActive={activeId === "life-under-constraint"}
     >
       {/* Scoped styles for this section only */}
-        <style>{`
+      <style>{`
         .constraint-section {
           max-width: 760px;
           margin: 0 auto;
@@ -257,7 +257,7 @@ export default function ConstraintSection({ activeId }) {
         {/* Block 1 — The Economic Crisis */}
         <div className="reveal">
           <p className="lede">
-            In the early 1930s, London was immersed in a severe economic crisis known as the <strong>Great Slump</strong>, triggered by the <strong>Great Depression</strong> and the <strong>Wall Street Crash of 1929</strong>. One of the most visible consequences was <strong>rampant unemployment</strong>. Factory closures, wage cuts, and mass layoffs deeply affected the city, its citizens ant the loads of migrants who arrived from all parts of the British Isles, drawn to the capital in search of work that, for most, simply did not exist.
+            In the early 1930s, London was immersed in a severe economic crisis known as the <strong>Great Slump</strong>, triggered by the <strong>Great Depression</strong> and the <strong>Wall Street Crash of 1929</strong>. One of the most visible consequences was <strong>rampant unemployment</strong>. Factory closures, wage cuts, and mass layoffs deeply affected the city, its citizens and the loads of migrants who arrived from all parts of Great Britain, drawn to the capital in search of work that, for most, simply did not exist.
           </p>
         </div>
 
@@ -268,12 +268,12 @@ export default function ConstraintSection({ activeId }) {
               alt="A woman assists a disabled war veteran begging on Curzon Street. — Margaret Monck"
             />
             <figcaption>
-              A woman assists a disabled war veteran begging on Curzon Street. — Margaret Monck
+              A woman assists a disabled war veteran begging on Curzon Street. — Monck, Margaret
             </figcaption>
           </figure>
           <div className="reveal">
             <p>
-              It was a hard time and <strong>state assistance</strong>, famously known as "<em>the dole</em>", <strong>was very limited and offered only minimal relief</strong>. <a href="https://schoolhistory.co.uk/modern/dole-and-the-means-test/">The usual rate for the dole was 15 shillings per week for a man and wife (nearly £40 at today's exchange rate) and about 5s (25p) for each child</a>. Howeever, benefits were frequently reduced, and subject to humiliating bureaucratic scrutiny, posing great challenge for many families. 
+              It was a hard time and <strong>state assistance</strong>, famously known as "<em>the dole</em>", <strong>was very limited and offered only minimal relief</strong>. <a href="https://schoolhistory.co.uk/modern/dole-and-the-means-test/">The usual rate for the dole was 15 shillings per week for a man and wife (nearly £40 at today's exchange rate) and about 5s (25p) for each child</a>. Howeever, benefits were frequently reduced, and subject to humiliating bureaucratic scrutiny, posing great challenge for many families.
             </p>
             <p>
               As a result, hunger, malnutrition, and disease became increasingly common through London's streets. <strong>Long queues for food, labour exchanges, and lodging houses</strong> became the defining image of the city's poorest districts.
@@ -288,7 +288,7 @@ export default function ConstraintSection({ activeId }) {
             alt="Hunger marchers rest on their journey from Tyneside to London. Spender, Humphrey. © London Museum."
           />
           <figcaption>
-            Hunger marchers rest on their journey from Tyneside to London. Spender, Humphrey. © London Museum.
+            Hunger marchers rest on their journey from Tyneside to London -  Spender, Humphrey. © London Museum.
           </figcaption>
         </figure>
 
@@ -297,7 +297,7 @@ export default function ConstraintSection({ activeId }) {
 
         <div className="reveal">
           <p>
-            Bread with butter and tea with milk were pillars of the British diet. For many, they were a light breakfast or an afternoon ritual. But in early 1930s, this modest combination became the only meal that thousands of Londoners could reliably afford once a day. And even then, butter and milk were luxuries beyond reach. Most of them contained margarine and dust tea.
+            <strong>Bread with butter and tea with milk were pillars of the British diet</strong>. For many, they were a light breakfast or an afternoon ritual. But in early 1930s, this modest combination became the only meal that thousands of Londoners could reliably afford once a day. And even then, butter and milk were luxuries beyond reach. <strong>Most of them contained margarine and dust tea</strong>.
           </p>
           <p>
             On luckier days, a bun, a pint of cocoa, or a bowl of <em>skilly</em> — a thin gruel of hot water and oatmeal served in lodging houses and spikes — might be all that stood between a person and an empty stomach.
@@ -341,22 +341,21 @@ export default function ConstraintSection({ activeId }) {
               style={{ objectPosition: "right" }}
             />
             <figcaption>
-              The Salvation Army Coffins. — Terry MacEwen
+              The Salvation Army Coffins. — MacEwen, Terry.
             </figcaption>
           </figure>
         </div>
 
-        <div className="reveal">
-          <p>
-            Not all spikes were the same, however. They varied widely in quality, management, and character. Some were privately run, others publicly administered; some admitted families, others just one gender; some were more tolerable than others. At the top of "luxury" were the <strong>Rowton Houses and Bruce Houses</strong>, and, an step below, the <strong>Salvation Army hostels</strong>. However, those not "lucky" enough usually ended up in ordinary <strong>common lodging houses</strong>, or even worse, in <strong>The Coffin</strong> — a literal wooden box, just large enough to lie in, with a tarpaulin for a covering -, or the infamous <strong>Twopenny Hangover</strong> - a rope stretched in front of person, which he/she would lean upon to sleep, suspended above the floor.
-          </p>
-        </div>
-
-        {/* Inline quote — bugs */}
         <aside className="inline-quote reveal">
           It is a curious but well-known fact that bugs are much commoner in south than north London. For some reason they have not yet crossed the river in any great numbers.
           <cite>Down and Out in Paris and London</cite>
         </aside>
+
+        <div className="reveal">
+          <p>
+            Not all spikes were the same, however. They varied widely in quality, management, and character. Some were privately run, others publicly administered; some admitted families, others just one gender; some were more tolerable than others. At the top of "luxury" were the <strong>Rowton Houses and Bruce Houses</strong>, and, a step below, the <strong>Salvation Army hostels</strong>. However, those not "lucky" enough usually ended up in ordinary <strong>common lodging houses</strong>, or even worse, in <strong>The Coffin</strong> — a literal wooden box, just large enough to lie in, with a tarpaulin for a covering -, or the infamous <strong>Twopenny Hangover</strong> - a rope stretched in front of person, which he/she would lean upon to sleep, suspended above the floor.
+          </p>
+        </div>
 
         <figure className="reveal">
           <img
@@ -365,11 +364,7 @@ export default function ConstraintSection({ activeId }) {
           />
           <figcaption>The Twopenny Hangover.</figcaption>
         </figure>
-
         <br />
-
-        {/* Block 9 — The Lens */}
-        <h3 className="reveal">The Lens</h3>
 
         {/* Pull quote 2 */}
         <aside className="pullquote reveal">
@@ -379,51 +374,8 @@ export default function ConstraintSection({ activeId }) {
           <cite>Down and Out in Paris and London</cite>
         </aside>
 
-        <div className="reveal">
-          <p>
-            Far from the imperial and majestic vision of London, Orwell portrayed the city as a suffocating place for those at the bottom. The East End, Southbank, and Lambeth — not so far away from The City and Westminster, the center of the power of the British empire — were neighbourhoods in which survival was a daily negotiation.
-          </p>
-          <p>
-            Nearly a century later, we can still see vestiges of Orwell's London still in the present. The shelters, the labour, the hunger may have changed, but dynamics, practices and institutions of the past still survive and shape the current lives of the poor.
-          </p>
-        </div>
-
-        <div className="split">
-          <div className="reveal">
-            <p>
-              One example are the many laws and administrative practices designed to control and discourage vagrancy in the 1930s which remained in force, with few changes, well into the modern era. The most prominent is <a href="https://www.legislation.gov.uk/ukpga/Geo4/5/83">the Vagrancy Act 1824</a> — a 200-year-old law that criminalized homelessness and begging, making sleeping outdoors a punishable offense and allowing police to arrest people without visible means of support. Far from reducing poverty, these laws deepened it, systematically dehumanising the lives of those they claimed to regulate.
-            </p>
-          </div>
-          <figure className="reveal">
-            <img
-              src={StrikeGoogle}
-              alt="A Google worker holds a sign at a demonstration against alleged union busting and layoffs risk outside the Kings Cross headquarters in London, Britain, April 4, 2023. REUTERS/Henry Nicholls"
-            />
-            <figcaption>
-              A Google worker holds a sign at a demonstration against alleged union busting and layoffs risk, 2023. REUTERS/Henry Nicholls 
-            </figcaption>
-          </figure>
-        </div>
-
-        <div className="reveal">
-
-          <p>
-            </p>
-            Like in the early ’30, London is still the promised land for those who arrive in the city seeking a better future. However, as Orwell showed in Down and Out in Paris and London, London is not an easy journey. This is particularly important in the wake of the fourth industrial revolution and the rapid transformation of the job market brought by automation, AI, and the gig economy, and the increasingly unaffordable cost of living. A period of crisis that, much like the Great Slump, is likely to hit the most vulnerable the hardest. Between 2010 and 2024, <a href="https://homelessoflondon.mylondon.news/">Homeless households living in temporary accommodation in Greater London grew from 39,030 to 65,280</a>. This is, ultimately, the reason Orwell's lens remains indispensable. It allows us to see the city through the eyes of those who struggle the most to survive in it, and to understand how the past continues to shape the present.
-        </div>
-
-        <figure className="reveal">
-          <img
-              src={RoughSleeping}
-              alt="Rough sleeping in London. Retrieved from Inside Housing."
-            />
-            <figcaption>
-              Rough sleeping in London. — Inside Housing
-            </figcaption>
-          </figure>
-
-
       </div>
+
     </SectionShell>
   );
 }

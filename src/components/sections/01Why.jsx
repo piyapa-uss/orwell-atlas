@@ -40,8 +40,8 @@ export default function WhySection({ activeId }) {
   return (
     <SectionShell
       id="why-orwell"
-      title="The Man and the Book"
-      intro={'"What I have most wanted to do… is to make political writing into an art." - George Orwell'}
+      title="The Lens"
+      intro={'"What I have most wanted to do… is to make political writing into an art." - Why I Write, George Orwell'}
       isActive={activeId === "why-orwell"}
     >
       {/* Scoped styles — same system as the Constraint section */}
@@ -275,14 +275,14 @@ export default function WhySection({ activeId }) {
               Born as Eric Arthur Blair <strong>(1903–1950), George Orwell</strong> was one of the most important British writers in history. During his lifetime, his work was deeply committed to exposing social injustice, poverty and the rise of authoritarianism in the first half of the 20th century.
             </p>
             <p>
-              Unlike many intellectuals of his time, Orwell wrote about his own experiences — working as a journalist for the BBC, but also as a dishwasher in Paris and sleeping in lodging houses in London — to show what deprivation felt like from the inside. Those experiences later forged his unique writing and deep reflection on hardship, inequality and power.
+              Unlike many intellectuals of his time, Orwell wrote about his own experiences — working as a journalist for the BBC, but also as a dishwasher in Paris or sleeping in lodging houses in London — to show what deprivation felt like from the inside. Those experiences forged his unique writing and deep reflection on <strong>hardship, inequality and power</strong>.
             </p>
           </div>
         </div>
 
         <div className="reveal">
           <p>
-            Orwell wrote many well-known classics such as <em>Animal Farm</em> and <em>Nineteen Eighty-Four</em>, two of the most influential books in history. However, he is also the author of non-fiction classics, such as <em>Down and Out in Paris and London</em>, <em>The Road to Wigan Pier</em> and <em>Homage to Catalonia</em>, where he described the hard life of the voiceless and oppressed. His work continues to inspire and resonate with readers around the world, making him a timeless figure in literature and social commentary.
+            Orwell is author of many well-known classics such as <em>Animal Farm</em> and <em>Nineteen Eighty-Four</em>, two of the most influential books in history. However, he also wrote many non-fiction classics, such as <em>Down and Out in Paris and London</em>, <em>The Road to Wigan Pier</em> and <em>Homage to Catalonia</em>, where he described the life of those voiceless and oppressed. His stories were so sensitive and powerful that his work continues to inspire and resonate with readers around the world, making him a timeless figure in literature and the social question.
           </p>
 
           <div className="cta-row">
@@ -309,7 +309,11 @@ export default function WhySection({ activeId }) {
         <div className="split">
           <div className="reveal">
             <p>
-              <strong><em>Down and Out in Paris and London</em> (1933)</strong> is part memoir, part social document. It traces the author's experience of survival across the two most majestic European cities of its time before earning his life as a journalist. It was one of the first literary works to give a detailed human account of <strong>what it meant to be poor in a major European city in the midst of the Great Depression and the unstable interwar period</strong>.
+              <strong><em>Down and Out in Paris and London</em></strong>, published in <strong>1933</strong>, is the first full-length work by Orwell. It is part memoir, part social document. It traces the author's experience of survival across the two most opulent European cities at the time in a period of rapid changes in the world. Particularly important, it is one of the first literary works to give a detailed human account of <strong>what it meant to be poor in a major European city in the wake of the Great Depression and the unstable interwar period</strong>.
+            </p>
+            <p>
+              In his book, Orwell described the daily <strong>life of the tramps and exposed the hardships they suffered</strong>. He tried to demystify the <strong>ill-monster prejudice</strong> that societies built around beggars, and to denounce the cruel and perverse system that locked them into eternal vagrancy.
+
             </p>
           </div>
           <figure className="reveal full-image">
@@ -323,8 +327,9 @@ export default function WhySection({ activeId }) {
         </div>
 
         <div className="reveal">
+         
           <p>
-            During his stay in London, Orwell described the daily <strong>life of the tramps and exposed the hardships they suffered</strong>. He tried to demystify the <strong>ill-monster prejudice</strong> that societies built around beggars, and to denounce the cruel and perverse system that locked poor people into eternal vagrancy. Almost one hundred years later, the book remains a powerful and relevant account of poverty, inequality and survival in the city.
+            Almost one hundred years later, the Down and Out in Paris and London remains more relevant than ever given the current <strong>similarities between the past and the present</strong>. It is not only a unique account of poverty, inequality and survival in the city, but also a <strong>timeless reflection on the social question and the human condition in a period of deep economic changes, social instability and political turmoil</strong>.
           </p>
         </div>
 

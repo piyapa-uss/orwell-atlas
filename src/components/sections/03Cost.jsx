@@ -32,8 +32,8 @@ export default function CostSection({ activeId }) {
   return (
     <SectionShell
       id="cost-of-survival"
-      title="The Cost of Survival"
-      intro="This section traces everyday expenses — food, lodging, transport — revealing how survival is structured through spending patterns."
+      title="Orwell's Bank App: The Cost of Survival"
+      intro="Trace author's expenses across London revealing how surviving was like. In which items did he spend his scarce pennies? How much things cost back then? What was his daily budget? How did he manage to get by? Explore how money shapes poor people experience in the city."
       isActive={activeId === "cost-of-survival"}
     >
       {/* Main container: two-column layout (flexbox) */}
@@ -56,6 +56,16 @@ export default function CostSection({ activeId }) {
             fontWeight: "400",
           }}>
             Day by Day
+            <span style={{
+              fontFamily: THEME.fonts.sans,
+              fontSize: "0.8rem",
+              fontWeight: "400",
+              color: THEME.colors.muted,
+              marginLeft: "0.6rem",
+              fontStyle: "italic",
+            }}>
+              (in £ / £sd system)
+            </span>
           </h3>
 
           {/* Loop through each day's transactions */}
@@ -182,8 +192,10 @@ export default function CostSection({ activeId }) {
                   outerRadius={190}
                   dataKey="value"
                   strokeWidth={0}
+                  paddingAngle={3}
+                  label={({ percent }) => `${(percent * 100).toFixed(0)}%`}
+                  labelLine={false}
                 >
-                  {/* Apply alternating colors to each category segment */}
                   {categoryData.map((entry, index) => (
                     <Cell key={index} fill={COLORS[index % COLORS.length]} />
                   ))}
@@ -214,7 +226,7 @@ export default function CostSection({ activeId }) {
                 color: THEME.colors.muted,
                 fontFamily: THEME.fonts.sans,
               }}>
-                total spent
+                Total Spent
               </div>
             </div>
           </div>
@@ -261,6 +273,22 @@ export default function CostSection({ activeId }) {
         </div>
 
       </div>
+
+      <div style={{
+        maxWidth: "1100px",
+        margin: "3rem auto 0 auto",
+        padding: "1.5rem 2rem",
+        borderTop: `1px solid ${THEME.colors.line}`,
+        fontFamily: THEME.fonts.sans,
+        fontSize: "0.78rem",
+        lineHeight: "1.6",
+        color: THEME.colors.muted,
+        fontStyle: "italic",
+        textAlign: "center",
+      }}>
+        Note: All data shown here corresponds strictly to items the author explicitly mentioned consuming or spending on. Actual expenditures may have been higher (indeed, there is week gap within the story), but no records remain of those. After all, money laundering and tax evasion has been a common practice in The City since the beginnings of time.
+      </div>
+
     </SectionShell>
   );
 }
