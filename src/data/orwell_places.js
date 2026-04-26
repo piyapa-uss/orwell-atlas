@@ -25,7 +25,7 @@ export const placesData = [
     "lon": -0.093,
     "type": "B'office and Family Hotel",
     "spend": "Seven and Six pence slept in a 'family' hotel",
-    "image": "images/footstep/London.jpg"
+    "image": "images/London.jpg"
   },
   {
     "id": 4,
@@ -34,7 +34,7 @@ export const placesData = [
     "lat": 51.490,
     "lon": -0.116,
     "type": "Clothes shop",
-    "image": "images/footstep/lambath.jpg"
+    "image": "images/lambath.jpg"
   },
   {
     "id": 5,
@@ -55,7 +55,7 @@ export const placesData = [
     "type": "Coffee-shop",
     "context": "I crossed the river and walked a long way eastward, finally going into a coffee-shop on Tower Hill.",
     "spend": "Threepence Halfpenny for a tea and two slices",
-    "image": "images/footstep/Tower.jpg"
+    "image": "images/Tower.jpg"
   },
   {
     "id": 7,
@@ -66,7 +66,7 @@ export const placesData = [
     "type": "Lodging",
     "context": "After my bad experience in the Waterloo Road* I moved eastward, and spent the next night in a lodging-house in Pennyfields.",
     "spend": "One shilling slept in a lodging-house",
-    "image": "images/footstep/pennyfields.jpg"
+    "image": "images/pennyfields.jpg"
   },
   {
     "id": 8,
@@ -76,7 +76,7 @@ export const placesData = [
     "lon": -0.062,
     "type": "Walk",
     "context":"All day I loafed in the streets, east as far as Wapping, west as far as Whitechapel.",
-    "image": "images/footstep/Wapping.jpg"
+    "image": "images/Wapping.jpg"
   },
   {
     "id": 9,
@@ -86,7 +86,7 @@ export const placesData = [
     "lon": -0.065,
     "type": "Walk",
     "context":"All day I loafed in the streets, east as far as Wapping, west as far as Whitechapel.",
-    "image": "images/footstep/whitechapel.jpg"
+    "image": "images/whitechapel.jpg"
   },
   {
     "id": 10,
@@ -105,7 +105,7 @@ export const placesData = [
     "lon": -0.029,
     "type": "Lodging",
     "spend": "Eight pance slept in a lodging-house",
-    "image": "images/footstep/bow.jpg"
+    "image": "images/bow.jpg"
   },
   {
     "id": 12,
@@ -115,7 +115,7 @@ export const placesData = [
     "lon": 0.181,
     "type": "Suburb",
     "context": "When we were in the outskirts of Romton, Paddy noticed a bottle of milk on a doorstep, evidently left there by mistake.",
-    "image": "images/footstep/Romford.jpg"
+    "image": "images/Romford.jpg"
   },
   {
     "id": 13,
@@ -125,7 +125,7 @@ export const placesData = [
     "lon": 0.071,
     "type": "Coffee-shop",
     "spend": "Eight pance for a tea and two slices of bread in a coffee",
-    "image":"images/footstep/cafe.jpg"
+    "image":"images/cafe.jpg"
   },
   {
     "id": 14,
@@ -135,7 +135,7 @@ export const placesData = [
     "lon": -0.075,
     "type": "Shelter",
     "context": "He was going to Edbury spike, and suggested that we should go together.",
-    "image":"images/footstep/Edmonton.jpg"
+    "image":"images/Edmonton.jpg"
   },
   {
     "id": 15,
@@ -146,7 +146,7 @@ export const placesData = [
     "type": "B'office",
     "context": "Borrow money from B.",
     "spend": "Borrow two pounds",
-    "image":"images/footstep/1930s.jpg"
+    "image":"images/1930s.jpg"
   },
   {
     "id": 16,
@@ -175,7 +175,7 @@ export const placesData = [
     "type": "Meeting",
     "context": "Addresses did not exist in Paddy's world, but he had a vague idea that Bozo might be found in Lambeth, and in the end we ran across him on the Embankment, where he had established himself not far from Waterloo Bridge.",
     "spend": "Eight pance stay in a lodge-house",
-    "image": "images/footstep/embankment.jpeg"
+    "image": "images/embankment.jpeg"
   },
   {
     "id": 19,
@@ -194,7 +194,7 @@ export const placesData = [
     "lon": -0.121,
     "type": "Bridge",
     "context": "Under Charing Cross Bridge fifty men were waiting, mirrored in the shivering puddles.",
-    "image": "images/footstep/salvation.jpg"
+    "image": "images/salvation.jpg"
   },
   {
     "id": 21,
@@ -204,7 +204,7 @@ export const placesData = [
     "lon": -0.069,
     "type": "Walk",
     "context": "We went southward by the Old Kent Road, making for Cromley.",
-    "image": "images/footstep/oldkentrd.jpg"
+    "image": "images/oldkentrd.jpg"
   },
   {
     "id": 22,
@@ -215,7 +215,7 @@ export const placesData = [
     "type": "Shelter",
     "context": "We went southward by the Old Kent Road, making for Cromley.",
     "spend": "One penny for a large piece of stale bread",
-    "image": "images/footstep/Bromley.jpg"
+    "image": "images/Bromley.jpg"
   },
   {
     "id": 23,
@@ -225,6 +225,6 @@ export const placesData = [
     "lon": 0.788,
     "type": "Easthampstead Union Workhouse",
     "spend": "Buy a threepenny loaf and half an ounce of tobacco",
-    "image": "images/footstep/Easthampstead.jpg"
+    "image": "images/Easthampstead.jpg"
   }
 ]
