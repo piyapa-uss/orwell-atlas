@@ -4,9 +4,9 @@ import { THEME } from "../../theme";
 const items = [
   { no: "01", label: "The Author", id: "why-orwell" },
   { no: "02", label: "Constraint", id: "life-under-constraint" },
-  { no: "03", label: "Map", id: "mapping-inequality" },
+  { no: "03", label: "Footsteps", id: "mapping-footstep" },
   { no: "04", label: "Cost", id: "cost-of-survival" },
-  { no: "05", label: "Numbers", id: "survival-by-numbers" },
+  { no: "05", label: "Survival", id: "survival-compare" },
   { no: "06", label: "Then / Now", id: "then-now" },
   { no: "07", label: "Reflection", id: "reflection" },
   { no: "08", label: "About", id: "footer-about" },
@@ -34,9 +34,9 @@ export default function LeftRailNav() {
     const sectionIds = [
       "why-orwell",
       "life-under-constraint",
-      "mapping-inequality",
+      "mapping-footstep",
       "cost-of-survival",
-      "survival-by-numbers",
+      "survival-compare",
       "then-now",
       "reflection",
       "footer-about",
