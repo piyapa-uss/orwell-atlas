@@ -13,6 +13,7 @@ export default function MapSection({ activeId }) {
   const [playing, setPlaying] = React.useState(false);
   const [hasPlayed, setHasPlayed] = React.useState(false);
   const [selectedPlace, setSelectedPlace] = React.useState(null);
+  console.log("Current Base URL:", import.meta.env.BASE_URL);
 
   const mapRef = React.useRef(null);
 
@@ -263,10 +264,9 @@ export default function MapSection({ activeId }) {
 
                   {selectedPlace?.properties?.image && (
                     <img
+                     src={(import.meta.env.BASE_URL + selectedPlace.properties.image).replace(/\/+/g, '/')}
                      alt={selectedPlace.properties.place}
-                     src={`${import.meta.env.BASE_URL}/${selectedPlace.properties.image}`.replace(/\/+/g, '/')}
-                      
-                      onError={(e) => {
+                     onError={(e) => {
                         e.currentTarget.onerror = null;
                         e.currentTarget.src = "https://placehold.co/400x300/e0e0e0/666666?text=No+Photo";
                       }}
