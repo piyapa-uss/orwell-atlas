@@ -263,10 +263,11 @@ export default function MapSection({ activeId }) {
 
                   {selectedPlace?.properties?.image && (
                     <img
-                      src={selectedPlace.properties.image}
+                      src={`${import.meta.env.BASE_URL}${selectedPlace.properties.image}`}
                       alt={selectedPlace.properties.place}
                       onError={(e) => {
-                        e.target.src = "/default.jpg";
+                        e.currentTarget.onerror = null;
+                        e.currentTarget.src = `${import.meta.env.BASE_URL}default.jpg`;
                       }}
                       style={{
                         width: "100%",
