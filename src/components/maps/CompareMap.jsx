@@ -34,7 +34,7 @@ function createBaseStyle() {
         type: "raster",
         source: "osm",
         paint: {
-          "raster-opacity": 0.9,
+          "raster-opacity": 0.92,
         },
       },
     ],
@@ -50,8 +50,8 @@ function createOverlayStyle() {
         id: "overlay-bg",
         type: "background",
         paint: {
-          "background-opacity": 0,
           "background-color": "rgba(0,0,0,0)",
+          "background-opacity": 0,
         },
       },
     ],
@@ -61,22 +61,80 @@ function createOverlayStyle() {
 function shortenBorough(name) {
   const shortMap = {
     "Kensington and Chelsea": "Kensington & Chelsea",
-    "Richmond-upon-Thames": "Richmond-upon-Thames",
     "Barking and Dagenham": "Barking & Dagenham",
-    "City of London": "City of London",
-    "Tower Hamlets": "Tower Hamlets",
-    Westminster: "Westminster",
-    Islington: "Islington",
-    Camden: "Camden",
-    Hackney: "Hackney",
-    Brent: "Brent",
-    Newham: "Newham",
-    Enfield: "Enfield",
-    Haringey: "Haringey",
-    Wandsworth: "Wandsworth",
+    "Hammersmith and Fulham": "Hammersmith & Fulham",
+    "Richmond upon Thames": "Richmond",
+    "Richmond-upon-Thames": "Richmond",
+    "Kingston upon Thames": "Kingston",
+    "City of London": "City",
   };
 
   return shortMap[name] || name;
+}
+
+function getPressureValue(config, value) {
+  if (config.pressureMode === "low") return -value;
+  return value;
+}
+
+function getRankedBoroughs(features, config, breaks, palette, mode) {
+  const rows = features
+    .map((feature) => {
+      const value = Number(feature.properties[config.property]);
+      if (Number.isNaN(value)) return null;
+
+      return {
+        borough: feature.properties.borough,
+        value,
+        pressureValue: getPressureValue(config, value),
+        mapColor: getPaletteColor(value, breaks, palette),
+      };
+    })
+    .filter(Boolean);
+
+  const sorted =
+    mode === "most"
+      ? rows.sort((a, b) => b.pressureValue - a.pressureValue)
+      : rows.sort((a, b) => a.pressureValue - b.pressureValue);
+
+  return sorted.slice(0, 5).sort((a, b) => a.value - b.value);
+}
+
+function buildWorkhousePopup(props, lngLat) {
+  const name = props.name || "Workhouse";
+  const type = props.type || "Workhouse";
+  const certainty = props.certainty || "unknown";
+  const note =
+    props.note ||
+    "A historical workhouse location associated with Poor Law welfare and urban hardship.";
+  const source = props.source || props.link || props.url || "";
+
+  const lon = Number(lngLat.lng).toFixed(5);
+  const lat = Number(lngLat.lat).toFixed(5);
+
+  const sourceHtml = source
+    ? `<a href="${source}" target="_blank" rel="noreferrer" style="color:#171717;text-decoration:underline;">Source / more info</a>`
+    : `<span style="color:rgba(23,23,23,0.52);">Source link unavailable</span>`;
+
+  return `
+    <div style="font-family: Cormorant Garamond, Georgia, serif; width: 240px; color: #171717;">
+      <div style="font-size: 17px; font-weight: 500; line-height: 1.1; margin-bottom: 6px;">
+        ${name}
+      </div>
+      <div style="font-family: Inter, sans-serif; font-size: 10.5px; color: rgba(23,23,23,0.58); margin-bottom: 8px; letter-spacing:0.04em; text-transform:uppercase;">
+        ${type} · certainty: ${certainty}
+      </div>
+      <div style="font-size: 14px; line-height: 1.35; margin-bottom: 8px; color:rgba(23,23,23,0.76);">
+        ${note}
+      </div>
+      <div style="font-family: Inter, sans-serif; font-size: 10.5px; line-height: 1.45; color: rgba(23,23,23,0.58); margin-bottom: 8px;">
+        Coordinates: ${lat}, ${lon}
+      </div>
+      <div style="font-family: Inter, sans-serif; font-size: 10.5px;">
+        ${sourceHtml}
+      </div>
+    </div>
+  `;
 }
 
 export default function CompareMap({ swipePosition }) {
@@ -89,13 +147,26 @@ export default function CompareMap({ swipePosition }) {
   const nowMapRef = useRef(null);
 
   const popupRef = useRef(null);
+  const workhousePopupRef = useRef(null);
+
   const hoveredIdRef = useRef(null);
+  const hoveredWorkhouseIdRef = useRef(null);
+  const selectedWorkhouseIdRef = useRef(null);
   const quantilesRef = useRef({});
   const activeNowLayerRef = useRef("affordability");
   const syncingRef = useRef(false);
 
-  const [activeThenLayer, setActiveThenLayer] = useState("booth_poverty_map");
+  const [activeThenLayers, setActiveThenLayers] = useState({
+    booth_poverty_map: true,
+    workhouse_points: true,
+  });
+
+  const [boothOpacity, setBoothOpacity] = useState(
+    THEN_LAYER_CONFIG.booth_poverty_map.defaultOpacity || 0.58
+  );
+
   const [activeNowLayer, setActiveNowLayer] = useState("affordability");
+  const [rankingMode, setRankingMode] = useState("most");
   const [legendBreaks, setLegendBreaks] = useState([]);
   const [nowFeatures, setNowFeatures] = useState([]);
   const [hoveredBorough, setHoveredBorough] = useState(null);
@@ -158,6 +229,14 @@ export default function CompareMap({ swipePosition }) {
       closeButton: false,
       closeOnClick: false,
       className: "cost-popup",
+      offset: 14,
+    });
+
+    workhousePopupRef.current = new maplibregl.Popup({
+      closeButton: true,
+      closeOnClick: true,
+      className: "cost-popup",
+      offset: 16,
     });
 
     const maps = [baseMap, thenMap, nowMap];
@@ -176,9 +255,7 @@ export default function CompareMap({ swipePosition }) {
         };
 
         maps.forEach((map) => {
-          if (map !== sourceMap) {
-            map.jumpTo(camera);
-          }
+          if (map !== sourceMap) map.jumpTo(camera);
         });
 
         syncingRef.current = false;
@@ -203,7 +280,7 @@ export default function CompareMap({ swipePosition }) {
         type: "raster",
         source: "booth-mosaic",
         paint: {
-          "raster-opacity": 0.6,
+          "raster-opacity": boothOpacity,
           "raster-fade-duration": 0,
         },
       });
@@ -211,6 +288,35 @@ export default function CompareMap({ swipePosition }) {
       thenMap.addSource("workhouses", {
         type: "geojson",
         data: "/orwell-atlas/data/maps/workhouses_london.geojson",
+        promoteId: "id",
+      });
+
+      thenMap.addLayer({
+        id: "workhouse-halo",
+        type: "circle",
+        source: "workhouses",
+        paint: {
+          "circle-radius": [
+            "case",
+            ["boolean", ["feature-state", "hover"], false],
+            16,
+            ["boolean", ["feature-state", "selected"], false],
+            18,
+            0,
+          ],
+          "circle-color": "#F4E7A1",
+          "circle-opacity": [
+            "case",
+            [
+              "any",
+              ["boolean", ["feature-state", "hover"], false],
+              ["boolean", ["feature-state", "selected"], false],
+            ],
+            0.36,
+            0,
+          ],
+          "circle-blur": 0.85,
+        },
       });
 
       thenMap.addLayer({
@@ -219,28 +325,44 @@ export default function CompareMap({ swipePosition }) {
         source: "workhouses",
         paint: {
           "circle-radius": [
-            "interpolate",
-            ["linear"],
-            ["zoom"],
-            9,
-            4,
-            14,
-            8,
+            "case",
+            ["boolean", ["feature-state", "hover"], false],
+            9.5,
+            ["boolean", ["feature-state", "selected"], false],
+            10.5,
+            7,
           ],
-          "circle-color": "#171717",
+          "circle-color": [
+            "match",
+            ["get", "certainty"],
+            "exact",
+            "#F4E7A1",
+            "approximate",
+            "#E6D27B",
+            "interpretive",
+            "#CBB89A",
+            "#F4E7A1",
+          ],
           "circle-opacity": [
             "match",
             ["get", "certainty"],
             "exact",
-            0.9,
+            0.98,
             "approximate",
-            0.6,
+            0.82,
             "interpretive",
-            0.35,
-            0.7,
+            0.64,
+            0.9,
           ],
-          "circle-stroke-width": 1.2,
-          "circle-stroke-color": "#F4E7A1",
+          "circle-stroke-color": "#171717",
+          "circle-stroke-width": [
+            "case",
+            ["boolean", ["feature-state", "hover"], false],
+            2.3,
+            ["boolean", ["feature-state", "selected"], false],
+            2.6,
+            1.7,
+          ],
         },
       });
 
@@ -248,29 +370,65 @@ export default function CompareMap({ swipePosition }) {
         thenMap.getCanvas().style.cursor = "pointer";
       });
 
+      thenMap.on("mousemove", "workhouse-points", (e) => {
+        if (!e.features || !e.features.length) return;
+
+        const feature = e.features[0];
+        const id = feature.id;
+
+        if (
+          hoveredWorkhouseIdRef.current !== null &&
+          hoveredWorkhouseIdRef.current !== id
+        ) {
+          thenMap.setFeatureState(
+            { source: "workhouses", id: hoveredWorkhouseIdRef.current },
+            { hover: false }
+          );
+        }
+
+        hoveredWorkhouseIdRef.current = id;
+
+        if (id !== undefined && id !== null) {
+          thenMap.setFeatureState({ source: "workhouses", id }, { hover: true });
+        }
+      });
+
       thenMap.on("mouseleave", "workhouse-points", () => {
         thenMap.getCanvas().style.cursor = "";
+
+        if (hoveredWorkhouseIdRef.current !== null) {
+          thenMap.setFeatureState(
+            { source: "workhouses", id: hoveredWorkhouseIdRef.current },
+            { hover: false }
+          );
+        }
+
+        hoveredWorkhouseIdRef.current = null;
       });
 
       thenMap.on("click", "workhouse-points", (e) => {
         if (!e.features || !e.features.length) return;
 
-        const props = e.features[0].properties;
+        const feature = e.features[0];
 
-        new maplibregl.Popup({
-          closeButton: false,
-          closeOnClick: true,
-          className: "cost-popup",
-        })
+        if (selectedWorkhouseIdRef.current !== null) {
+          thenMap.setFeatureState(
+            { source: "workhouses", id: selectedWorkhouseIdRef.current },
+            { selected: false }
+          );
+        }
+
+        if (feature.id !== undefined && feature.id !== null) {
+          selectedWorkhouseIdRef.current = feature.id;
+          thenMap.setFeatureState(
+            { source: "workhouses", id: feature.id },
+            { selected: true }
+          );
+        }
+
+        workhousePopupRef.current
           .setLngLat(e.lngLat)
-          .setHTML(`
-            <div style="font-family: Inter, sans-serif; font-size: 12px; color: #171717;">
-              <strong>${props.name}</strong><br/>
-              Type: ${props.type}<br/>
-              Certainty: ${props.certainty}<br/>
-              <em>${props.note}</em>
-            </div>
-          `)
+          .setHTML(buildWorkhousePopup(feature.properties, e.lngLat))
           .addTo(thenMap);
       });
     });
@@ -308,7 +466,7 @@ export default function CompareMap({ swipePosition }) {
           "fill-opacity": [
             "case",
             ["boolean", ["feature-state", "hover"], false],
-            0.95,
+            0.96,
             0.82,
           ],
         },
@@ -319,14 +477,24 @@ export default function CompareMap({ swipePosition }) {
         type: "line",
         source: "london-cost",
         paint: {
-          "line-color": "#171717",
+          "line-color": [
+            "case",
+            ["boolean", ["feature-state", "hover"], false],
+            "#171717",
+            "rgba(23,23,23,0.56)",
+          ],
           "line-width": [
             "case",
             ["boolean", ["feature-state", "hover"], false],
-            1.35,
+            2.5,
             0.65,
           ],
-          "line-opacity": 0.28,
+          "line-opacity": [
+            "case",
+            ["boolean", ["feature-state", "hover"], false],
+            0.95,
+            0.32,
+          ],
         },
       });
 
@@ -361,9 +529,13 @@ export default function CompareMap({ swipePosition }) {
         popupRef.current
           .setLngLat(e.lngLat)
           .setHTML(`
-            <div style="font-family: Inter, sans-serif; font-size: 12px; color: #171717;">
-              <strong>${feature.properties.borough}</strong><br/>
-              ${config.label}: ${formattedValue}
+            <div style="font-family: Cormorant Garamond, Georgia, serif; color: #171717; min-width: 170px;">
+              <div style="font-size:17px;font-weight:500;margin-bottom:4px;line-height:1.05;">
+                ${feature.properties.borough}
+              </div>
+              <div style="font-family:Inter, sans-serif;font-size:11px;line-height:1.45;color:rgba(23,23,23,0.62);">
+                ${config.label}: <strong style="color:#171717;">${formattedValue}</strong>
+              </div>
             </div>
           `)
           .addTo(nowMap);
@@ -385,6 +557,7 @@ export default function CompareMap({ swipePosition }) {
 
     return () => {
       popupRef.current?.remove();
+      workhousePopupRef.current?.remove();
       baseMap.remove();
       thenMap.remove();
       nowMap.remove();
@@ -393,6 +566,41 @@ export default function CompareMap({ swipePosition }) {
       nowMapRef.current = null;
     };
   }, []);
+
+  useEffect(() => {
+    const thenMap = thenMapRef.current;
+    if (!thenMap) return;
+
+    if (thenMap.getLayer("booth-mosaic-layer")) {
+      thenMap.setLayoutProperty(
+        "booth-mosaic-layer",
+        "visibility",
+        activeThenLayers.booth_poverty_map ? "visible" : "none"
+      );
+
+      thenMap.setPaintProperty(
+        "booth-mosaic-layer",
+        "raster-opacity",
+        boothOpacity
+      );
+    }
+
+    if (thenMap.getLayer("workhouse-halo")) {
+      thenMap.setLayoutProperty(
+        "workhouse-halo",
+        "visibility",
+        activeThenLayers.workhouse_points ? "visible" : "none"
+      );
+    }
+
+    if (thenMap.getLayer("workhouse-points")) {
+      thenMap.setLayoutProperty(
+        "workhouse-points",
+        "visibility",
+        activeThenLayers.workhouse_points ? "visible" : "none"
+      );
+    }
+  }, [activeThenLayers, boothOpacity]);
 
   useEffect(() => {
     const nowMap = nowMapRef.current;
@@ -414,28 +622,11 @@ export default function CompareMap({ swipePosition }) {
   }, [activeNowLayer]);
 
   useEffect(() => {
-    const thenMap = thenMapRef.current;
-    if (!thenMap) return;
-
-    const visibility =
-      activeThenLayer === "booth_poverty_map" ? "visible" : "none";
-
-    if (thenMap.getLayer("booth-mosaic-layer")) {
-      thenMap.setLayoutProperty("booth-mosaic-layer", "visibility", visibility);
-    }
-
-    if (thenMap.getLayer("workhouse-points")) {
-      thenMap.setLayoutProperty("workhouse-points", "visibility", visibility);
-    }
-  }, [activeThenLayer]);
-
-  useEffect(() => {
     baseMapRef.current?.resize();
     thenMapRef.current?.resize();
     nowMapRef.current?.resize();
   }, [swipePosition]);
 
-  const activeThenConfig = THEN_LAYER_CONFIG[activeThenLayer];
   const activeNowConfig = useMemo(
     () => NOW_LAYER_CONFIG[activeNowLayer],
     [activeNowLayer]
@@ -444,28 +635,33 @@ export default function CompareMap({ swipePosition }) {
   const activePalette = activeNowConfig.palette;
   const rankBarColors = getRankBarColors(activePalette);
 
-  const topFive = useMemo(() => {
+  const rankedFive = useMemo(() => {
     if (!nowFeatures.length) return [];
 
-    const property = activeNowConfig.property;
     const breaks = quantilesRef.current[activeNowLayer] || [];
-    const palette = activeNowConfig.palette;
+    return getRankedBoroughs(
+      nowFeatures,
+      activeNowConfig,
+      breaks,
+      activeNowConfig.palette,
+      rankingMode
+    );
+  }, [nowFeatures, activeNowConfig, activeNowLayer, rankingMode]);
 
-    return [...nowFeatures]
-      .map((feature) => {
-        const value = Number(feature.properties[property]);
-        return {
-          borough: feature.properties.borough,
-          value,
-          mapColor: getPaletteColor(value, breaks, palette),
-        };
-      })
-      .filter((d) => !Number.isNaN(d.value))
-      .sort((a, b) => b.value - a.value)
-      .slice(0, 5);
-  }, [nowFeatures, activeNowConfig, activeNowLayer]);
+  const rankingMax = rankedFive.length
+    ? Math.max(...rankedFive.map((d) => d.value))
+    : 0;
 
-  const rankingMax = topFive.length ? topFive[0].value : 0;
+  const rankingMin = rankedFive.length
+    ? Math.min(...rankedFive.map((d) => d.value))
+    : 0;
+
+  const toggleThenLayer = (layerId) => {
+    setActiveThenLayers((prev) => ({
+      ...prev,
+      [layerId]: !prev[layerId],
+    }));
+  };
 
   return (
     <div style={{ position: "absolute", inset: 0 }}>
@@ -475,6 +671,7 @@ export default function CompareMap({ swipePosition }) {
           position: "absolute",
           inset: 0,
           zIndex: 1,
+          background: "#f6f3ee",
         }}
       />
 
@@ -495,24 +692,7 @@ export default function CompareMap({ swipePosition }) {
             inset: 0,
             width: "100%",
             height: "100%",
-          }}
-        />
-
-        {/* Fade left edge of Booth mosaic */}
-        <div
-          style={{
-            position: "absolute",
-            inset: 0,
-            pointerEvents: "none",
-            zIndex: 5,
-            background: `
-              linear-gradient(
-                90deg,
-                rgba(246,243,238,0.95) 0%,
-                rgba(246,243,238,0.7) 28%,
-                rgba(246,243,238,0) 48%
-              )
-            `,
+            background: "transparent",
           }}
         />
       </div>
@@ -534,6 +714,7 @@ export default function CompareMap({ swipePosition }) {
             inset: 0,
             width: "100%",
             height: "100%",
+            background: "transparent",
           }}
         />
       </div>
@@ -542,63 +723,77 @@ export default function CompareMap({ swipePosition }) {
       <div
         style={{
           position: "absolute",
-          bottom: "72px",
+          bottom: "112px",
           left: "56px",
-          zIndex: 30,
-          width: "260px",
+          zIndex: 34,
+          width: "335px",
           boxSizing: "border-box",
           background: "rgba(246, 243, 238, 0.92)",
           border: "1px solid rgba(23,23,23,0.12)",
-          borderRadius: "14px",
-          padding: "14px",
-          boxShadow: "0 8px 24px rgba(0,0,0,0.08)",
-          backdropFilter: "blur(6px)",
+          borderRadius: "16px",
+          padding: "17px",
+          boxShadow: "0 10px 30px rgba(0,0,0,0.10)",
+          backdropFilter: "blur(7px)",
         }}
       >
         <div
           style={{
             fontFamily: "Inter, sans-serif",
-            fontSize: "0.98rem",
-            fontWeight: 700,
-            marginBottom: "10px",
-            color: "#171717",
-            lineHeight: 1.2,
+            fontSize: "0.66rem",
+            fontWeight: 600,
+            color: "rgba(23,23,23,0.48)",
+            letterSpacing: "0.08em",
+            textTransform: "uppercase",
+            marginBottom: "6px",
           }}
         >
-          Historical Layers
+          Historical evidence
         </div>
 
-        <div style={{ display: "grid", gap: "8px" }}>
+        <div
+          style={{
+            fontFamily: "Cormorant Garamond, Georgia, serif",
+            fontSize: "1.46rem",
+            fontWeight: 400,
+            color: "#171717",
+            lineHeight: 1.05,
+            marginBottom: "15px",
+          }}
+        >
+          Poverty, welfare and control
+        </div>
+
+        <div style={{ display: "grid", gap: "10px" }}>
           {Object.values(THEN_LAYER_CONFIG).map((layer) => {
-            const isActive = activeThenLayer === layer.id;
+            const isActive = !!activeThenLayers[layer.id];
 
             return (
               <button
                 key={layer.id}
                 type="button"
                 disabled={!layer.available}
-                onClick={() => layer.available && setActiveThenLayer(layer.id)}
+                onClick={() => layer.available && toggleThenLayer(layer.id)}
                 style={{
                   display: "grid",
-                  gridTemplateColumns: "1fr 54px",
+                  gridTemplateColumns: "1fr 48px",
                   alignItems: "center",
                   columnGap: "10px",
                   width: "100%",
-                  minHeight: "34px",
+                  minHeight: "31px",
                   padding: 0,
                   border: "none",
                   background: "transparent",
                   cursor: layer.available ? "pointer" : "not-allowed",
-                  fontFamily: "Inter, sans-serif",
                   opacity: layer.available ? 1 : 0.45,
                 }}
               >
                 <span
                   style={{
-                    fontSize: "0.82rem",
-                    lineHeight: 1.2,
+                    fontFamily: "Cormorant Garamond, Georgia, serif",
+                    fontSize: "1.03rem",
+                    lineHeight: 1.08,
                     color: "#171717",
-                    fontWeight: 500,
+                    fontWeight: 400,
                     textAlign: "left",
                   }}
                 >
@@ -608,12 +803,11 @@ export default function CompareMap({ swipePosition }) {
                 <span
                   style={{
                     position: "relative",
-                    width: "54px",
-                    height: "30px",
+                    width: "48px",
+                    height: "26px",
                     borderRadius: "999px",
                     background: isActive ? "#171717" : "rgba(23,23,23,0.12)",
                     border: "1px solid rgba(23,23,23,0.10)",
-                    transition: "background 0.2s ease",
                     justifySelf: "end",
                     boxSizing: "border-box",
                   }}
@@ -622,11 +816,11 @@ export default function CompareMap({ swipePosition }) {
                     style={{
                       position: "absolute",
                       top: "3px",
-                      left: isActive ? "27px" : "3px",
-                      width: "22px",
-                      height: "22px",
+                      left: isActive ? "24px" : "3px",
+                      width: "18px",
+                      height: "18px",
                       borderRadius: "999px",
-                      background: "#ffffff",
+                      background: isActive ? "#F4E7A1" : "#ffffff",
                       boxShadow: "0 1px 4px rgba(0,0,0,0.16)",
                       transition: "left 0.2s ease",
                     }}
@@ -639,26 +833,65 @@ export default function CompareMap({ swipePosition }) {
 
         <div
           style={{
-            marginTop: "12px",
-            fontFamily: "Inter, sans-serif",
-            fontSize: "0.74rem",
-            lineHeight: 1.5,
-            color: "rgba(23,23,23,0.72)",
+            marginTop: "10px",
+            display: activeThenLayers.booth_poverty_map ? "block" : "none",
           }}
         >
-          {activeThenConfig.description}
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              fontFamily: "Inter, sans-serif",
+              fontSize: "0.64rem",
+              color: "rgba(23,23,23,0.48)",
+              marginBottom: "5px",
+            }}
+          >
+            <span>Booth map opacity</span>
+            <span>{Math.round(boothOpacity * 100)}%</span>
+          </div>
+
+          <input
+            type="range"
+            min="0.2"
+            max="0.85"
+            step="0.05"
+            value={boothOpacity}
+            onChange={(e) => setBoothOpacity(Number(e.target.value))}
+            style={{
+              width: "100%",
+              accentColor: "#171717",
+              cursor: "pointer",
+            }}
+          />
         </div>
 
         <div
           style={{
-            marginTop: "8px",
-            fontFamily: "Inter, sans-serif",
-            fontSize: "0.72rem",
-            lineHeight: 1.45,
-            color: "rgba(23,23,23,0.58)",
+            marginTop: "14px",
+            paddingTop: "12px",
+            borderTop: "1px solid rgba(23,23,23,0.12)",
+            fontFamily: "Cormorant Garamond, Georgia, serif",
+            fontSize: "1rem",
+            lineHeight: 1.33,
+            color: "rgba(23,23,23,0.74)",
+            fontWeight: 400,
           }}
         >
-          {activeThenConfig.sourceNote}
+          {THEN_LAYER_CONFIG.workhouse_points.description}
+        </div>
+
+        <div
+          style={{
+            marginTop: "10px",
+            fontFamily: "Inter, sans-serif",
+            fontSize: "0.64rem",
+            lineHeight: 1.42,
+            color: "rgba(23,23,23,0.48)",
+          }}
+        >
+          Click a yellow marker to inspect a workhouse location.
         </div>
       </div>
 
@@ -666,30 +899,44 @@ export default function CompareMap({ swipePosition }) {
       <div
         style={{
           position: "absolute",
-          bottom: "72px",
+          bottom: "112px",
           right: "56px",
-          zIndex: 30,
-          width: "360px",
+          zIndex: 34,
+          width: "405px",
           boxSizing: "border-box",
           background: "rgba(246, 243, 238, 0.92)",
           border: "1px solid rgba(23,23,23,0.12)",
-          borderRadius: "14px",
-          padding: "14px",
-          boxShadow: "0 8px 24px rgba(0,0,0,0.08)",
-          backdropFilter: "blur(6px)",
+          borderRadius: "16px",
+          padding: "17px",
+          boxShadow: "0 10px 30px rgba(0,0,0,0.10)",
+          backdropFilter: "blur(7px)",
         }}
       >
         <div
           style={{
             fontFamily: "Inter, sans-serif",
-            fontSize: "0.98rem",
-            fontWeight: 700,
-            marginBottom: "10px",
-            color: "#171717",
-            lineHeight: 1.2,
+            fontSize: "0.66rem",
+            fontWeight: 600,
+            color: "rgba(23,23,23,0.48)",
+            letterSpacing: "0.08em",
+            textTransform: "uppercase",
+            marginBottom: "6px",
           }}
         >
-          London Living Costs
+          Present-day pressure
+        </div>
+
+        <div
+          style={{
+            fontFamily: "Cormorant Garamond, Georgia, serif",
+            fontSize: "1.46rem",
+            fontWeight: 400,
+            color: "#171717",
+            lineHeight: 1.05,
+            marginBottom: "15px",
+          }}
+        >
+          Borough-level cost of survival
         </div>
 
         <div style={{ display: "grid", gap: "8px" }}>
@@ -703,24 +950,24 @@ export default function CompareMap({ swipePosition }) {
                 onClick={() => setActiveNowLayer(key)}
                 style={{
                   display: "grid",
-                  gridTemplateColumns: "1fr 54px",
+                  gridTemplateColumns: "1fr 48px",
                   alignItems: "center",
                   columnGap: "10px",
                   width: "100%",
-                  minHeight: "34px",
+                  minHeight: "30px",
                   padding: 0,
                   border: "none",
                   background: "transparent",
                   cursor: "pointer",
-                  fontFamily: "Inter, sans-serif",
                 }}
               >
                 <span
                   style={{
-                    fontSize: "0.82rem",
-                    lineHeight: 1.2,
+                    fontFamily: "Cormorant Garamond, Georgia, serif",
+                    fontSize: "1.03rem",
+                    lineHeight: 1.08,
                     color: "#171717",
-                    fontWeight: 500,
+                    fontWeight: 400,
                     textAlign: "left",
                   }}
                 >
@@ -730,12 +977,11 @@ export default function CompareMap({ swipePosition }) {
                 <span
                   style={{
                     position: "relative",
-                    width: "54px",
-                    height: "30px",
+                    width: "48px",
+                    height: "26px",
                     borderRadius: "999px",
                     background: isActive ? "#171717" : "rgba(23,23,23,0.12)",
                     border: "1px solid rgba(23,23,23,0.10)",
-                    transition: "background 0.2s ease",
                     justifySelf: "end",
                     boxSizing: "border-box",
                   }}
@@ -744,11 +990,11 @@ export default function CompareMap({ swipePosition }) {
                     style={{
                       position: "absolute",
                       top: "3px",
-                      left: isActive ? "27px" : "3px",
-                      width: "22px",
-                      height: "22px",
+                      left: isActive ? "24px" : "3px",
+                      width: "18px",
+                      height: "18px",
                       borderRadius: "999px",
-                      background: "#ffffff",
+                      background: isActive ? activePalette[4] : "#ffffff",
                       boxShadow: "0 1px 4px rgba(0,0,0,0.16)",
                       transition: "left 0.2s ease",
                     }}
@@ -759,133 +1005,163 @@ export default function CompareMap({ swipePosition }) {
           })}
         </div>
 
-        {!!topFive.length && (
+        {!!rankedFive.length && (
           <div style={{ marginTop: "14px" }}>
             <div
               style={{
-                fontFamily: "Inter, sans-serif",
-                fontSize: "0.78rem",
-                fontWeight: 700,
-                color: "#171717",
-                marginBottom: "8px",
+                display: "flex",
+                gap: "6px",
+                marginBottom: "10px",
               }}
             >
-              Top 5 Boroughs in London
+              {[
+                ["most", "Most pressured"],
+                ["least", "Least pressured"],
+              ].map(([mode, label]) => {
+                const isActive = rankingMode === mode;
+
+                return (
+                  <button
+                    key={mode}
+                    type="button"
+                    onClick={() => setRankingMode(mode)}
+                    style={{
+                      flex: 1,
+                      border: `1px solid ${
+                        isActive ? "#171717" : "rgba(23,23,23,0.14)"
+                      }`,
+                      background: isActive
+                        ? "rgba(23,23,23,0.90)"
+                        : "rgba(255,255,255,0.32)",
+                      color: isActive ? "#F5F0DB" : "#171717",
+                      borderRadius: "999px",
+                      padding: "7px 9px",
+                      fontFamily: "Inter, sans-serif",
+                      fontSize: "0.66rem",
+                      fontWeight: 650,
+                      cursor: "pointer",
+                    }}
+                  >
+                    {label}
+                  </button>
+                );
+              })}
             </div>
 
             <div
               style={{
-                marginTop: "8px",
-                marginBottom: "10px",
-                borderBottom: "1px solid rgba(23,23,23,0.14)",
-                paddingBottom: "10px",
+                fontFamily: "Cormorant Garamond, Georgia, serif",
+                fontSize: "1rem",
+                fontWeight: 400,
+                color: "#171717",
+                marginBottom: "8px",
+                lineHeight: 1.15,
               }}
             >
-              <div
-                style={{
-                  height: "180px",
-                  display: "flex",
-                  alignItems: "flex-end",
-                  justifyContent: "space-between",
-                  gap: "10px",
-                }}
-              >
-                {topFive.map((item, index) => {
-                  const isHovered = hoveredBorough === item.borough;
-                  const heightPct = rankingMax
-                    ? (item.value / rankingMax) * 100
-                    : 0;
+              {rankingMode === "most"
+                ? activeNowConfig.rankingLabel
+                : `Boroughs with the lowest ${activeNowConfig.label.toLowerCase()} values`}
+            </div>
 
-                  return (
+            <div
+              style={{
+                height: "156px",
+                display: "flex",
+                alignItems: "flex-end",
+                justifyContent: "space-between",
+                gap: "9px",
+                borderBottom: "1px solid rgba(23,23,23,0.14)",
+                paddingBottom: "12px",
+                marginBottom: "10px",
+              }}
+            >
+              {rankedFive.map((item, index) => {
+                const isHovered = hoveredBorough === item.borough;
+                const range = rankingMax - rankingMin || 1;
+                const heightPct = ((item.value - rankingMin) / range) * 78 + 18;
+
+                return (
+                  <div
+                    key={item.borough}
+                    style={{
+                      flex: 1,
+                      minWidth: 0,
+                      display: "flex",
+                      flexDirection: "column",
+                      alignItems: "center",
+                      gap: "6px",
+                    }}
+                  >
                     <div
-                      key={item.borough}
                       style={{
-                        flex: 1,
-                        minWidth: 0,
+                        fontFamily: "Inter, sans-serif",
+                        fontSize: "0.65rem",
+                        color: "#171717",
+                        textAlign: "center",
+                        minHeight: "20px",
+                        fontWeight: isHovered ? 760 : 550,
+                      }}
+                    >
+                      {activeNowConfig.format(item.value)}
+                    </div>
+
+                    <div
+                      style={{
+                        height: "90px",
+                        width: "100%",
                         display: "flex",
-                        flexDirection: "column",
-                        alignItems: "center",
-                        gap: "6px",
+                        alignItems: "flex-end",
+                        justifyContent: "center",
                       }}
                     >
                       <div
                         style={{
-                          fontFamily: "Inter, sans-serif",
-                          fontSize: "0.72rem",
-                          color: "#171717",
-                          lineHeight: 1.1,
-                          textAlign: "center",
-                          minHeight: "22px",
-                          fontWeight: isHovered ? 700 : 500,
-                        }}
-                      >
-                        {activeNowConfig.format(item.value)}
-                      </div>
-
-                      <div
-                        style={{
-                          height: "110px",
                           width: "100%",
-                          display: "flex",
-                          alignItems: "flex-end",
-                          justifyContent: "center",
+                          maxWidth: "42px",
+                          height: `${heightPct}%`,
+                          background:
+                            rankBarColors[index] ||
+                            activePalette[activePalette.length - 1],
+                          border: "1px solid rgba(23,23,23,0.30)",
+                          borderRadius: "8px 8px 0 0",
+                          outline: isHovered ? "2px solid #171717" : "none",
+                          outlineOffset: "2px",
+                          boxShadow: isHovered
+                            ? "0 0 0 4px rgba(244,231,161,0.48)"
+                            : "none",
                         }}
-                      >
-                        <div
-                          style={{
-                            width: "100%",
-                            maxWidth: "42px",
-                            height: `${Math.max(heightPct, 12)}%`,
-                            background: rankBarColors[index] || activePalette[5],
-                            border: `1px solid ${item.mapColor}`,
-                            borderRadius: "8px 8px 0 0",
-                            outline: isHovered ? "2px solid #171717" : "none",
-                            outlineOffset: "1px",
-                            transition: "all 0.15s ease",
-                          }}
-                        />
-                      </div>
-
-                      <div
-                        style={{
-                          fontFamily: "Inter, sans-serif",
-                          fontSize: "0.62rem",
-                          color: "#171717",
-                          lineHeight: 1.1,
-                          textAlign: "center",
-                          minHeight: "34px",
-                          fontWeight: isHovered ? 700 : 500,
-                          wordBreak: "break-word",
-                        }}
-                      >
-                        {shortenBorough(item.borough)}
-                      </div>
+                      />
                     </div>
-                  );
-                })}
-              </div>
-            </div>
 
-            <div
-              style={{
-                fontFamily: "Inter, sans-serif",
-                fontSize: "0.68rem",
-                color: "rgba(23,23,23,0.58)",
-                marginBottom: "10px",
-              }}
-            >
-              {activeNowConfig.rankingLabel}
+                    <div
+                      style={{
+                        fontFamily: "Cormorant Garamond, Georgia, serif",
+                        fontSize: "0.78rem",
+                        color: "#171717",
+                        lineHeight: 1,
+                        textAlign: "center",
+                        minHeight: "30px",
+                        fontWeight: 400,
+                      }}
+                    >
+                      {shortenBorough(item.borough)}
+                    </div>
+                  </div>
+                );
+              })}
             </div>
 
             {!!legendBreaks.length && (
               <>
                 <div
                   style={{
-                    marginTop: "4px",
                     display: "grid",
-                    gridTemplateColumns: "repeat(6, 1fr)",
-                    gap: "4px",
+                    gridTemplateColumns: `repeat(${activePalette.length}, 1fr)`,
+                    gap: "0px",
                     marginBottom: "6px",
+                    border: "1px solid rgba(23,23,23,0.08)",
+                    borderRadius: "4px",
+                    overflow: "hidden",
                   }}
                 >
                   {activePalette.map((color) => (
@@ -894,7 +1170,6 @@ export default function CompareMap({ swipePosition }) {
                       style={{
                         height: "10px",
                         background: color,
-                        borderRadius: "3px",
                       }}
                     />
                   ))}
@@ -905,9 +1180,9 @@ export default function CompareMap({ swipePosition }) {
                     display: "flex",
                     justifyContent: "space-between",
                     fontFamily: "Inter, sans-serif",
-                    fontSize: "0.68rem",
-                    color: "rgba(23,23,23,0.60)",
-                    marginBottom: "8px",
+                    fontSize: "0.64rem",
+                    color: "rgba(23,23,23,0.56)",
+                    marginBottom: "9px",
                   }}
                 >
                   <span>{activeNowConfig.format(legendBreaks[0])}</span>
@@ -918,11 +1193,12 @@ export default function CompareMap({ swipePosition }) {
 
             <div
               style={{
-                fontFamily: "Inter, sans-serif",
-                fontSize: "0.74rem",
-                lineHeight: 1.5,
+                fontFamily: "Cormorant Garamond, Georgia, serif",
+                fontSize: "0.96rem",
+                lineHeight: 1.32,
                 color: "rgba(23,23,23,0.72)",
                 marginBottom: "8px",
+                fontWeight: 400,
               }}
             >
               {activeNowConfig.description}
@@ -931,12 +1207,13 @@ export default function CompareMap({ swipePosition }) {
             <div
               style={{
                 fontFamily: "Inter, sans-serif",
-                fontSize: "0.72rem",
-                lineHeight: 1.45,
-                color: "rgba(23,23,23,0.58)",
+                fontSize: "0.64rem",
+                lineHeight: 1.4,
+                color: "rgba(23,23,23,0.48)",
               }}
             >
               Darker areas indicate higher values within the selected layer.
+              Hover a borough to connect the map and ranking.
             </div>
           </div>
         )}

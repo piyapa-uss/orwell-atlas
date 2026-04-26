@@ -14,30 +14,20 @@ export const THEN_LAYER_CONFIG = {
       "Charles Booth's poverty map reveals the social geography of late nineteenth-century London, showing how hardship was unevenly distributed across streets and districts.",
     sourceNote:
       "Source: Charles Booth Online Archive / MapWarper rectified sheets.",
-    defaultOpacity: 0.55,
-    tiles: [
-      "https://mapwarper.net/mosaics/tile/2483/{z}/{x}/{y}.png",
-    ],
+    defaultOpacity: 0.58,
+    tiles: ["https://mapwarper.net/mosaics/tile/2483/{z}/{x}/{y}.png"],
     available: true,
   },
 
-  workplace_map: {
-    id: "workplace_map",
-    label: "Workplaces Map",
-    type: "raster",
-    description:
-      "Historical workplace layer will be added after georeferencing additional map sheets.",
-    sourceNote: "Coming soon.",
-    available: false,
-  },
-  workplace_points: {
-    id: "workplace_points",
-    label: "Workplace Locations",
+  workhouse_points: {
+    id: "workhouse_points",
+    label: "Workhouse Locations",
     type: "points",
     description:
-      "Point locations for workplaces, lodging houses, and related sites will be added after data preparation.",
-    sourceNote: "Coming soon.",
-    available: false,
+      "Workhouses were part of the Poor Law welfare system, offering basic shelter and support while also enforcing strict conditions on people in poverty. In Orwell's London, they represent a visible geography of welfare, hardship, and social control.",
+    sourceNote:
+      "Source: compiled historical workhouse locations from public archive references.",
+    available: true,
   },
 };
 
@@ -46,86 +36,60 @@ export const NOW_LAYER_CONFIG = {
     id: "affordability",
     label: "Affordability",
     property: "affordability",
+    pressureMode: "high",
     description:
       "Monthly rent as a share of monthly income by borough. Higher values indicate a heavier everyday cost burden.",
     format: (v) => `${(Number(v) * 100).toFixed(1)}%`,
-    rankingLabel: "Highest affordability boroughs in London",
-    palette: [
-      "#F6E4E3",
-      "#E9C5C2",
-      "#D79B97",
-      "#BF6D69",
-      "#9C4442",
-      "#6F2E2D",
-    ],
+    rankingLabel: "Boroughs with the heaviest affordability pressure",
+    palette: ["#F1E8D8", "#DCCFB9", "#BFAF95", "#9C8A6F", "#6F5F49", "#3F372C"],
   },
+
   income_monthly: {
     id: "income_monthly",
     label: "Income",
     property: "income_monthly",
+    pressureMode: "low",
     description:
-      "Median monthly income by borough. Higher values indicate greater earning capacity.",
+      "Median monthly income by borough. Lower values indicate weaker earning capacity and stronger survival pressure.",
     format: (v) => `£${Number(v).toLocaleString()}`,
-    rankingLabel: "Highest income boroughs in London",
-    palette: [
-      "#F7F3EA",
-      "#EBDEC3",
-      "#D8C9A9",
-      "#C5B28C",
-      "#AA9875",
-      "#8C7A5D",
-    ],
+    rankingLabel: "Boroughs with the weakest earning capacity",
+    palette: ["#F1DFDD" , "#DDB7B2", "#C38C87", "#A76560", "#8A4745", "#5F3230"],
   },
+
   rent_monthly: {
     id: "rent_monthly",
     label: "Rent",
     property: "rent_monthly",
+    pressureMode: "high",
     description:
       "Median monthly rent by borough. Higher values indicate greater housing cost pressure.",
     format: (v) => `£${Number(v).toLocaleString()}`,
-    rankingLabel: "Highest rent boroughs in London",
-    palette: [
-      "#F3E8DA",
-      "#E5D0B3",
-      "#D0AF82",
-      "#B08A5A",
-      "#8E6A3F",
-      "#6F4F2C",
-    ],
+    rankingLabel: "Boroughs with the highest rent pressure",
+    palette: ["#EEF3F6", "#D6E0E7", "#AEBFCC", "#7F97A8", "#536F84", "#2F4A5E"],
   },
+
   house_price: {
     id: "house_price",
     label: "House Price",
     property: "house_price",
+    pressureMode: "high",
     description:
       "Average house price by borough. Higher values indicate stronger barriers to home ownership.",
     format: (v) => `£${Number(v).toLocaleString()}`,
-    rankingLabel: "Highest house-price boroughs in London",
-    palette: [
-      "#EFE7EB",
-      "#D9C8D0",
-      "#B99FAE",
-      "#9A7B8A",
-      "#7A5A6B",
-      "#57404D",
-    ],
+    rankingLabel: "Boroughs with the highest ownership barriers",
+    palette: ["#F2F0F6", "#DDD9EA", "#BEB7D6", "#9A90BE", "#74699F", "#3F3A63"],
   },
+
   income_deprivation: {
     id: "income_deprivation",
     label: "Income Deprivation",
     property: "income_deprivation",
+    pressureMode: "high",
     description:
       "Share of residents experiencing income deprivation by borough. Higher values indicate deeper structural hardship.",
     format: (v) => `${(Number(v) * 100).toFixed(1)}%`,
-    rankingLabel: "Highest income-deprivation boroughs in London",
-    palette: [
-      "#F1EEE7",
-      "#DDD6C8",
-      "#C2B8A4",
-      "#9E978A",
-      "#7F786D",
-      "#605A52",
-    ],
+    rankingLabel: "Boroughs with the deepest income deprivation",
+    palette: ["#EFE7E2", "#D6C6BD", "#B8A59A", "#978377", "#6F5E55", "#4A3E38"],
   },
 };
 
@@ -155,11 +119,16 @@ export function getStepExpression(property, breaks, palette) {
     "step",
     ["to-number", ["get", property]],
     palette[0],
-    breaks[1], palette[1],
-    breaks[2], palette[2],
-    breaks[3], palette[3],
-    breaks[4], palette[4],
-    breaks[5], palette[5],
+    breaks[1],
+    palette[1],
+    breaks[2],
+    palette[2],
+    breaks[3],
+    palette[3],
+    breaks[4],
+    palette[4],
+    breaks[5],
+    palette[5],
   ];
 }
 
@@ -177,11 +146,5 @@ export function getRankBarColors(palette) {
     return ["#171717", "#333333", "#555555", "#777777", "#999999"];
   }
 
-  return [
-    palette[5],
-    palette[4],
-    palette[3],
-    palette[2],
-    palette[1],
-  ];
+  return [palette[1], palette[2], palette[3], palette[4], palette[5]];
 }

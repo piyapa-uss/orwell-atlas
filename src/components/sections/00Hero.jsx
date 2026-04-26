@@ -1,17 +1,14 @@
 import { useEffect, useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import { THEME } from "../../theme";
 
 export default function HeroSection() {
-  const [showIntro, setShowIntro] = useState(false);
+  const [showOpen, setShowOpen] = useState(false);
   const base = import.meta.env.BASE_URL;
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setShowIntro(true);
-    }, 3000);
-
-    return () => clearTimeout(timer);
+    const t = setTimeout(() => setShowOpen(true), 1800);
+    return () => clearTimeout(t);
   }, []);
 
   return (
@@ -19,191 +16,141 @@ export default function HeroSection() {
       style={{
         minHeight: "100vh",
         position: "relative",
-        overflow: "hidden",
         background: THEME.colors.bg,
-        padding: "92px 36px 40px",
+        overflow: "hidden",
       }}
     >
-      <div
+      {/* TITLE */}
+      <motion.div
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8 }}
         style={{
-          position: "relative",
-          width: "min(1520px, 100%)",
-          minHeight: "calc(100vh - 132px)",
-          margin: "0 auto",
+          position: "absolute",
+          left: "45%", // Move title left/right
+          top: "28%", // Move title up/down 
+          transform: "translateX(-10%)",
+          zIndex: 5,
+          width: "min(760px, 55vw)",
+          pointerEvents: "none",
         }}
       >
-        {/* TITLE - fixed, does not move */}
-        <div
+        <h1
           style={{
-            position: "absolute",
-            left: "50%",
-            top: "1%",
-            transform: "translate(-50%, -50%)",
-            zIndex: 8,
-            width: "min(980px, 78vw)",
-            textAlign: "center",
-            pointerEvents: "none",
+            margin: 0,
+            fontFamily: THEME.fonts.serif,
+            fontSize: "clamp(3.4rem, 5vw, 5.4rem)",
+            lineHeight: 0.95,
+            fontWeight: 500,
+            letterSpacing: "-0.045em",
+            color: THEME.colors.ink,
+            whiteSpace: "nowrap",
           }}
         >
-          <h1
-            style={{
-              margin: 0,
-              color: THEME.colors.ink,
-              fontFamily: THEME.fonts.serif,
-              fontSize: "clamp(2.6rem, 4.8vw, 4.8rem)",
-              lineHeight: 1,
-              fontWeight: 500,
-              letterSpacing: "-0.03em",
-              whiteSpace: "nowrap",
-            }}
-          >
-            London: An Atlas of Survival
-          </h1>
-        </div>
+          London: An Atlas of Survival
+        </h1>
+      </motion.div>
 
-        {/* LEFT QUOTE - default */}
+      {/* COVER IMAGE STACK */}
+      <div
+        style={{
+          position: "absolute",
+          left: "50%",
+          top: "49%",
+          transform: "translate(-50%, -50%)",
+          width: "min(1380px, 96vw)",
+          zIndex: 2,
+        }}
+      >
         <motion.img
-          src={`${base}assets/quote_left.png`}
-          alt=""
-          initial={{ opacity: 0, x: -20 }}
-          animate={{
-            opacity: 1,
-            x: showIntro ? -130 : 0,
-          }}
-          transition={{ duration: 1.05, ease: [0.22, 1, 0.36, 1] }}
+          src={`${base}assets/cover_close_ex.png`}
           style={{
             position: "absolute",
-            left: "28%",
-            top: "10%",
-            transform: "translate(-50%, -50%)",
-            width: "clamp(150px, 14vw, 240px)",
-            zIndex: 2,
-            pointerEvents: "none",
-            userSelect: "none",
+            width: "100%",
+            top: 0,
+            left: 0,
+            display: "block",
           }}
+          initial={{ opacity: 1 }}
+          animate={{ opacity: showOpen ? 0 : 1 }}
+          transition={{ duration: 0.9, ease: "easeInOut" }}
         />
 
-        {/* ORWELL BLOCK - follows left with quote_left */}
-        <motion.div
-          initial={{ opacity: 0, y: 18 }}
-          animate={{
-            opacity: 1,
-            y: 0,
-            x: showIntro ? -115 : 0,
-          }}
-          transition={{ duration: 1.05, ease: [0.22, 1, 0.36, 1] }}
-          style={{
-            position: "absolute",
-            left: "46%",
-            top: "35%",
-            transform: "translate(-50%, -50%)",
-            width: "clamp(100px, 8vw, 140px)",
-            height: "clamp(130px, 11vw, 190px)",
-            background: "#171717",
-            zIndex: 4,
-            overflow: "hidden",
-            display: "flex",
-            alignItems: "flex-end",
-            justifyContent: "center",
-          }}
-        >
-          <img
-            src={`${base}assets/orwell.png`}
-            alt="George Orwell"
-            style={{
-              width: "108%",
-              height: "100%",
-              objectFit: "contain",
-              transform: "translateY(22px)",
-              pointerEvents: "none",
-              userSelect: "none",
-              filter: "grayscale(100%)",
-            }}
-          />
-        </motion.div>
-
-        {/* RIGHT QUOTE - moves right */}
         <motion.img
-          src={`${base}assets/quote_right.png`}
-          alt=""
-          initial={{ opacity: 0, x: 20 }}
-          animate={{
-            opacity: 1,
-            x: showIntro ? 170 : 0,
-          }}
-          transition={{ duration: 1.05, ease: [0.22, 1, 0.36, 1] }}
+          src={`${base}assets/cover_open_ex.png`}
           style={{
-            position: "absolute",
-            left: "58%",
-            top: "35%",
-            transform: "translate(-50%, -50%)",
-            width: "clamp(150px, 14vw, 240px)",
-            zIndex: 3,
-            pointerEvents: "none",
-            userSelect: "none",
+            width: "100%",
+            display: "block",
           }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: showOpen ? 1 : 0 }}
+          transition={{ duration: 0.9, ease: "easeInOut" }}
         />
-
-        {/* REVEAL TEXT */}
-        <AnimatePresence>
-          {showIntro && (
-            <motion.div
-              initial={{ opacity: 0, y: 16 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0 }}
-              transition={{
-                duration: 0.85,
-                ease: [0.22, 1, 0.36, 1],
-              }}
-              style={{
-                position: "absolute",
-                left: "50%",
-                top: "35%",
-                transform: "translateY(-50%)",
-                width: "min(420px, 30vw)",
-                textAlign: "left",
-                zIndex: 9,
-              }}
-            >
-              <p
-                style={{
-                  margin: 0,
-                  color: THEME.colors.muted,
-                  fontFamily: THEME.fonts.serif,
-                  fontSize: "clamp(1rem, 1.15vw, 1.2rem)",
-                  lineHeight: 1.45,
-                }}
-              >
-                The Cost of Survival in the City
-              </p>
-
-              <div
-                style={{
-                  width: "52px",
-                  height: "1px",
-                  background: THEME.colors.line,
-                  margin: "16px 0 16px 0",
-                }}
-              />
-
-              <p
-                style={{
-                  margin: 0,
-                  color: THEME.colors.muted,
-                  fontFamily: THEME.fonts.serif,
-                  fontSize: "clamp(0.95rem, 0.98vw, 1.08rem)",
-                  lineHeight: 1.7,
-                  maxWidth: "420px",
-                }}
-              >
-                Through the lens of George Orwell, this project examines
-                how the cost of everyday survival reveals
-                the shifting geography of inequality in London.
-              </p>
-            </motion.div>
-          )}
-        </AnimatePresence>
       </div>
+
+      {/* TAGLINE HEADING */}
+      <motion.div
+        initial={{ opacity: 0, y: 16 }}
+        animate={{ opacity: showOpen ? 1 : 0, y: showOpen ? 0 : 16 }}
+        transition={{ delay: 0.45, duration: 0.8 }}
+        style={{
+          position: "absolute",
+          left: "40%",   // move heading left/right
+          top: "41%",    // move heading up/down
+          transform: "translate(-50%, -50%)",
+          width: "min(520px, 38vw)",
+          textAlign: "center",
+          zIndex: 6,
+          pointerEvents: "none",
+        }}
+      >
+        <h2
+          style={{
+            margin: 0,
+            fontFamily: THEME.fonts.serif,
+            fontSize: "clamp(1.25rem, 1.55vw, 1.65rem)",
+            lineHeight: 1.2,
+            fontWeight: 700,
+            letterSpacing: "0.01em",
+            color: THEME.colors.muted,
+          }}
+        >
+          The cost of survival in the city
+        </h2>
+      </motion.div>
+
+      {/* TAGLINE BODY */}
+      <motion.div
+        initial={{ opacity: 0, y: 16 }}
+        animate={{ opacity: showOpen ? 1 : 0, y: showOpen ? 0 : 16 }}
+        transition={{ delay: 0.55, duration: 0.8 }}
+        style={{
+          position: "absolute",
+          left: "45%",   // Move paragraph left/right
+          top: "47%",    // Move paragraph up/down
+          transform: "translate(-50%, -50%)",
+          width: "min(560px, 40vw)",
+          textAlign: "left",
+          zIndex: 6,
+          pointerEvents: "none",
+        }}
+      >
+        <p
+          style={{
+            margin: 0,
+            fontFamily: THEME.fonts.serif,
+            fontSize: "clamp(1.05rem, 1.2vw, 1.25rem)",
+            lineHeight: 1.55,
+            letterSpacing: "0.01em",
+            color: THEME.colors.muted,
+          }}
+        >
+          Through the lens of Orwell, let’s explore <br />
+          how the cost of everyday survival has evolved, <br />
+          revealing the shifting geography <br />
+          of inequality across London.
+        </p>
+      </motion.div>
 
       {/* Scroll Cue */}
       <a
@@ -211,13 +158,10 @@ export default function HeroSection() {
         style={{
           position: "absolute",
           left: "50%",
-          bottom: "30px",
+          bottom: "90px", // Move cue up/down
           transform: "translateX(-50%)",
-          display: "inline-flex",
-          justifyContent: "center",
-          alignItems: "center",
-          textDecoration: "none",
           zIndex: 10,
+          textDecoration: "none",
         }}
       >
         <div
@@ -247,13 +191,13 @@ export default function HeroSection() {
       <style>
         {`
           @keyframes floatDown {
-            0%, 100% {
-              transform: translateY(0);
-              opacity: 0.55;
-            }
-            50% {
-              transform: translateY(8px);
-              opacity: 1;
+            0%, 100% { transform: translateY(0); opacity: 0.55; }
+            50% { transform: translateY(8px); opacity: 1; }
+          }
+
+          @media (max-width: 900px) {
+            h1 {
+              white-space: normal !important;
             }
           }
         `}
