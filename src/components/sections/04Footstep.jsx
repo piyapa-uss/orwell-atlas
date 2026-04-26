@@ -263,11 +263,12 @@ export default function MapSection({ activeId }) {
 
                   {selectedPlace?.properties?.image && (
                     <img
-                      src={`${import.meta.env.BASE_URL}${selectedPlace.properties.image}`}
-                      alt={selectedPlace.properties.place}
+                     alt={selectedPlace.properties.place}
+                     src={`${import.meta.env.BASE_URL}/${selectedPlace.properties.image}`.replace(/\/+/g, '/')}
+                      
                       onError={(e) => {
                         e.currentTarget.onerror = null;
-                        const imageUrl = `${import.meta.env.BASE_URL}/${selectedPlace.properties.image}`.replace(/\/+/g, '/');
+                        e.currentTarget.src = "https://placehold.co/400x300/e0e0e0/666666?text=No+Photo";
                       }}
                       style={{
                         width: "100%",
