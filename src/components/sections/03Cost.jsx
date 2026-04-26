@@ -286,7 +286,7 @@ export default function CostSection({ activeId }) {
         fontStyle: "italic",
         textAlign: "center",
       }}>
-        Note: All data shown here corresponds strictly to items the author explicitly mentioned consuming or spending on. Actual expenditures may have been higher (indeed, there is week gap within the story), but no records remain of those. After all, money laundering and tax evasion has been a common practice in The City since the beginnings of time.
+        Note: All prices in Down and Out in London and Paris are expressed in the old British <a href="https://www.royalmintmuseum.org.uk/journal/history/pounds-shillings-and-pence/">pre-decimal currency system</a>. However, this app translated the to the decimal pound system using <a href="https://www.bankofengland.co.uk/education/education-resources/shillings-to-pounds-converter">Bank of England Calculator</a> so as to improve interpretation. All data shown here corresponds strictly to items the author explicitly mentioned consuming or spending on. Actual expenditures may have been higher (indeed, there is week gap within the story), but no records remain of those. After all, money laundering and tax evasion has been a common practice in The City since the beginnings of time.
       </div>
 
     </SectionShell>

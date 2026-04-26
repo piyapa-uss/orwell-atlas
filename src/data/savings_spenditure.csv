@@ -1,25 +1,25 @@
 ﻿Location;Neighbourhood;City;Action;Spending;Spending (Decimal Pounds System);Category;Day;Savings;Savings (Decimal Pounds System);Net Savings
 Tillbury Pier;Tillbury;Tillbury;Savings;0;0;Saving;Day 1;19s 6d;0,975;0,975
-Family Hotel;City of London;London ;Reservation;7s 6d;0,375;Accomodation;Day 2;0;0;0,6
-Doss-House;Waterloo;London ;Reservation;1s;0,05;Accomodation;Day 3;0;0;0,55
-Clothes Shop;Lambeth;London ;Clothes Sale;0;0;Saving;Day 3;1s;0,05;0,6
-Coffee Shop;Tower Hill;London ;Tea and Two Slices;3½d;0,015;Food;Day 4;0;0;0,585
-Lodge-House;Poplar;London ;Reservation;1s;0,05;Accomodation;Day 4;0;0;0,535
-Lodge-House;Poplar;London ;Reservation;1s;0,05;Accomodation;Day 5;0;0;0,485
-Lodge-House;Poplar;London ;Reservation;1s;0,05;Accomodation;Day 6;0;0;0,435
-Lodge-House;Poplar;London ;Reservation;1s;0,05;Accomodation;Day 7;0;0;0,385
-Lodge-House;Bow;London ;Reservation;8d;0,035;Accomodation;Day 8;0;0;0,35
-Coffee Shop;Bow;London ;Tea and Two Slices;3½d;0,015;Food;Day 9;0;0;0,335
-Coffee Shop;Ilford;London ;Tea and Two Slices;8d;0,035;Food;Day 10;0;0;0,3
-Salvation Army Shelter;City of London;London ;Reservation;8d;0,035;Accomodation;Day 11;0;0;0,265
-Coffee Shop;City of London;London ;Cup of Tea;3½d;0,015;Food;Day 12;0;0;0,25
-Lodge-House;Westminster;London ;Reservation;11d;0,045;Accomodation;Day 12;0;0;0,205
-B's office;City of London;London ;B's loan;0;0;Saving;Day 12;£2;2;2,205
-Lodge-House;Embarkment;London ;Reservation;9d;0,04;Accomodation;Day 13;0;0;2,165
-Lodge-House;Embarkment;London ;Reservation;8d;0,035;Accomodation;Day 21;0;0;2,13
-Coffee Shop;Embarkment;London ;Tea and Two Slices;3d;0,015;Food;Day 21;0;0;2,115
-Coffee Shop;Embarkment;London ;Dinner;4d;0,015;Food;Day 21;0;0;2,1
-Shop;Bromley;London ;Bread;1d;0,005;Food;Day 22;0;0;2,095
+Family Hotel;City of London;London;Bed;7s 6d;0,375;Accommodation;Day 2;0;0;0,6
+Doss-House;Waterloo;London;Bed;1s;0,05;Accommodation;Day 3;0;0;0,55
+Clothes Shop;Lambeth;London;Clothes Sale;0;0;Saving;Day 3;1s;0,05;0,6
+Coffee Shop;Tower Hill;London;Tea and Two Slices;3½d;0,015;Food;Day 4;0;0;0,585
+Lodge-House;Poplar;London;Bed;1s;0,05;Accommodation;Day 4;0;0;0,535
+Lodge-House;Poplar;London;Bed;1s;0,05;Accommodation;Day 5;0;0;0,485
+Lodge-House;Poplar;London;Bed;1s;0,05;Accommodation;Day 6;0;0;0,435
+Lodge-House;Poplar;London;Bed;1s;0,05;Accommodation;Day 7;0;0;0,385
+Lodge-House;Bow;London;Bed;8d;0,035;Accommodation;Day 8;0;0;0,35
+Coffee Shop;Bow;London;Tea and Two Slices;3½d;0,015;Food;Day 9;0;0;0,335
+Coffee Shop;Ilford;London;Tea and Two Slices;8d;0,035;Food;Day 10;0;0;0,3
+Salvation Army Shelter;City of London;London;Bed;8d;0,035;Accommodation;Day 11;0;0;0,265
+Coffee Shop;City of London;London;Cup of Tea;3½d;0,015;Food;Day 12;0;0;0,25
+Lodge-House;Westminster;London;Bed;11d;0,045;Accommodation;Day 12;0;0;0,205
+B's office;City of London;London;B's loan;0;0;Saving;Day 12;£2;2;2,205
+Lodge-House;Embarkment;London;Bed;9d;0,04;Accommodation;Day 13;0;0;2,165
+Lodge-House;Embarkment;London;Bed;8d;0,035;Accommodation;Day 21;0;0;2,13
+Coffee Shop;Embarkment;London;Tea and Two Slices;3d;0,015;Food;Day 21;0;0;2,115
+Coffee Shop;Embarkment;London;Dinner;4d;0,015;Food;Day 21;0;0;2,1
+Shop;Bromley;London;Bread;1d;0,005;Food;Day 22;0;0;2,095
 House;Lower Binfield;Kent;Work - Chop wood;0;0;Saving;Day 22;6d;0,025;2,12
 Shop;Lower Binfield;Kent;Bread and Tobacco;1d;0,005;Food;Day 23;0;0;2,115
 House;Lower Binfield;Kent;Work - Sweep gardens;0;0;Saving;Day 24;2s 6d;0,125;2,24
