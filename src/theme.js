@@ -25,6 +25,6 @@ export const THEME = {
   fonts: {
     sans: `"Inter", "Helvetica Neue", Arial, sans-serif`,
     serif: `"Cormorant Garamond", Georgia, serif`,
-    display: `"Canela", "Cormorant Garamond", Georgia, serif`,
+    display: `"Cormorant Garamond", Georgia, serif`,
   },
 };

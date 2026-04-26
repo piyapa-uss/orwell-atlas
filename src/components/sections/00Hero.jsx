@@ -31,7 +31,7 @@ export default function HeroSection() {
           top: "28%", // Move title up/down 
           transform: "translateX(-10%)",
           zIndex: 5,
-          width: "min(760px, 55vw)",
+          width: "min(900px, 70vw)",
           pointerEvents: "none",
         }}
       >
@@ -39,12 +39,14 @@ export default function HeroSection() {
           style={{
             margin: 0,
             fontFamily: THEME.fonts.serif,
-            fontSize: "clamp(3.4rem, 5vw, 5.4rem)",
-            lineHeight: 0.95,
+            fontSize: "clamp(3rem, 4.4vw, 4.7rem)",
+            lineHeight: 1,
             fontWeight: 500,
             letterSpacing: "-0.045em",
             color: THEME.colors.ink,
-            whiteSpace: "nowrap",
+
+            whiteSpace: "normal",
+            maxWidth: "760px",
           }}
         >
           London: An Atlas of Survival
