@@ -1,0 +1,366 @@
+{
+  "type": "FeatureCollection",
+  "name": "workhouses_london",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Whitechapel Workhouse",
+        "type": "workhouse",
+        "address": "South Grove Whitechapel",
+        "source": "workhouses.org.uk",
+        "certainty": "exact",
+        "note": "East London poverty core"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -0.06,
+          51.5155
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Poplar Workhouse",
+        "type": "workhouse",
+        "address": "High Street Poplar",
+        "source": "workhouses.org.uk",
+        "certainty": "exact",
+        "note": "dock labour district"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -0.0165,
+          51.507
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Mile End Workhouse",
+        "type": "workhouse",
+        "address": "Bancroft Road Mile End",
+        "source": "workhouses.org.uk",
+        "certainty": "exact",
+        "note": "working class area"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -0.0335,
+          51.525
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Stepney Workhouse",
+        "type": "workhouse",
+        "address": "Rainbow Street Stepney",
+        "source": "workhouses.org.uk",
+        "certainty": "approximate",
+        "note": "east end poverty zone"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -0.038,
+          51.515
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "St Pancras Workhouse",
+        "type": "workhouse",
+        "address": "Pancras Road",
+        "source": "workhouses.org.uk",
+        "certainty": "exact",
+        "note": "central casual ward"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -0.126,
+          51.5305
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Strand Union Workhouse",
+        "type": "workhouse",
+        "address": "Cleveland Street",
+        "source": "workhouses.org.uk",
+        "certainty": "exact",
+        "note": "central london"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -0.136,
+          51.523
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Holborn Workhouse",
+        "type": "workhouse",
+        "address": "Gray's Inn Road",
+        "source": "workhouses.org.uk",
+        "certainty": "approximate",
+        "note": "inner city poor"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -0.118,
+          51.522
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Southwark Workhouse",
+        "type": "workhouse",
+        "address": "Copeland Road Peckham",
+        "source": "workhouses.org.uk",
+        "certainty": "exact",
+        "note": "south london poverty"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -0.071,
+          51.473
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Lambeth Workhouse",
+        "type": "workhouse",
+        "address": "Renfrew Road Lambeth",
+        "source": "workhouses.org.uk",
+        "certainty": "exact",
+        "note": "near Thames labour"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -0.118,
+          51.49
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Greenwich Workhouse",
+        "type": "workhouse",
+        "address": "Vanbrugh Hill",
+        "source": "workhouses.org.uk",
+        "certainty": "exact",
+        "note": "river economy"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -0.009,
+          51.482
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Kensington Workhouse",
+        "type": "workhouse",
+        "address": "Marloes Road",
+        "source": "workhouses.org.uk",
+        "certainty": "exact",
+        "note": "west london contrast"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -0.197,
+          51.498
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Fulham Workhouse",
+        "type": "workhouse",
+        "address": "Hammersmith Road",
+        "source": "workhouses.org.uk",
+        "certainty": "approximate",
+        "note": "west london labour"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -0.223,
+          51.492
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Chelsea Workhouse",
+        "type": "workhouse",
+        "address": "Arthur Street Chelsea",
+        "source": "workhouses.org.uk",
+        "certainty": "approximate",
+        "note": "urban poor"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -0.167,
+          51.485
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Hackney Workhouse",
+        "type": "workhouse",
+        "address": "Mare Street Hackney",
+        "source": "workhouses.org.uk",
+        "certainty": "exact",
+        "note": "east london expansion"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -0.055,
+          51.546
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Islington Workhouse",
+        "type": "workhouse",
+        "address": "Hornsey Road",
+        "source": "workhouses.org.uk",
+        "certainty": "approximate",
+        "note": "north london poor"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -0.118,
+          51.556
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Shoreditch Workhouse",
+        "type": "workhouse",
+        "address": "Old Street",
+        "source": "workhouses.org.uk",
+        "certainty": "exact",
+        "note": "industrial poverty"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -0.087,
+          51.525
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Bethnal Green Workhouse",
+        "type": "workhouse",
+        "address": "Cambridge Heath Road",
+        "source": "workhouses.org.uk",
+        "certainty": "exact",
+        "note": "dense working class"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -0.056,
+          51.531
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Deptford Workhouse",
+        "type": "workhouse",
+        "address": "Deptford Broadway",
+        "source": "workhouses.org.uk",
+        "certainty": "approximate",
+        "note": "river labour"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -0.026,
+          51.478
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Wandsworth Workhouse",
+        "type": "workhouse",
+        "address": "Garratt Lane",
+        "source": "workhouses.org.uk",
+        "certainty": "approximate",
+        "note": "south west labour"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -0.192,
+          51.456
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Paddington Workhouse",
+        "type": "workhouse",
+        "address": "North Wharf Road",
+        "source": "workhouses.org.uk",
+        "certainty": "approximate",
+        "note": "west central"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -0.177,
+          51.52
+        ]
+      }
+    }
+  ]
+}
