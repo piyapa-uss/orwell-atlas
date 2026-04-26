@@ -267,6 +267,7 @@ export default function MapSection({ activeId }) {
                       alt={selectedPlace.properties.place}
                       onError={(e) => {
                         e.currentTarget.onerror = null;
+                        const imageUrl = `${import.meta.env.BASE_URL}/${selectedPlace.properties.image}`.replace(/\/+/g, '/');
                       }}
                       style={{
                         width: "100%",
@@ -274,6 +275,7 @@ export default function MapSection({ activeId }) {
                         objectFit: "cover",
                         marginBottom: "8px",
                         borderRadius: "4px",
+                        display: "block",
                       }}
                     />
                   )}
