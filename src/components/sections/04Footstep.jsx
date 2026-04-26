@@ -267,7 +267,6 @@ export default function MapSection({ activeId }) {
                       alt={selectedPlace.properties.place}
                       onError={(e) => {
                         e.currentTarget.onerror = null;
-                        e.currentTarget.src = `${import.meta.env.BASE_URL}default.jpg`;
                       }}
                       style={{
                         width: "100%",

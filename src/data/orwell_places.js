@@ -34,7 +34,7 @@ export const placesData = [
     "lat": 51.490,
     "lon": -0.116,
     "type": "Clothes shop",
-    "image": "images/lambath.jpg"
+    "image": "images/lambeth.jpg"
   },
   {
     "id": 5,
