@@ -139,7 +139,8 @@ export default function AboutSection({ activeId }) {
                 display: "flex",
                 alignItems: "center",
                 fontFamily: THEME.fonts.serif,
-                fontSize: "clamp(2rem, 3vw, 2.8rem)",
+                fontSize: "clamp(1.9rem, 2.6vw, 2.45rem)",
+                fontWeight: 500,
                 lineHeight: 1,
                 color: THEME.colors.ink,
                 borderBottom: `1px solid ${THEME.colors.line}`,
@@ -169,7 +170,8 @@ export default function AboutSection({ activeId }) {
                       textAlign: "left",
                       cursor: "pointer",
                       fontFamily: THEME.fonts.serif,
-                      fontSize: isOpen ? "1.28rem" : "1.16rem",
+                      fontSize: isOpen ? "1.12rem" : "1.02rem",
+                      fontWeight: 400,
                       color: THEME.colors.ink,
                       transition: "all 0.18s ease",
                     }}
@@ -210,10 +212,10 @@ export default function AboutSection({ activeId }) {
                 style={{
                   margin: "0 0 32px",
                   fontFamily: THEME.fonts.serif,
-                  fontSize: "clamp(2rem, 3vw, 2.8rem)",
+                  fontSize: "clamp(1.85rem, 2.5vw, 2.35rem)",
                   lineHeight: 1.05,
                   color: THEME.colors.ink,
-                  fontWeight: 600,
+                  fontWeight: 500,
                   maxWidth: "680px",
                 }}
               >
@@ -248,10 +250,10 @@ export default function AboutSection({ activeId }) {
                         style={{
                           margin: "0 0 16px",
                           fontFamily: THEME.fonts.serif,
-                          fontSize: "1.55rem",
-                          lineHeight: 1,
+                          fontSize: "1.25rem",
+                          lineHeight: 1.08,
                           color: THEME.colors.ink,
-                          fontWeight: 600,
+                          fontWeight: 500,
                         }}
                       >
                         {m.name}
@@ -318,8 +320,8 @@ export default function AboutSection({ activeId }) {
                         style={{
                           margin: 0,
                           fontFamily: THEME.fonts.serif,
-                          fontSize: "clamp(1.15rem, 1.55vw, 1.42rem)",
-                          lineHeight: 1.55,
+                          fontSize: "clamp(0.98rem, 1.15vw, 1.1rem)",
+                          lineHeight: 1.6,
                           color: THEME.colors.muted,
                         }}
                       >
@@ -334,8 +336,8 @@ export default function AboutSection({ activeId }) {
                     margin: 0,
                     maxWidth: "680px",
                     fontFamily: THEME.fonts.serif,
-                    fontSize: "clamp(1.25rem, 1.7vw, 1.55rem)",
-                    lineHeight: 1.55,
+                    fontSize: "clamp(0.98rem, 1.15vw, 1.1rem)",
+                    lineHeight: 1.65,
                     color: THEME.colors.muted,
                   }}
                 >

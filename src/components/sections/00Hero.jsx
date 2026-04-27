@@ -28,9 +28,9 @@ export default function HeroSection() {
         transition={{ duration: 0.8 }}
         style={{
           position: "absolute",
-          left: "45%",
-          top: "25%",
-          transform: "translateX(-10%)",
+          left: "47%",
+          top: "32%",
+          transform: "translateX(-50%)",
           zIndex: 5,
           width: "min(900px, 70vw)",
           pointerEvents: "none",
@@ -40,10 +40,10 @@ export default function HeroSection() {
           style={{
             margin: "-1rem 0 0 0",
             fontFamily: THEME.fonts.serif,
-            fontSize: "clamp(3rem, 4.4vw, 4.7rem)",
+            fontSize: "clamp(2.6rem, 3.8vw, 4rem)",
             lineHeight: 1,
             fontWeight: 500,
-            letterSpacing: "-0.045em",
+            letterSpacing: "-0.035em",
             color: THEME.colors.ink,
             whiteSpace: "normal",
             maxWidth: "900px",
@@ -57,10 +57,10 @@ export default function HeroSection() {
       <div
         style={{
           position: "absolute",
-          left: "50%",
-          top: "49%",
+          left: "52%",
+          top: "52%",
           transform: "translate(-50%, -50%)",
-          width: "min(1380px, 96vw)",
+          width: "min(1280px, 90vw)",
           zIndex: 2,
         }}
       >
@@ -99,11 +99,11 @@ export default function HeroSection() {
         transition={{ delay: 0.45, duration: 0.8 }}
         style={{
           position: "absolute",
-          left: "40%",
-          top: "41%",
-          transform: "translate(-50%, -50%)",
-          width: "min(520px, 38vw)",
-          textAlign: "center",
+          left: "47%",
+          top: "45%",
+          transform: "translateY(-50%)",
+          width: "360px",
+          textAlign: "left",
           zIndex: 6,
           pointerEvents: "none",
         }}
@@ -112,9 +112,9 @@ export default function HeroSection() {
           style={{
             margin: 0,
             fontFamily: THEME.fonts.serif,
-            fontSize: "clamp(1.25rem, 1.55vw, 1.65rem)",
+            fontSize: "clamp(1.05rem, 1.25vw, 1.35rem)",
             lineHeight: 1.2,
-            fontWeight: 700,
+            fontWeight: 600,
             letterSpacing: "0.01em",
             color: THEME.colors.muted,
           }}
@@ -130,9 +130,9 @@ export default function HeroSection() {
         transition={{ delay: 0.55, duration: 0.8 }}
         style={{
           position: "absolute",
-          left: "45%",
-          top: "47%",
-          transform: "translate(-50%, -50%)",
+          left: "47%",
+          top: "51%",
+          transform: "translateY(-50%)",
           width: "min(560px, 40vw)",
           textAlign: "left",
           zIndex: 6,
@@ -143,7 +143,7 @@ export default function HeroSection() {
           style={{
             margin: 0,
             fontFamily: THEME.fonts.serif,
-            fontSize: "clamp(1.05rem, 1.2vw, 1.25rem)",
+            fontSize: "clamp(0.95rem, 1.05vw, 1.1rem)",
             lineHeight: 1.55,
             letterSpacing: "0.01em",
             color: THEME.colors.muted,
@@ -162,7 +162,7 @@ export default function HeroSection() {
         style={{
           position: "absolute",
           left: "50%",
-          bottom: "90px",
+          bottom: "20px",
           transform: "translateX(-50%)",
           zIndex: 10,
           textDecoration: "none",
