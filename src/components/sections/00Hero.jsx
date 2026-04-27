@@ -29,7 +29,7 @@ export default function HeroSection() {
         style={{
           position: "absolute",
           left: "45%",
-          top: "28%",
+          top: "25%",
           transform: "translateX(-10%)",
           zIndex: 5,
           width: "min(900px, 70vw)",

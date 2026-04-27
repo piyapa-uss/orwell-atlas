@@ -51,12 +51,12 @@ export default function WhySection({ activeId }) {
           margin: 0 auto;
           font-family: ${f.serif};
           font-size: 1.2rem;
-          line-height: 1.65;
+          line-height: 1.7;
           color: ${c.ink};
         }
         .manbook-section p {
           font-family: ${f.serif};
-          font-size: 1.2rem;
+          font-size: 1.32rem;
           line-height: 1.65;
           color: ${c.ink};
           margin: 0 0 1.5rem;
@@ -118,7 +118,7 @@ export default function WhySection({ activeId }) {
           margin: 3rem 0;
         }
         .manbook-section .split figure { margin: 0; }
-        .manbook-section .split p { font-size: 1.1rem; }
+        .manbook-section .split p { font-size: 1.22rem; }
         .manbook-section .split figure img {
           aspect-ratio: 4 / 5;
           object-fit: cover;

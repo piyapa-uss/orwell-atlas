@@ -345,8 +345,8 @@ export default function MapSection({ activeId }) {
           margin: "10px 0 0 0",
           color: THEME.colors.muted,
           fontFamily: THEME.fonts.serif,
-          fontSize: "1rem",
-          lineHeight: 1.6,
+          fontSize: "1.2rem",
+          lineHeight: 1.55,
           textAlign: "center",
           fontStyle: "normal",
         }}

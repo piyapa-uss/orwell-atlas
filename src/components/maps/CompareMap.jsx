@@ -202,48 +202,40 @@ function buildWorkhousePopup(props, lngLat) {
   const lat = Number(lngLat.lat).toFixed(5);
 
   return `
-    <div style="
-      font-family: Cormorant Garamond, Georgia, serif;
-      color: #171717;
-      width: fit-content;
-      max-width: 420px;
-    ">
+    <div class="popup-card">
 
       ${
         image
-          ? `<img src="${image}" style="
-              width:100%;
-              height:auto;
-              display:block;
-              border-radius:12px 12px 0 0;
-            " />`
+          ? `<img src="${image}" />`
           : ""
       }
 
-      <div style="padding:14px;">
-        <div style="font-size: 26px; font-weight: 600; margin-bottom: 6px;">
+      <div class="popup-body">
+
+        <div class="popup-title">
           ${name}
         </div>
 
-        <div style="font-family: Inter, sans-serif; font-size: 11px; color: rgba(23,23,23,0.58); margin-bottom: 10px; text-transform:uppercase;">
+        <div class="popup-meta">
           ${type} · certainty: ${certainty}
         </div>
 
-        <div style="font-size: 14px; margin-bottom: 10px; color:rgba(23,23,23,0.76);">
+        <div class="popup-text">
           ${note}
         </div>
 
-        <div style="font-family: Inter, sans-serif; font-size: 11px; margin-bottom: 10px; color: rgba(23,23,23,0.58);">
+        <div class="popup-meta">
           Coordinates: ${lat}, ${lon}
         </div>
 
-        <div style="border-top:1px solid rgba(23,23,23,0.2); padding-top:8px;">
+        <div class="popup-footer">
           ${
             source
               ? `<a href="${source}" target="_blank">Source / more info</a>`
               : ""
           }
         </div>
+
       </div>
     </div>
   `;
@@ -347,7 +339,7 @@ export default function CompareMap({ swipePosition }) {
     workhousePopupRef.current = new maplibregl.Popup({
       closeButton: true,
       closeOnClick: true,
-      className: "cost-popup",
+      className: "workhouse-popup",
       offset: 16,
     });
 

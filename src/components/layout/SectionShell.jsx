@@ -47,7 +47,7 @@ export default function SectionShell({ id, title, intro, children, isActive }) {
               margin: "0 0 28px 0",
               color: THEME.colors.muted,
               fontFamily: THEME.fonts.serif,
-              fontSize: "1.15rem",
+              fontSize: "1.28rem",
               lineHeight: 1.65,             
             }}
           >
