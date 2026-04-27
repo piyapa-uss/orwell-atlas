@@ -11,3 +11,14 @@ html {
 .income-popup {
   z-index: 9999 !important;
 }
+
+.maplibregl-popup {
+  max-width: none !important;
+}
+
+.maplibregl-popup-content {
+  max-width: none !important;
+  width: auto !important;
+  padding: 0 !important;
+  overflow: visible !important;
+}

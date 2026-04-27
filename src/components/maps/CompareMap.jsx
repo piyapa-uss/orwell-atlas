@@ -72,6 +72,89 @@ function shortenBorough(name) {
   return shortMap[name] || name;
 }
 
+const WORKHOUSE_INFO = {
+  kensington: {
+    img: "/orwell-atlas/images/workhouses/kensington.jpg",
+    link: "https://www.workhouses.org.uk/Kensington/",
+  },
+  fulham: {
+    img: "/orwell-atlas/images/workhouses/fulham.jpg",
+    link: "https://www.workhouses.org.uk/Fulham/",
+  },
+  wandsworth: {
+    img: "/orwell-atlas/images/workhouses/wandsworth.jpg",
+    link: "https://www.workhouses.org.uk/Wandsworth/",
+  },
+  chelsea: {
+    img: "/orwell-atlas/images/workhouses/chelsea.jpg",
+    link: "https://www.workhouses.org.uk/Chelsea/",
+  },
+  lambeth: {
+    img: "/orwell-atlas/images/workhouses/lambeth.jpg",
+    link: "https://www.workhouses.org.uk/Lambeth/",
+  },
+  southwark: {
+    img: "/orwell-atlas/images/workhouses/southwark.jpg",
+    link: "https://www.workhouses.org.uk/Southwark/",
+  },
+  greenwich: {
+    img: "/orwell-atlas/images/workhouses/greenwich.jpg",
+    link: "https://www.workhouses.org.uk/Greenwich/",
+  },
+  deptford: {
+    img: "/orwell-atlas/images/workhouses/deptford.jpg",
+    link: "https://www.workhouses.org.uk/Greenwich/",
+  },
+  poplar: {
+    img: "/orwell-atlas/images/workhouses/poplar.jpg",
+    link: "https://www.workhouses.org.uk/Poplar/",
+  },
+  mileend: {
+    img: "/orwell-atlas/images/workhouses/mileend.jpg",
+    link: "https://www.workhouses.org.uk/MileEndOldTown/",
+  },
+  stepney: {
+    img: "/orwell-atlas/images/workhouses/stepney.jpg",
+    link: "https://www.workhouses.org.uk/Stepney/",
+  },
+  hackney: {
+    img: "/orwell-atlas/images/workhouses/hackney.jpg",
+    link: "https://www.workhouses.org.uk/Hackney/",
+  },
+  bethnalgreen: {
+    img: "/orwell-atlas/images/workhouses/bethnalgreen.jpg",
+    link: "https://www.workhouses.org.uk/BethnalGreen/",
+  },
+  whitechapel: {
+    img: "/orwell-atlas/images/workhouses/whitechapel.jpg",
+    link: "https://www.workhouses.org.uk/Whitechapel/",
+  },
+  shoreditch: {
+    img: "/orwell-atlas/images/workhouses/shoreditch.jpg",
+    link: "https://www.workhouses.org.uk/Shoreditch/",
+  },
+  holborn: {
+    img: "/orwell-atlas/images/workhouses/holborn.jpg",
+    link: "https://www.workhouses.org.uk/Holborn/",
+  },
+  islington: {
+    img: "/orwell-atlas/images/workhouses/islington.jpg",
+    link: "https://www.workhouses.org.uk/Islington/",
+  },
+  stpancras: {
+    img: "/orwell-atlas/images/workhouses/stpancras.jpg",
+    link: "https://www.workhouses.org.uk/StPancras/",
+  },
+  strandunion: {
+    img: "/orwell-atlas/images/workhouses/strand.jpg",
+    link: "https://www.workhouses.org.uk/Strand/",
+  },
+  paddington: {
+    img: "/orwell-atlas/images/workhouses/paddington.jpg",
+    link: "https://www.workhouses.org.uk/Paddington/",
+  },
+};
+
 function getPressureValue(config, value) {
   if (config.pressureMode === "low") return -value;
   return value;
@@ -104,34 +187,63 @@ function buildWorkhousePopup(props, lngLat) {
   const name = props.name || "Workhouse";
   const type = props.type || "Workhouse";
   const certainty = props.certainty || "unknown";
+
+  const key = name.toLowerCase().replace(/\s/g, "").replace("workhouse", "");
+
+  const info = WORKHOUSE_INFO[key] || {};
+  const image = info.img || "";
+  const source = info.link || "";
+
   const note =
     props.note ||
     "A historical workhouse location associated with Poor Law welfare and urban hardship.";
-  const source = props.source || props.link || props.url || "";
 
   const lon = Number(lngLat.lng).toFixed(5);
   const lat = Number(lngLat.lat).toFixed(5);
 
-  const sourceHtml = source
-    ? `<a href="${source}" target="_blank" rel="noreferrer" style="color:#171717;text-decoration:underline;">Source / more info</a>`
-    : `<span style="color:rgba(23,23,23,0.52);">Source link unavailable</span>`;
-
   return `
-    <div style="font-family: Cormorant Garamond, Georgia, serif; width: 240px; color: #171717;">
-      <div style="font-size: 17px; font-weight: 500; line-height: 1.1; margin-bottom: 6px;">
-        ${name}
-      </div>
-      <div style="font-family: Inter, sans-serif; font-size: 10.5px; color: rgba(23,23,23,0.58); margin-bottom: 8px; letter-spacing:0.04em; text-transform:uppercase;">
-        ${type} · certainty: ${certainty}
-      </div>
-      <div style="font-size: 14px; line-height: 1.35; margin-bottom: 8px; color:rgba(23,23,23,0.76);">
-        ${note}
-      </div>
-      <div style="font-family: Inter, sans-serif; font-size: 10.5px; line-height: 1.45; color: rgba(23,23,23,0.58); margin-bottom: 8px;">
-        Coordinates: ${lat}, ${lon}
-      </div>
-      <div style="font-family: Inter, sans-serif; font-size: 10.5px;">
-        ${sourceHtml}
+    <div style="
+      font-family: Cormorant Garamond, Georgia, serif;
+      color: #171717;
+      width: fit-content;
+      max-width: 420px;
+    ">
+
+      ${
+        image
+          ? `<img src="${image}" style="
+              width:100%;
+              height:auto;
+              display:block;
+              border-radius:12px 12px 0 0;
+            " />`
+          : ""
+      }
+
+      <div style="padding:14px;">
+        <div style="font-size: 26px; font-weight: 600; margin-bottom: 6px;">
+          ${name}
+        </div>
+
+        <div style="font-family: Inter, sans-serif; font-size: 11px; color: rgba(23,23,23,0.58); margin-bottom: 10px; text-transform:uppercase;">
+          ${type} · certainty: ${certainty}
+        </div>
+
+        <div style="font-size: 14px; margin-bottom: 10px; color:rgba(23,23,23,0.76);">
+          ${note}
+        </div>
+
+        <div style="font-family: Inter, sans-serif; font-size: 11px; margin-bottom: 10px; color: rgba(23,23,23,0.58);">
+          Coordinates: ${lat}, ${lon}
+        </div>
+
+        <div style="border-top:1px solid rgba(23,23,23,0.2); padding-top:8px;">
+          ${
+            source
+              ? `<a href="${source}" target="_blank">Source / more info</a>`
+              : ""
+          }
+        </div>
       </div>
     </div>
   `;
