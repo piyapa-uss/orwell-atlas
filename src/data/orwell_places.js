@@ -219,10 +219,10 @@ export const placesData = [
   },
   {
     "id": 23,
-    "place": "Binfield",
+    "place": "Lower Binfield (Fictional)",
     "day": 23,
-    "lat": 51.434,
-    "lon": 0.788,
+    "lat": 51.276,
+    "lon": 0.059,
     "type": "Easthampstead Union Workhouse",
     "spend": "Buy a threepenny loaf and half an ounce of tobacco",
     "image": "images/Easthampstead.jpg"

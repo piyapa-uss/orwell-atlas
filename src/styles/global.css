@@ -22,6 +22,7 @@ html {
   max-width: 320px;
 }
 
+<<<<<<< Updated upstream
 /* image */
 .workhouse-popup img {
   width: 100%;
@@ -59,3 +60,11 @@ html {
   color: rgba(23,23,23,0.76);
   margin-bottom: 10px;
 }
+=======
+.maplibregl-popup-content {
+  max-width: none !important;
+  width: auto !important;
+  padding: 0 !important;
+  overflow: visible !important;
+}
+>>>>>>> Stashed changes

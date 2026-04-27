@@ -195,9 +195,21 @@ export default function CostSection({ activeId }) {
                   paddingAngle={3}
                   label={({ percent }) => `${(percent * 100).toFixed(0)}%`}
                   labelLine={false}
+                  isAnimationActive={true}
+                  tabIndex={-1}
+                  style={{ outline: "none" }}
                 >
                   {categoryData.map((entry, index) => (
-                    <Cell key={index} fill={COLORS[index % COLORS.length]} />
+                    <Cell 
+                     key={index} 
+                     fill={
+                        entry.name === "Accommodation"
+                           ? "#4a6a7f"   
+                           : entry.name === "Food"
+                           ? "#acbd8b"   
+                           : "#ccc"      
+                      } 
+                    />
                   ))}
                 </Pie>
               </PieChart>
@@ -283,10 +295,10 @@ export default function CostSection({ activeId }) {
         fontSize: "0.78rem",
         lineHeight: "1.6",
         color: THEME.colors.muted,
-        fontStyle: "italic",
+        fontStyle: "normal",
         textAlign: "center",
       }}>
-        Note: All prices in Down and Out in London and Paris are expressed in the old British <a href="https://www.royalmintmuseum.org.uk/journal/history/pounds-shillings-and-pence/">pre-decimal currency system</a>. However, this app translated the to the decimal pound system using <a href="https://www.bankofengland.co.uk/education/education-resources/shillings-to-pounds-converter">Bank of England Calculator</a> so as to improve interpretation. All data shown here corresponds strictly to items the author explicitly mentioned consuming or spending on. Actual expenditures may have been higher (indeed, there is week gap within the story), but no records remain of those. After all, money laundering and tax evasion has been a common practice in The City since the beginnings of time.
+        Note: All prices in Down and Out in London and Paris are expressed in the old British <a href="https://www.royalmintmuseum.org.uk/journal/history/pounds-shillings-and-pence/" style={{ color: "#4a6a7f" }}>pre-decimal currency system</a>. However, this app translated the to the decimal pound system using <a href="https://www.bankofengland.co.uk/education/education-resources/shillings-to-pounds-converter" style={{ color: "#4a6a7f" }}>Bank of England Calculator</a> so as to improve interpretation. All data shown here corresponds strictly to items the author explicitly mentioned consuming or spending on. Actual expenditures may have been higher (indeed, there is week gap within the story), but no records remain of those. After all, money laundering and tax evasion has been a common practice in The City since the beginnings of time.
       </div>
 
     </SectionShell>

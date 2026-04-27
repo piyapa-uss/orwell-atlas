@@ -74,7 +74,7 @@ export default function WhySection({ activeId }) {
         .manbook-section a {
           color: ${c.accent};
           text-decoration: none;
-          border-bottom: 1px solid rgba(156,68,66,.35);
+          border-bottom: 1px solid #9c4442;
           transition: border-color .2s;
         }
         .manbook-section a:hover { border-bottom-color: ${c.accent}; }

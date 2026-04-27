@@ -38,7 +38,7 @@ export default function HeroSection() {
       >
         <h1
           style={{
-            margin: 0,
+            margin: "-1rem 0 0 0",
             fontFamily: THEME.fonts.serif,
             fontSize: "clamp(3rem, 4.4vw, 4.7rem)",
             lineHeight: 1,
@@ -149,9 +149,9 @@ export default function HeroSection() {
             color: THEME.colors.muted,
           }}
         >
-          Through the lens of Orwell, let’s explore <br />
-          how the cost of everyday survival has evolved, <br />
-          revealing the shifting geography <br />
+          Through the lens of Orwell, let's explore <br />
+          how the cost of everyday survival has <br />
+          evolved, revealing the shifting geography <br />
           of inequality across London.
         </p>
       </motion.div>
